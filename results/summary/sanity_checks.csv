@@ -1,0 +1,16 @@
+check,topology,passed
+S1_q1_static_expected_equals_adaptive,T1_corridor,True
+S2_q0_no_false_growth,T1_corridor,True
+S3_positive_edge_monotonic,T1_corridor,True
+S4_budget_respected,T1_corridor,True
+S5_shared_edge_latents,T1_corridor,True
+S1_q1_static_expected_equals_adaptive,T2_rooms,True
+S2_q0_no_false_growth,T2_rooms,True
+S3_positive_edge_monotonic,T2_rooms,True
+S4_budget_respected,T2_rooms,True
+S5_shared_edge_latents,T2_rooms,True
+S1_q1_static_expected_equals_adaptive,T3_irregular,True
+S2_q0_no_false_growth,T3_irregular,True
+S3_positive_edge_monotonic,T3_irregular,True
+S4_budget_respected,T3_irregular,True
+S5_shared_edge_latents,T3_irregular,True

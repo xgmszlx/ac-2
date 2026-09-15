@@ -1,0 +1,11 @@
+{
+  "config": "/home/wcqw/ac-2/adaptive_graph_feasibility/configs/base.yaml",
+  "trials_per_configuration": 1000,
+  "configuration_count": 54,
+  "episode_count": 162000,
+  "started_unix": 1789443559.5925264,
+  "runtime_seconds": 150.185090424,
+  "python": "3.12.7",
+  "platform": "Linux-5.15.0-139-generic-x86_64-with-glibc2.31",
+  "decision": "WEAK_GO"
+}

@@ -1,0 +1,9 @@
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.venv/
+
+# Large reproducible per-trial evidence stays local. Git tracks the compact
+# candidate manifest, aggregate tables, figures, and reports.
+results/raw/trials.csv
+results/raw/edge_outcomes.csv

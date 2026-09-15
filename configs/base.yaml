@@ -1,0 +1,33 @@
+experiment:
+  master_seed: 20260915
+  graph_seed: 1701
+  smoke_trials: 200
+  full_trials: 1000
+  bootstrap_samples: 2000
+
+graph:
+  node_count: 48
+  odometry_weight: 1.0
+  loop_weight: 2.0
+  candidate_count: 18
+  minimum_temporal_separation: 8
+
+routing:
+  service_cost: 2.0
+  budgets: [12.0, 24.0, 36.0]
+
+reliability:
+  uniform_q: [0.3, 0.5, 0.7, 0.9]
+  heterogeneous:
+    alpha: 2.5
+    beta: 2.5
+    minimum: 0.15
+    maximum: 0.95
+  conflict:
+    highest_value_q: 0.20
+    lowest_value_q: 0.85
+
+evaluation:
+  failure_threshold_fraction: 0.25
+  tie_tolerance: 1.0e-10
+  practical_tail_gain_fraction: 0.05
