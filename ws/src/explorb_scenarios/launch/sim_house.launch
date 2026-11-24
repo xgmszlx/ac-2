@@ -1,0 +1,56 @@
+<!-- ExplORB-SLAM localization-observability line: simulation bring-up.
+
+   Equivalent of robot_description/single_house.launch (and include/robot.launch.xml)
+   with the platform substitutions documented in urdf/explorb_robot.urdf.xacro:
+     * the TurtleBot3 Waffle body replaces the kobuki (its sensors are the ones that
+       actually run on this Gazebo/ROS combination),
+     * the AWS world is the adapted copy whose <physics> block is a plain default ODE
+       profile instead of the author's non-default profile,
+     * rviz is not started (headless timed runs, no CPU competition),
+     * the robot is spawned at the ROOT namespace so that its gazebo_ros sensor
+       plugins publish; move_base and the decision maker stay in `robot_1`, which is
+       what the author's action/service names require.
+
+   The SLAM frontend, the candidate set and the motion constraints are the author's.
+-->
+<launch>
+
+    <arg name="world_file" default="$(find explorb_scenarios)/worlds/loc_store.world"/>
+    <arg name="model_path" default="$(find robot_description)/launch/include/models/aws/bookstore"/>
+    <arg name="robot_ns"   default="robot_1"/>
+    <arg name="gazebo_gui" default="false"/>
+    <arg name="verbose"    default="false"/>
+    <arg name="with_slam"  default="true"/>
+    <arg name="robot_urdf" default="$(find explorb_scenarios)/urdf/explorb_robot.urdf.xacro"/>
+    <arg name="init_pose"  default="-x 0.0 -y 0.0 -z 0.02"/>
+
+    <param name="use_sim_time" value="true"/>
+
+    <env name="GAZEBO_RESOURCE_PATH" value="$(find robot_description)/launch/include/meshes:$(env GAZEBO_RESOURCE_PATH)"/>
+    <env name="GAZEBO_MODEL_PATH"    value="$(arg model_path):$(env GAZEBO_MODEL_PATH)"/>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="gui"          value="$(arg gazebo_gui)"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="world_name"   value="$(arg world_file)"/>
+        <arg name="verbose"      value="$(arg verbose)"/>
+    </include>
+
+    <param name="robot_description" command="$(find xacro)/xacro '$(arg robot_urdf)'"/>
+
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_robot"
+          args="$(arg init_pose) -urdf -param robot_description -model $(arg robot_ns)"
+          respawn="false" output="screen"/>
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+        <param name="publish_frequency" type="double" value="100.0"/>
+        <param name="use_tf_static" type="bool" value="true"/>
+    </node>
+
+    <group if="$(arg with_slam)">
+        <include file="$(find explorb_scenarios)/launch/move_base_slam.launch">
+            <arg name="namespace" value="$(arg robot_ns)"/>
+        </include>
+    </group>
+
+</launch>

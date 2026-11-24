@@ -1,0 +1,66 @@
+<!-- One complete timed exploration task: world + robot + baseline SLAM/move_base
+     + author frontier detectors + strategy-selectable decision maker + recorder.
+
+     The only thing that changes between arms is `strategy` (and the seed of the
+     scenario driver). Worlds, models, robot, SLAM frontend, detectors, candidate
+     pool, plan sampling, costmaps and local planner are identical. -->
+<launch>
+
+    <arg name="task_id"     default="smoke"/>
+    <arg name="strategy"    default="native"/>
+    <arg name="seed"        default="0"/>
+    <arg name="scenario"    default="static"/>   <!-- static | visual | blocker | both -->
+    <arg name="budget_sim_s" default="900"/>
+    <arg name="arm_after_sim_s" default="25"/>
+    <arg name="run_dir"     default="$(env HOME)/explorb_line_20261121/results/runs/$(arg task_id)"/>
+    <arg name="robot_ns"    default="robot_1"/>
+    <arg name="world_file"  default="$(find robot_description)/launch/include/worlds/aws_house.world"/>
+    <arg name="model_path"  default="$(find robot_description)/launch/include/models/aws/house"/>
+    <arg name="init_pose"   default="-x 0.0 -y 0.0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0"/>
+    <arg name="gazebo_gui"  default="false"/>
+    <arg name="with_actors" default="true"/>
+    <arg name="with_recorder" default="true"/>
+
+    <param name="use_sim_time" value="true"/>
+
+    <include file="$(find explorb_scenarios)/launch/sim_house.launch">
+        <arg name="world_file" value="$(arg world_file)"/>
+        <arg name="model_path" value="$(arg model_path)"/>
+        <arg name="robot_ns"   value="$(arg robot_ns)"/>
+        <arg name="init_pose"  value="$(arg init_pose)"/>
+        <arg name="gazebo_gui" value="$(arg gazebo_gui)"/>
+    </include>
+
+    <include file="$(find explorb_scenarios)/launch/agent.launch">
+        <arg name="robot_namespace" value="$(arg robot_ns)"/>
+        <arg name="strategy"        value="$(arg strategy)"/>
+        <arg name="strategy_seed"   value="$(arg seed)"/>
+        <arg name="run_dir"         value="$(arg run_dir)"/>
+        <arg name="exploring_time"  value="9000"/>
+    </include>
+
+    <node pkg="explorb_scenarios" type="budget_guard.py" name="budget_guard" output="screen">
+        <param name="budget_sim_s"    value="$(arg budget_sim_s)"/>
+        <param name="arm_after_sim_s" value="$(arg arm_after_sim_s)"/>
+        <param name="run_dir"         value="$(arg run_dir)"/>
+    </node>
+
+    <group if="$(arg with_recorder)">
+        <node pkg="explorb_scenarios" type="run_recorder.py" name="run_recorder" output="screen">
+            <param name="run_dir"     value="$(arg run_dir)"/>
+            <param name="robot_model" value="$(arg robot_ns)"/>
+            <param name="robot_ns"    value="$(arg robot_ns)"/>
+            <param name="camera_type" value="rgbd"/>
+        </node>
+    </group>
+
+    <group if="$(arg with_actors)">
+        <node pkg="explorb_scenarios" type="scenario_driver.py" name="scenario_driver" output="screen">
+            <param name="run_dir"  value="$(arg run_dir)"/>
+            <param name="scenario" value="$(arg scenario)"/>
+            <param name="seed"     value="$(arg seed)"/>
+            <param name="robot_model" value="$(arg robot_ns)"/>
+        </node>
+    </group>
+
+</launch>

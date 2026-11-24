@@ -1,0 +1,11 @@
+<launch>
+  <arg name="urdf" default="$(find explorb_scenarios)/urdf/explorb_robot.urdf.xacro"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_world.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="false"/>
+  </include>
+  <param name="robot_description" command="$(find xacro)/xacro $(arg urdf)"/>
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model robot_1 -x -2.0 -y -0.5 -z 0.0 -param robot_description"/>
+</launch>

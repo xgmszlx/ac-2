@@ -1,0 +1,558 @@
+-- Using CATKIN_DEVEL_PREFIX: /home/wcqw/explorb_line_20261121/ws/devel
+-- Using CMAKE_PREFIX_PATH: /home/wcqw/explorb_line_20261121/localroot/opt/ros/noetic;/opt/ros/noetic
+-- This workspace overlays: /opt/ros/noetic
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3
+-- Using Debian Python package layout
+-- Using empy: /home/wcqw/.local/lib/python3.8/site-packages/em.py
+-- Using CATKIN_ENABLE_TESTING: ON
+-- Call enable_testing()
+-- Using CATKIN_TEST_RESULTS_DIR: /home/wcqw/explorb_line_20261121/ws/build/test_results
+-- Forcing gtest/gmock from source, though one was otherwise available.
+-- Found gtest sources under '/usr/src/googletest': gtests will be built
+-- Found gmock sources under '/usr/src/googletest': gmock will be built
+-- Found PythonInterp: /usr/bin/python3 (found version "3.8.10") 
+-- Using Python nosetests: /usr/bin/nosetests3
+-- catkin 0.8.12
+-- BUILD_SHARED_LIBS is on
+-- BUILD_SHARED_LIBS is on
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- ~~  traversing 5 packages in topological order:
+-- ~~  - orb_slam2_ros
+-- ~~  - decision_maker
+-- ~~  - frontier_detector
+-- ~~  - kobuki_plugins
+-- ~~  - robot_description
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- +++ processing catkin package: 'orb_slam2_ros'
+-- ==> add_subdirectory(orb_slam2_ros)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Chmod a+x the dynamic_reconfigure file
+-- orb_slam2_ros: 1 messages, 1 services
+-- Found OpenMP_C: -fopenmp  
+-- Found OpenMP_CXX: -fopenmp  
+-- Found OpenMP: TRUE   
+-- Compile With map save/load function
+-- +++ processing catkin package: 'decision_maker'
+-- ==> add_subdirectory(decision_maker)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- +++ processing catkin package: 'frontier_detector'
+-- ==> add_subdirectory(frontier_detector)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+Loaded OpenCV 4.0.
+-- frontier_detector: 1 messages, 0 services
+-- +++ processing catkin package: 'kobuki_plugins'
+-- ==> add_subdirectory(kobuki_plugins)
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found version "3.6.1") 
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-transport8 -- found version 8.5.0
+-- Searching for dependencies of ignition-transport8
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.2
+-- Checking for module 'uuid'
+--   Found uuid, version 2.34.0
+-- Looking for ignition-msgs5 -- found version 5.11.0
+-- Searching for dependencies of ignition-msgs5
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found suitable version "3.6.1", minimum required is "3") 
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 6.2.0
+-- Looking for ignition-msgs5 -- found version 5.11.0
+-- Looking for ignition-common3 -- found version 3.17.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.17.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-fuel_tools4 -- found version 4.9.1
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.7.4
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Checking for module 'libzip'
+--   Found libzip, version 1.5.1
+-- Looking for ignition-common3 -- found version 3.17.0
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-msgs5 -- found version 5.11.0
+WARNING: package 'gazebo_ros' is deprecated (This package has been deprecated as of January 2025 with Gazebo classic 11 reaching
+      end-of-life. Users are highly encouraged to migrate to the new Gazebo
+      using our migration guides (https://gazebosim.org/docs/latest/gazebo_classic_migration))
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+WARNING: package 'gazebo_msgs' is deprecated (This package has been deprecated as of January 2025 with Gazebo classic 11 reaching
+      end-of-life. Users are highly encouraged to migrate to the new Gazebo
+      using our migration guides (https://gazebosim.org/docs/latest/gazebo_classic_migration))
+WARNING: package 'gazebo_plugins' is deprecated (This package has been deprecated as of January 2025 with Gazebo classic 11 reaching
+      end-of-life. Users are highly encouraged to migrate to the new Gazebo
+      using our migration guides (https://gazebosim.org/docs/latest/gazebo_classic_migration))
+-- +++ processing catkin package: 'robot_description'
+-- ==> add_subdirectory(robot_description)
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found version "3.6.1") 
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-transport8 -- found version 8.5.0
+-- Searching for dependencies of ignition-transport8
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.2
+-- Checking for module 'uuid'
+--   Found uuid, version 2.34.0
+-- Looking for ignition-msgs5 -- found version 5.11.0
+-- Searching for dependencies of ignition-msgs5
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found suitable version "3.6.1", minimum required is "3") 
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 6.2.0
+-- Looking for ignition-msgs5 -- found version 5.11.0
+-- Looking for ignition-common3 -- found version 3.17.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.17.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-fuel_tools4 -- found version 4.9.1
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.7.4
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Checking for module 'libzip'
+--   Found libzip, version 1.5.1
+-- Looking for ignition-common3 -- found version 3.17.0
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-msgs5 -- found version 5.11.0
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+WARNING: package 'gazebo_ros' is deprecated (This package has been deprecated as of January 2025 with Gazebo classic 11 reaching
+      end-of-life. Users are highly encouraged to migrate to the new Gazebo
+      using our migration guides (https://gazebosim.org/docs/latest/gazebo_classic_migration))
+WARNING: package 'gazebo_msgs' is deprecated (This package has been deprecated as of January 2025 with Gazebo classic 11 reaching
+      end-of-life. Users are highly encouraged to migrate to the new Gazebo
+      using our migration guides (https://gazebosim.org/docs/latest/gazebo_classic_migration))
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/wcqw/explorb_line_20261121/ws/build
+Scanning dependencies of target _orb_slam2_ros_generate_messages_check_deps_SaveMap
+Scanning dependencies of target orb_slam2_ros_gencfg
+Scanning dependencies of target _orb_slam2_ros_generate_messages_check_deps_ORBState
+Scanning dependencies of target std_msgs_generate_messages_nodejs
+Scanning dependencies of target std_msgs_generate_messages_cpp
+Scanning dependencies of target std_msgs_generate_messages_py
+Scanning dependencies of target std_msgs_generate_messages_lisp
+Scanning dependencies of target std_msgs_generate_messages_eus
+Scanning dependencies of target frontier_detector_gencfg
+Scanning dependencies of target tf_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_lisp
+Scanning dependencies of target geometry_msgs_generate_messages_eus
+[  0%] Built target tf_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_eus
+Scanning dependencies of target sensor_msgs_generate_messages_cpp
+Scanning dependencies of target geometry_msgs_generate_messages_py
+Scanning dependencies of target sensor_msgs_generate_messages_nodejs
+[  0%] Built target geometry_msgs_generate_messages_eus
+Scanning dependencies of target roscpp_generate_messages_cpp
+Scanning dependencies of target sensor_msgs_generate_messages_lisp
+[  0%] Built target sensor_msgs_generate_messages_cpp
+[  0%] Built target geometry_msgs_generate_messages_py
+[  0%] Built target sensor_msgs_generate_messages_nodejs
+[  0%] Built target roscpp_generate_messages_cpp
+Scanning dependencies of target sensor_msgs_generate_messages_eus
+[  0%] Built target sensor_msgs_generate_messages_lisp
+Scanning dependencies of target sensor_msgs_generate_messages_py
+Scanning dependencies of target roscpp_generate_messages_eus
+Scanning dependencies of target rosgraph_msgs_generate_messages_nodejs
+[  0%] Built target sensor_msgs_generate_messages_eus
+Scanning dependencies of target actionlib_generate_messages_cpp
+Scanning dependencies of target tf2_msgs_generate_messages_eus
+[  0%] Built target rosgraph_msgs_generate_messages_nodejs
+[  0%] Built target roscpp_generate_messages_eus
+[  0%] Built target sensor_msgs_generate_messages_py
+[  0%] Built target actionlib_generate_messages_cpp
+[  0%] Built target tf2_msgs_generate_messages_eus
+Scanning dependencies of target geometry_msgs_generate_messages_lisp
+Scanning dependencies of target roscpp_generate_messages_py
+Scanning dependencies of target actionlib_msgs_generate_messages_py
+Scanning dependencies of target tf_generate_messages_cpp
+[  0%] Built target geometry_msgs_generate_messages_lisp
+[  0%] Built target roscpp_generate_messages_py
+Scanning dependencies of target rosgraph_msgs_generate_messages_eus
+Scanning dependencies of target roscpp_generate_messages_nodejs
+[  0%] Built target actionlib_msgs_generate_messages_py
+[  0%] Built target tf_generate_messages_cpp
+[  0%] Built target rosgraph_msgs_generate_messages_eus
+Scanning dependencies of target tf_generate_messages_eus
+Scanning dependencies of target rosgraph_msgs_generate_messages_lisp
+[  0%] Built target roscpp_generate_messages_nodejs
+Scanning dependencies of target dynamic_reconfigure_generate_messages_py
+[  0%] Built target rosgraph_msgs_generate_messages_lisp
+Scanning dependencies of target actionlib_msgs_generate_messages_eus
+[  0%] Built target tf_generate_messages_eus
+Scanning dependencies of target tf_generate_messages_lisp
+Scanning dependencies of target dynamic_reconfigure_generate_messages_cpp
+[  0%] Built target dynamic_reconfigure_generate_messages_py
+[  0%] Built target actionlib_msgs_generate_messages_eus
+[  0%] Built target tf_generate_messages_lisp
+[  0%] Built target dynamic_reconfigure_generate_messages_cpp
+Scanning dependencies of target dynamic_reconfigure_generate_messages_nodejs
+Scanning dependencies of target geometry_msgs_generate_messages_cpp
+Scanning dependencies of target tf2_msgs_generate_messages_py
+[  0%] Built target dynamic_reconfigure_generate_messages_nodejs
+[  0%] Built target geometry_msgs_generate_messages_cpp
+[  0%] Built target tf2_msgs_generate_messages_py
+Scanning dependencies of target roscpp_generate_messages_lisp
+Scanning dependencies of target actionlib_generate_messages_lisp
+Scanning dependencies of target rosgraph_msgs_generate_messages_cpp
+[  0%] Built target actionlib_generate_messages_lisp
+[  0%] Built target roscpp_generate_messages_lisp
+Scanning dependencies of target actionlib_msgs_generate_messages_cpp
+Scanning dependencies of target actionlib_generate_messages_nodejs
+Scanning dependencies of target actionlib_generate_messages_eus
+[  0%] Built target rosgraph_msgs_generate_messages_cpp
+[  0%] Built target actionlib_msgs_generate_messages_cpp
+[  0%] Built target actionlib_generate_messages_nodejs
+Scanning dependencies of target tf_generate_messages_py
+Scanning dependencies of target actionlib_generate_messages_py
+[  0%] Built target actionlib_generate_messages_eus
+Scanning dependencies of target actionlib_msgs_generate_messages_nodejs
+[  0%] Built target actionlib_generate_messages_py
+Scanning dependencies of target actionlib_msgs_generate_messages_lisp
+Scanning dependencies of target tf2_msgs_generate_messages_lisp
+Scanning dependencies of target tf2_msgs_generate_messages_nodejs
+[  0%] Built target tf_generate_messages_py
+[  0%] Built target actionlib_msgs_generate_messages_nodejs
+[  0%] Built target tf2_msgs_generate_messages_lisp
+[  0%] Built target actionlib_msgs_generate_messages_lisp
+Scanning dependencies of target geometry_msgs_generate_messages_nodejs
+[  0%] Built target tf2_msgs_generate_messages_nodejs
+Scanning dependencies of target dynamic_reconfigure_generate_messages_eus
+Scanning dependencies of target dynamic_reconfigure_gencfg
+[  0%] Built target geometry_msgs_generate_messages_nodejs
+Scanning dependencies of target rosgraph_msgs_generate_messages_py
+Scanning dependencies of target tf2_msgs_generate_messages_cpp
+Scanning dependencies of target dynamic_reconfigure_generate_messages_lisp
+[  0%] Built target dynamic_reconfigure_generate_messages_eus
+[  1%] Generating dynamic reconfigure files from cfg/informationGain.cfg: /home/wcqw/explorb_line_20261121/ws/devel/include/frontier_detector/informationGainConfig.h /home/wcqw/explorb_line_20261121/ws/devel/lib/python3/dist-packages/frontier_detector/cfg/informationGainConfig.py
+[  1%] Built target _orb_slam2_ros_generate_messages_check_deps_ORBState
+[  1%] Built target dynamic_reconfigure_gencfg
+[  2%] Generating dynamic reconfigure files from ros/config/dynamic_reconfigure.cfg: /home/wcqw/explorb_line_20261121/ws/devel/include/orb_slam2_ros/dynamic_reconfigureConfig.h /home/wcqw/explorb_line_20261121/ws/devel/lib/python3/dist-packages/orb_slam2_ros/cfg/dynamic_reconfigureConfig.py
+Scanning dependencies of target octomap_msgs_generate_messages_cpp
+Scanning dependencies of target visualization_msgs_generate_messages_cpp
+[  2%] Built target tf2_msgs_generate_messages_cpp
+[  2%] Built target rosgraph_msgs_generate_messages_py
+[  2%] Built target dynamic_reconfigure_generate_messages_lisp
+[  2%] Built target _orb_slam2_ros_generate_messages_check_deps_SaveMap
+Scanning dependencies of target octomap_msgs_generate_messages_py
+[  2%] Built target visualization_msgs_generate_messages_cpp
+[  2%] Built target octomap_msgs_generate_messages_cpp
+Scanning dependencies of target visualization_msgs_generate_messages_nodejs
+Scanning dependencies of target nav_msgs_generate_messages_eus
+Scanning dependencies of target visualization_msgs_generate_messages_eus
+Scanning dependencies of target visualization_msgs_generate_messages_py
+[  2%] Built target octomap_msgs_generate_messages_py
+Scanning dependencies of target octomap_msgs_generate_messages_eus
+[  2%] Built target nav_msgs_generate_messages_eus
+[  2%] Built target visualization_msgs_generate_messages_nodejs
+Scanning dependencies of target nav_msgs_generate_messages_py
+Scanning dependencies of target visualization_msgs_generate_messages_lisp
+[  2%] Built target visualization_msgs_generate_messages_eus
+[  2%] Built target visualization_msgs_generate_messages_py
+Scanning dependencies of target octomap_msgs_generate_messages_nodejs
+[  2%] Built target nav_msgs_generate_messages_py
+[  2%] Built target octomap_msgs_generate_messages_eus
+[  2%] Built target visualization_msgs_generate_messages_lisp
+Scanning dependencies of target nav_msgs_generate_messages_nodejs
+Scanning dependencies of target _frontier_detector_generate_messages_check_deps_PointArray
+[  2%] Built target octomap_msgs_generate_messages_nodejs
+Scanning dependencies of target octomap_msgs_generate_messages_lisp
+Scanning dependencies of target nav_msgs_generate_messages_lisp
+[  2%] Built target nav_msgs_generate_messages_nodejs
+Scanning dependencies of target nav_msgs_generate_messages_cpp
+[  2%] Built target octomap_msgs_generate_messages_lisp
+[  2%] Built target nav_msgs_generate_messages_lisp
+Scanning dependencies of target kobuki_msgs_generate_messages_cpp
+[  2%] Built target nav_msgs_generate_messages_cpp
+Scanning dependencies of target kobuki_msgs_generate_messages_py
+[  2%] Built target kobuki_msgs_generate_messages_cpp
+Scanning dependencies of target kobuki_msgs_generate_messages_lisp
+Scanning dependencies of target trajectory_msgs_generate_messages_cpp
+[  2%] Built target kobuki_msgs_generate_messages_py
+Scanning dependencies of target gazebo_msgs_generate_messages_eus
+[  2%] Built target kobuki_msgs_generate_messages_lisp
+[  2%] Built target trajectory_msgs_generate_messages_cpp
+Scanning dependencies of target gazebo_msgs_generate_messages_cpp
+[  2%] Built target gazebo_msgs_generate_messages_eus
+Scanning dependencies of target _catkin_empty_exported_target
+[  2%] Built target _frontier_detector_generate_messages_check_deps_PointArray
+[  2%] Built target gazebo_msgs_generate_messages_cpp
+Scanning dependencies of target gazebo_msgs_generate_messages_lisp
+Scanning dependencies of target std_srvs_generate_messages_py
+Scanning dependencies of target std_srvs_generate_messages_nodejs
+[  2%] Built target _catkin_empty_exported_target
+[  2%] Built target gazebo_msgs_generate_messages_lisp
+[  2%] Built target std_srvs_generate_messages_py
+Scanning dependencies of target std_srvs_generate_messages_eus
+Scanning dependencies of target std_srvs_generate_messages_lisp
+[  2%] Built target std_srvs_generate_messages_nodejs
+Scanning dependencies of target gazebo_msgs_generate_messages_py
+[  2%] Built target std_srvs_generate_messages_eus
+Scanning dependencies of target gazebo_ros_gencfg
+Scanning dependencies of target std_srvs_generate_messages_cpp
+[  2%] Built target std_srvs_generate_messages_lisp
+Scanning dependencies of target trajectory_msgs_generate_messages_lisp
+[  2%] Built target gazebo_msgs_generate_messages_py
+[  2%] Built target gazebo_ros_gencfg
+[  2%] Built target std_srvs_generate_messages_cpp
+[  2%] Built target trajectory_msgs_generate_messages_lisp
+Scanning dependencies of target trajectory_msgs_generate_messages_py
+Scanning dependencies of target kobuki_msgs_generate_messages_nodejs
+Scanning dependencies of target bond_generate_messages_nodejs
+Scanning dependencies of target nodelet_generate_messages_nodejs
+Scanning dependencies of target nodelet_generate_messages_cpp
+[  2%] Built target kobuki_msgs_generate_messages_nodejs
+[  2%] Built target trajectory_msgs_generate_messages_py
+Scanning dependencies of target gazebo_msgs_generate_messages_nodejs
+[  2%] Built target bond_generate_messages_nodejs
+[  2%] Built target nodelet_generate_messages_nodejs
+[  2%] Built target gazebo_msgs_generate_messages_nodejs
+[  2%] Built target nodelet_generate_messages_cpp
+Scanning dependencies of target trajectory_msgs_generate_messages_nodejs
+Scanning dependencies of target trajectory_msgs_generate_messages_eus
+Scanning dependencies of target nodelet_generate_messages_eus
+[  2%] Built target trajectory_msgs_generate_messages_nodejs
+Scanning dependencies of target nodelet_generate_messages_lisp
+Scanning dependencies of target gazebo_plugins_gencfg
+Scanning dependencies of target nodelet_generate_messages_py
+[  2%] Built target trajectory_msgs_generate_messages_eus
+[  2%] Built target nodelet_generate_messages_eus
+[  2%] Built target gazebo_plugins_gencfg
+[  2%] Built target nodelet_generate_messages_py
+[  2%] Built target nodelet_generate_messages_lisp
+Scanning dependencies of target kobuki_msgs_generate_messages_eus
+Scanning dependencies of target bond_generate_messages_eus
+[  2%] Built target kobuki_msgs_generate_messages_eus
+[  2%] Built target bond_generate_messages_eus
+Scanning dependencies of target bond_generate_messages_cpp
+Scanning dependencies of target bond_generate_messages_lisp
+Scanning dependencies of target bond_generate_messages_py
+Scanning dependencies of target robot_description_xacro_generated_to_devel_space_
+[  2%] Built target bond_generate_messages_cpp
+[  2%] Built target bond_generate_messages_lisp
+[  2%] Built target bond_generate_messages_py
+[  2%] Built target robot_description_xacro_generated_to_devel_space_
+Scanning dependencies of target orb_slam2_ros_generate_messages_cpp
+Scanning dependencies of target orb_slam2_ros_generate_messages_py
+[  3%] Generating C++ code from orb_slam2_ros/ORBState.msg
+[  4%] Generating Python from MSG orb_slam2_ros/ORBState
+Scanning dependencies of target orb_slam2_ros_generate_messages_lisp
+Scanning dependencies of target orb_slam2_ros_generate_messages_nodejs
+Scanning dependencies of target frontier_detector_generate_messages_lisp
+Scanning dependencies of target orb_slam2_ros_generate_messages_eus
+[  8%] Generating Javascript code from orb_slam2_ros/ORBState.msg
+[  8%] Generating EusLisp code from orb_slam2_ros/ORBState.msg
+[  8%] Generating Lisp code from frontier_detector/PointArray.msg
+[  8%] Generating Lisp code from orb_slam2_ros/ORBState.msg
+[  9%] Generating Lisp code from orb_slam2_ros/SaveMap.srv
+[ 10%] Generating Javascript code from orb_slam2_ros/SaveMap.srv
+[ 11%] Generating EusLisp code from orb_slam2_ros/SaveMap.srv
+[ 11%] Generating EusLisp manifest code for orb_slam2_ros
+[ 13%] Generating C++ code from orb_slam2_ros/SaveMap.srv
+Generating reconfiguration files for informationGain in frontier_detector
+Wrote header file in /home/wcqw/explorb_line_20261121/ws/devel/include/frontier_detector/informationGainConfig.h
+[ 13%] Built target frontier_detector_generate_messages_lisp
+[ 14%] Generating Python code from SRV orb_slam2_ros/SaveMap
+Generating reconfiguration files for dynamic_reconfigure in orb_slam2_ros
+Wrote header file in /home/wcqw/explorb_line_20261121/ws/devel/include/orb_slam2_ros/dynamic_reconfigureConfig.h
+[ 14%] Built target frontier_detector_gencfg
+[ 14%] Built target orb_slam2_ros_gencfg
+Scanning dependencies of target frontier_detector_generate_messages_eus
+Scanning dependencies of target frontier_detector_generate_messages_cpp
+[ 15%] Generating C++ code from frontier_detector/PointArray.msg
+[ 15%] Generating EusLisp code from frontier_detector/PointArray.msg
+[ 15%] Built target orb_slam2_ros_generate_messages_lisp
+[ 15%] Built target orb_slam2_ros_generate_messages_cpp
+[ 16%] Generating EusLisp manifest code for frontier_detector
+Scanning dependencies of target frontier_detector_generate_messages_py
+[ 17%] Generating Python from MSG frontier_detector/PointArray
+Scanning dependencies of target frontier_detector_generate_messages_nodejs
+[ 18%] Generating Javascript code from frontier_detector/PointArray.msg
+[ 18%] Built target frontier_detector_generate_messages_cpp
+[ 18%] Built target orb_slam2_ros_generate_messages_nodejs
+[ 18%] Built target frontier_detector_generate_messages_nodejs
+[ 18%] Built target orb_slam2_ros_generate_messages_eus
+[ 18%] Built target frontier_detector_generate_messages_eus
+[ 20%] Generating Python msg __init__.py for orb_slam2_ros
+[ 20%] Generating Python srv __init__.py for orb_slam2_ros
+[ 21%] Generating Python msg __init__.py for frontier_detector
+[ 21%] Built target frontier_detector_generate_messages_py
+Scanning dependencies of target frontier_detector_generate_messages
+[ 21%] Built target frontier_detector_generate_messages
+[ 21%] Built target orb_slam2_ros_generate_messages_py
+Scanning dependencies of target orb_slam2_ros_generate_messages
+[ 21%] Built target orb_slam2_ros_generate_messages
+Scanning dependencies of target frontier_detector_local_rrt
+Scanning dependencies of target frontier_detector_global_rrt
+make[2]: *** 没有规则可制作目标“/opt/ros/noetic/lib/liboctomap.so”，由“/home/wcqw/explorb_line_20261121/ws/devel/lib/frontier_detector/frontier_detector_local_rrt” 需求。 停止。
+make[2]: *** 正在等待未完成的任务....
+make[2]: *** 没有规则可制作目标“/opt/ros/noetic/lib/liboctomap.so”，由“/home/wcqw/explorb_line_20261121/ws/devel/lib/frontier_detector/frontier_detector_global_rrt” 需求。 停止。
+make[2]: *** 正在等待未完成的任务....
+[ 27%] Building CXX object frontier_detector/CMakeFiles/frontier_detector_global_rrt.dir/src/GlobalRRTDetector.cpp.o
+[ 27%] Building CXX object frontier_detector/CMakeFiles/frontier_detector_local_rrt.dir/src/LocalRRTDetector.cpp.o
+[ 27%] Building CXX object frontier_detector/CMakeFiles/frontier_detector_global_rrt.dir/src/Functions.cpp.o
+[ 27%] Building CXX object frontier_detector/CMakeFiles/frontier_detector_local_rrt.dir/src/Functions.cpp.o
+[ 27%] Building CXX object frontier_detector/CMakeFiles/frontier_detector_local_rrt.dir/src/Mtrand.cpp.o
+[ 27%] Building CXX object frontier_detector/CMakeFiles/frontier_detector_global_rrt.dir/src/Mtrand.cpp.o
+Scanning dependencies of target frontier_detector_gridmapper
+Scanning dependencies of target DBoW2
+make[2]: *** 没有规则可制作目标“/opt/ros/noetic/lib/liboctomap.so”，由“/home/wcqw/explorb_line_20261121/ws/devel/lib/frontier_detector/frontier_detector_gridmapper” 需求。 停止。
+make[2]: *** 正在等待未完成的任务....
+[ 28%] Building CXX object orb_slam2_ros/CMakeFiles/DBoW2.dir/orb_slam2/Thirdparty/DBoW2/DBoW2/BowVector.cpp.o
+[ 29%] Building CXX object orb_slam2_ros/CMakeFiles/DBoW2.dir/orb_slam2/Thirdparty/DBoW2/DBoW2/FORB.cpp.o
+[ 30%] Building CXX object orb_slam2_ros/CMakeFiles/DBoW2.dir/orb_slam2/Thirdparty/DBoW2/DBoW2/FeatureVector.cpp.o
+[ 30%] Building CXX object frontier_detector/CMakeFiles/frontier_detector_gridmapper.dir/src/GridMapper.cpp.o
+[ 31%] Building CXX object orb_slam2_ros/CMakeFiles/DBoW2.dir/orb_slam2/Thirdparty/DBoW2/DBoW2/ScoringObject.cpp.o
+Scanning dependencies of target frontier_detector_octomapper
+make[2]: *** 没有规则可制作目标“/opt/ros/noetic/lib/liboctomap.so”，由“/home/wcqw/explorb_line_20261121/ws/devel/lib/frontier_detector/frontier_detector_octomapper” 需求。 停止。
+make[2]: *** 正在等待未完成的任务....
+[ 32%] Building CXX object frontier_detector/CMakeFiles/frontier_detector_octomapper.dir/src/OctoMapper.cpp.o
+Scanning dependencies of target g2o
+[ 33%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/types/types_sba.cpp.o
+[ 34%] Building CXX object orb_slam2_ros/CMakeFiles/DBoW2.dir/orb_slam2/Thirdparty/DBoW2/DUtils/Random.cpp.o
+[ 35%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/types/types_six_dof_expmap.cpp.o
+[ 36%] Building CXX object orb_slam2_ros/CMakeFiles/DBoW2.dir/orb_slam2/Thirdparty/DBoW2/DUtils/Timestamp.cpp.o
+[ 38%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/types/types_seven_dof_expmap.cpp.o
+[ 39%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/hyper_graph_action.cpp.o
+[ 40%] Linking CXX shared library /home/wcqw/explorb_line_20261121/ws/src/orb_slam2_ros/orb_slam2/Thirdparty/DBoW2/lib/libDBoW2.so
+[ 40%] Built target DBoW2
+[ 41%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/hyper_graph.cpp.o
+[ 42%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/marginal_covariance_cholesky.cpp.o
+[ 43%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/matrix_structure.cpp.o
+[ 43%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/batch_stats.cpp.o
+[ 44%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/parameter.cpp.o
+[ 45%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/cache.cpp.o
+[ 46%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/optimizable_graph.cpp.o
+[ 47%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/solver.cpp.o
+[ 48%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/optimization_algorithm_factory.cpp.o
+[ 50%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/estimate_propagator.cpp.o
+[ 51%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/factory.cpp.o
+[ 52%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/sparse_optimizer.cpp.o
+[ 52%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/hyper_dijkstra.cpp.o
+[ 53%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/parameter_container.cpp.o
+[ 54%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/optimization_algorithm.cpp.o
+[ 55%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/optimization_algorithm_with_hessian.cpp.o
+[ 56%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/optimization_algorithm_levenberg.cpp.o
+[ 57%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/jacobian_workspace.cpp.o
+[ 58%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/robust_kernel.cpp.o
+[ 59%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/robust_kernel_factory.cpp.o
+[ 60%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/core/robust_kernel_impl.cpp.o
+[ 60%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/stuff/timeutil.cpp.o
+[ 61%] Building C object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/stuff/os_specific.c.o
+[ 63%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/stuff/string_tools.cpp.o
+[ 64%] Building CXX object orb_slam2_ros/CMakeFiles/g2o.dir/orb_slam2/Thirdparty/g2o/g2o/stuff/property.cpp.o
+[ 65%] Linking CXX shared library /home/wcqw/explorb_line_20261121/ws/src/orb_slam2_ros/orb_slam2/Thirdparty/g2o/lib/libg2o.so
+[ 65%] Built target g2o
+Scanning dependencies of target orb_slam2_ros
+[ 67%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/LocalMapping.cc.o
+[ 67%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/System.cc.o
+[ 67%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/Tracking.cc.o
+[ 68%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/LoopClosing.cc.o
+[ 69%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/ORBextractor.cc.o
+[ 70%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/ORBmatcher.cc.o
+Scanning dependencies of target gazebo_ros_kobuki
+[ 71%] Building CXX object kobuki_plugins/CMakeFiles/gazebo_ros_kobuki.dir/src/gazebo_ros_kobuki.cpp.o
+[ 72%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/FrameDrawer.cc.o
+[ 73%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/Converter.cc.o
+[ 75%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/MapPoint.cc.o
+[ 75%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/MapGraphPublisher.cc.o
+[ 76%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/KeyFrame.cc.o
+[ 77%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/Map.cc.o
+[ 78%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/Optimizer.cc.o
+[ 79%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/PnPsolver.cc.o
+make[1]: *** [CMakeFiles/Makefile2:2661：frontier_detector/CMakeFiles/frontier_detector_gridmapper.dir/all] 错误 2
+make[1]: *** 正在等待未完成的任务....
+[ 80%] Building CXX object kobuki_plugins/CMakeFiles/gazebo_ros_kobuki.dir/src/gazebo_ros_kobuki_updates.cpp.o
+[ 81%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/Frame.cc.o
+[ 82%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/KeyFrameDatabase.cc.o
+[ 83%] Building CXX object kobuki_plugins/CMakeFiles/gazebo_ros_kobuki.dir/src/gazebo_ros_kobuki_loads.cpp.o
+[ 84%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/Sim3Solver.cc.o
+[ 84%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/Initializer.cc.o
+[ 85%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/HessianComputation.cc.o
+[ 86%] Building CXX object orb_slam2_ros/CMakeFiles/orb_slam2_ros.dir/orb_slam2/src/PinHole.cc.o
+make[1]: *** [CMakeFiles/Makefile2:3589：frontier_detector/CMakeFiles/frontier_detector_global_rrt.dir/all] 错误 2
+make[1]: *** [CMakeFiles/Makefile2:2792：frontier_detector/CMakeFiles/frontier_detector_local_rrt.dir/all] 错误 2
+make[1]: *** [CMakeFiles/Makefile2:2765：frontier_detector/CMakeFiles/frontier_detector_octomapper.dir/all] 错误 2
+[ 88%] Linking CXX shared library /home/wcqw/explorb_line_20261121/ws/src/orb_slam2_ros/orb_slam2/lib/liborb_slam2_ros.so
+[ 88%] Built target orb_slam2_ros
+In file included from /usr/local/include/boost/bind.hpp:30,
+                 from /home/wcqw/explorb_line_20261121/ws/src/kobuki_plugins/include/kobuki_gazebo_plugins/gazebo_ros_kobuki.h:42,
+                 from /home/wcqw/explorb_line_20261121/ws/src/kobuki_plugins/src/gazebo_ros_kobuki_updates.cpp:36:
+/usr/local/include/boost/bind.hpp:36:1: note: #pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/local/include/boost/bind.hpp:30,
+                 from /home/wcqw/explorb_line_20261121/ws/src/kobuki_plugins/include/kobuki_gazebo_plugins/gazebo_ros_kobuki.h:42,
+                 from /home/wcqw/explorb_line_20261121/ws/src/kobuki_plugins/src/gazebo_ros_kobuki_loads.cpp:36:
+/usr/local/include/boost/bind.hpp:36:1: note: #pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/local/include/boost/bind.hpp:30,
+                 from /home/wcqw/explorb_line_20261121/ws/src/kobuki_plugins/src/gazebo_ros_kobuki.cpp:4:
+/usr/local/include/boost/bind.hpp:36:1: note: #pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+[ 88%] Linking CXX shared library /home/wcqw/explorb_line_20261121/ws/devel/lib/libgazebo_ros_kobuki.so
+[ 88%] Built target gazebo_ros_kobuki
+make: *** [Makefile:141：all] 错误 2
+Base path: /home/wcqw/explorb_line_20261121/ws
+Source space: /home/wcqw/explorb_line_20261121/ws/src
+Build space: /home/wcqw/explorb_line_20261121/ws/build
+Devel space: /home/wcqw/explorb_line_20261121/ws/devel
+Install space: /home/wcqw/explorb_line_20261121/ws/install
+####
+#### Running command: "cmake /home/wcqw/explorb_line_20261121/ws/src -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_BUILD_TYPE=Release -DCATKIN_DEVEL_PREFIX=/home/wcqw/explorb_line_20261121/ws/devel -DCMAKE_INSTALL_PREFIX=/home/wcqw/explorb_line_20261121/ws/install -G Unix Makefiles" in "/home/wcqw/explorb_line_20261121/ws/build"
+####
+####
+#### Running command: "make -j12" in "/home/wcqw/explorb_line_20261121/ws/build"
+####
+Invoking "make -j12" failed

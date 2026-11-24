@@ -1,0 +1,315 @@
+-- Using CATKIN_DEVEL_PREFIX: /home/wcqw/explorb_line_20261121/ws/devel
+-- Using CMAKE_PREFIX_PATH: /home/wcqw/explorb_line_20261121/localroot/opt/ros/noetic;/opt/ros/noetic
+-- This workspace overlays: /opt/ros/noetic
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3
+-- Using Debian Python package layout
+-- Using empy: /home/wcqw/.local/lib/python3.8/site-packages/em.py
+-- Using CATKIN_ENABLE_TESTING: ON
+-- Call enable_testing()
+-- Using CATKIN_TEST_RESULTS_DIR: /home/wcqw/explorb_line_20261121/ws/build/test_results
+-- Forcing gtest/gmock from source, though one was otherwise available.
+-- Found gtest sources under '/usr/src/googletest': gtests will be built
+-- Found gmock sources under '/usr/src/googletest': gmock will be built
+-- Found PythonInterp: /usr/bin/python3 (found version "3.8.10") 
+-- Using Python nosetests: /usr/bin/nosetests3
+-- catkin 0.8.12
+-- BUILD_SHARED_LIBS is on
+-- BUILD_SHARED_LIBS is on
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- ~~  traversing 6 packages in topological order:
+-- ~~  - explorb_scenarios
+-- ~~  - orb_slam2_ros
+-- ~~  - decision_maker
+-- ~~  - frontier_detector
+-- ~~  - kobuki_plugins
+-- ~~  - robot_description
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- +++ processing catkin package: 'explorb_scenarios'
+-- ==> add_subdirectory(explorb_scenarios)
+-- Installing devel-space wrapper /home/wcqw/explorb_line_20261121/ws/src/explorb_scenarios/scripts/scenario_driver.py to /home/wcqw/explorb_line_20261121/ws/devel/lib/explorb_scenarios
+-- Installing devel-space wrapper /home/wcqw/explorb_line_20261121/ws/src/explorb_scenarios/scripts/run_recorder.py to /home/wcqw/explorb_line_20261121/ws/devel/lib/explorb_scenarios
+-- Installing devel-space wrapper /home/wcqw/explorb_line_20261121/ws/src/explorb_scenarios/scripts/budget_guard.py to /home/wcqw/explorb_line_20261121/ws/devel/lib/explorb_scenarios
+-- +++ processing catkin package: 'orb_slam2_ros'
+-- ==> add_subdirectory(orb_slam2_ros)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Chmod a+x the dynamic_reconfigure file
+-- orb_slam2_ros: 1 messages, 1 services
+-- Compile With map save/load function
+-- +++ processing catkin package: 'decision_maker'
+-- ==> add_subdirectory(decision_maker)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- +++ processing catkin package: 'frontier_detector'
+-- ==> add_subdirectory(frontier_detector)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+Loaded OpenCV 4.0.
+-- frontier_detector: 1 messages, 0 services
+-- +++ processing catkin package: 'kobuki_plugins'
+-- ==> add_subdirectory(kobuki_plugins)
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found version "3.6.1") 
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-transport8 -- found version 8.5.0
+-- Searching for dependencies of ignition-transport8
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.2
+-- Checking for module 'uuid'
+--   Found uuid, version 2.34.0
+-- Looking for ignition-msgs5 -- found version 5.11.0
+-- Searching for dependencies of ignition-msgs5
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found suitable version "3.6.1", minimum required is "3") 
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 6.2.0
+-- Looking for ignition-msgs5 -- found version 5.11.0
+-- Looking for ignition-common3 -- found version 3.17.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.17.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-fuel_tools4 -- found version 4.9.1
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.7.4
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Checking for module 'libzip'
+--   Found libzip, version 1.5.1
+-- Looking for ignition-common3 -- found version 3.17.0
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-msgs5 -- found version 5.11.0
+WARNING: package 'gazebo_ros' is deprecated (This package has been deprecated as of January 2025 with Gazebo classic 11 reaching
+      end-of-life. Users are highly encouraged to migrate to the new Gazebo
+      using our migration guides (https://gazebosim.org/docs/latest/gazebo_classic_migration))
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+WARNING: package 'gazebo_msgs' is deprecated (This package has been deprecated as of January 2025 with Gazebo classic 11 reaching
+      end-of-life. Users are highly encouraged to migrate to the new Gazebo
+      using our migration guides (https://gazebosim.org/docs/latest/gazebo_classic_migration))
+WARNING: package 'gazebo_plugins' is deprecated (This package has been deprecated as of January 2025 with Gazebo classic 11 reaching
+      end-of-life. Users are highly encouraged to migrate to the new Gazebo
+      using our migration guides (https://gazebosim.org/docs/latest/gazebo_classic_migration))
+-- +++ processing catkin package: 'robot_description'
+-- ==> add_subdirectory(robot_description)
+-- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found version "3.6.1") 
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Searching for dependencies of ignition-math6
+-- Looking for OGRE...
+-- Found Ogre Ghadamon (1.9.0)
+-- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+-- Looking for OGRE_Paging...
+-- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+-- Looking for OGRE_Terrain...
+-- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+-- Looking for OGRE_Property...
+-- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+-- Looking for OGRE_RTShaderSystem...
+-- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+-- Looking for OGRE_Volume...
+-- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+-- Looking for OGRE_Overlay...
+-- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-transport8 -- found version 8.5.0
+-- Searching for dependencies of ignition-transport8
+-- Config-file not installed for ZeroMQ -- checking for pkg-config
+-- Checking for module 'libzmq >= 4'
+--   Found libzmq , version 4.3.2
+-- Checking for module 'uuid'
+--   Found uuid, version 2.34.0
+-- Looking for ignition-msgs5 -- found version 5.11.0
+-- Searching for dependencies of ignition-msgs5
+-- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found suitable version "3.6.1", minimum required is "3") 
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Checking for module 'tinyxml2'
+--   Found tinyxml2, version 6.2.0
+-- Looking for ignition-msgs5 -- found version 5.11.0
+-- Looking for ignition-common3 -- found version 3.17.0
+-- Searching for dependencies of ignition-common3
+-- Looking for dlfcn.h - found
+-- Looking for libdl - found
+-- Searching for <ignition-common3> component [graphics]
+-- Looking for ignition-common3-graphics -- found version 3.17.0
+-- Searching for dependencies of ignition-common3-graphics
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-fuel_tools4 -- found version 4.9.1
+-- Searching for dependencies of ignition-fuel_tools4
+-- Checking for module 'jsoncpp'
+--   Found jsoncpp, version 1.7.4
+-- Checking for module 'yaml-0.1'
+--   Found yaml-0.1, version 0.2.2
+-- Checking for module 'libzip'
+--   Found libzip, version 1.5.1
+-- Looking for ignition-common3 -- found version 3.17.0
+-- Looking for ignition-math6 -- found version 6.15.1
+-- Looking for ignition-msgs5 -- found version 5.11.0
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+WARNING: package 'gazebo_ros' is deprecated (This package has been deprecated as of January 2025 with Gazebo classic 11 reaching
+      end-of-life. Users are highly encouraged to migrate to the new Gazebo
+      using our migration guides (https://gazebosim.org/docs/latest/gazebo_classic_migration))
+WARNING: package 'gazebo_msgs' is deprecated (This package has been deprecated as of January 2025 with Gazebo classic 11 reaching
+      end-of-life. Users are highly encouraged to migrate to the new Gazebo
+      using our migration guides (https://gazebosim.org/docs/latest/gazebo_classic_migration))
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/wcqw/explorb_line_20261121/ws/build
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target tf_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target roscpp_generate_messages_cpp
+[  0%] Built target sensor_msgs_generate_messages_cpp
+[  0%] Built target geometry_msgs_generate_messages_eus
+[  0%] Built target geometry_msgs_generate_messages_py
+[  0%] Built target sensor_msgs_generate_messages_nodejs
+[  0%] Built target sensor_msgs_generate_messages_lisp
+[  0%] Built target sensor_msgs_generate_messages_py
+[  0%] Built target sensor_msgs_generate_messages_eus
+[  0%] Built target roscpp_generate_messages_eus
+[  0%] Built target tf2_msgs_generate_messages_eus
+[  0%] Built target rosgraph_msgs_generate_messages_nodejs
+[  0%] Built target actionlib_generate_messages_cpp
+[  0%] Built target _orb_slam2_ros_generate_messages_check_deps_SaveMap
+[  0%] Built target _orb_slam2_ros_generate_messages_check_deps_ORBState
+[  0%] Built target roscpp_generate_messages_py
+[  0%] Built target actionlib_msgs_generate_messages_py
+[  1%] Built target orb_slam2_ros_gencfg
+[  1%] Built target roscpp_generate_messages_nodejs
+[  1%] Built target geometry_msgs_generate_messages_lisp
+[  1%] Built target tf_generate_messages_lisp
+[  1%] Built target rosgraph_msgs_generate_messages_eus
+[  1%] Built target dynamic_reconfigure_generate_messages_nodejs
+[  1%] Built target tf2_msgs_generate_messages_py
+[  1%] Built target geometry_msgs_generate_messages_cpp
+[  1%] Built target dynamic_reconfigure_generate_messages_cpp
+[  2%] Built target frontier_detector_gencfg
+[  2%] Built target roscpp_generate_messages_lisp
+[  2%] Built target actionlib_msgs_generate_messages_eus
+[  2%] Built target tf_generate_messages_eus
+[  2%] Built target rosgraph_msgs_generate_messages_lisp
+[  2%] Built target tf_generate_messages_cpp
+[  2%] Built target dynamic_reconfigure_generate_messages_py
+[  2%] Built target actionlib_generate_messages_lisp
+[  2%] Built target actionlib_msgs_generate_messages_cpp
+[  2%] Built target actionlib_generate_messages_eus
+[  2%] Built target rosgraph_msgs_generate_messages_cpp
+[  2%] Built target actionlib_generate_messages_py
+[  2%] Built target actionlib_generate_messages_nodejs
+[  2%] Built target tf_generate_messages_py
+[  2%] Built target tf2_msgs_generate_messages_lisp
+[  2%] Built target actionlib_msgs_generate_messages_nodejs
+[  2%] Built target actionlib_msgs_generate_messages_lisp
+[  2%] Built target dynamic_reconfigure_generate_messages_eus
+[  2%] Built target tf2_msgs_generate_messages_cpp
+[  2%] Built target tf2_msgs_generate_messages_nodejs
+[  2%] Built target geometry_msgs_generate_messages_nodejs
+[  2%] Built target dynamic_reconfigure_gencfg
+[  2%] Built target dynamic_reconfigure_generate_messages_lisp
+[  2%] Built target rosgraph_msgs_generate_messages_py
+[  2%] Built target octomap_msgs_generate_messages_cpp
+[  2%] Built target visualization_msgs_generate_messages_cpp
+[  2%] Built target nav_msgs_generate_messages_eus
+[  2%] Built target visualization_msgs_generate_messages_eus
+[  2%] Built target octomap_msgs_generate_messages_py
+[  2%] Built target visualization_msgs_generate_messages_nodejs
+[  2%] Built target octomap_msgs_generate_messages_eus
+[  2%] Built target visualization_msgs_generate_messages_lisp
+[  2%] Built target nav_msgs_generate_messages_py
+[  2%] Built target visualization_msgs_generate_messages_py
+[  2%] Built target octomap_msgs_generate_messages_nodejs
+[  2%] Built target _frontier_detector_generate_messages_check_deps_PointArray
+[  2%] Built target nav_msgs_generate_messages_nodejs
+[  2%] Built target octomap_msgs_generate_messages_lisp
+[  2%] Built target nav_msgs_generate_messages_cpp
+[  2%] Built target nav_msgs_generate_messages_lisp
+[  2%] Built target kobuki_msgs_generate_messages_cpp
+[  2%] Built target kobuki_msgs_generate_messages_py
+[  2%] Built target kobuki_msgs_generate_messages_lisp
+[  2%] Built target _catkin_empty_exported_target
+[  2%] Built target trajectory_msgs_generate_messages_cpp
+[  2%] Built target std_srvs_generate_messages_eus
+[  2%] Built target std_srvs_generate_messages_nodejs
+[  2%] Built target std_srvs_generate_messages_lisp
+[  8%] Built target DBoW2
+[  8%] Built target std_srvs_generate_messages_cpp
+[  8%] Built target gazebo_msgs_generate_messages_py
+[  8%] Built target gazebo_ros_gencfg
+[  8%] Built target trajectory_msgs_generate_messages_lisp
+[  8%] Built target gazebo_msgs_generate_messages_eus
+[  8%] Built target gazebo_msgs_generate_messages_cpp
+[  8%] Built target std_srvs_generate_messages_py
+[  8%] Built target gazebo_msgs_generate_messages_lisp
+[  8%] Built target kobuki_msgs_generate_messages_nodejs
+[  8%] Built target nodelet_generate_messages_eus
+[  8%] Built target bond_generate_messages_nodejs
+[  8%] Built target trajectory_msgs_generate_messages_eus
+[  8%] Built target nodelet_generate_messages_cpp
+[  8%] Built target gazebo_msgs_generate_messages_nodejs
+[  8%] Built target nodelet_generate_messages_nodejs
+[  8%] Built target trajectory_msgs_generate_messages_py
+[  8%] Built target trajectory_msgs_generate_messages_nodejs
+[ 38%] Built target g2o
+[ 38%] Built target gazebo_plugins_gencfg
+[ 38%] Built target nodelet_generate_messages_lisp
+[ 38%] Built target kobuki_msgs_generate_messages_eus
+[ 38%] Built target nodelet_generate_messages_py
+[ 38%] Built target bond_generate_messages_py
+[ 38%] Built target bond_generate_messages_lisp
+[ 38%] Built target bond_generate_messages_eus
+[ 42%] Built target frontier_detector_local_rrt
+[ 42%] Built target bond_generate_messages_cpp
+[ 42%] Built target robot_description_xacro_generated_to_devel_space_
+[ 45%] Built target frontier_detector_global_rrt
+[ 57%] Built target orb_slam2_ros_generate_messages_eus
+[ 57%] Built target orb_slam2_ros_generate_messages_nodejs
+[ 57%] Built target orb_slam2_ros_generate_messages_cpp
+[ 57%] Built target orb_slam2_ros_generate_messages_lisp
+[ 58%] Built target orb_slam2_ros_generate_messages_py
+[ 59%] Built target frontier_detector_generate_messages_lisp
+[ 59%] Built target frontier_detector_generate_messages_cpp
+[ 61%] Built target frontier_detector_generate_messages_eus
+[ 64%] Built target frontier_detector_generate_messages_py
+[ 64%] Built target orb_slam2_ros_generate_messages
+[ 65%] Built target frontier_detector_generate_messages_nodejs
+[ 65%] Built target frontier_detector_generate_messages
+[ 67%] Built target frontier_detector_gridmapper
+[ 68%] Built target frontier_detector_octomapper
+[ 88%] Built target orb_slam2_ros
+[ 95%] Built target orb_slam2_ros_rgbd
+[ 95%] Built target orb_slam2_ros_mono
+[ 96%] Built target orb_slam2_ros_stereo
+[100%] Built target gazebo_ros_kobuki
+Base path: /home/wcqw/explorb_line_20261121/ws
+Source space: /home/wcqw/explorb_line_20261121/ws/src
+Build space: /home/wcqw/explorb_line_20261121/ws/build
+Devel space: /home/wcqw/explorb_line_20261121/ws/devel
+Install space: /home/wcqw/explorb_line_20261121/ws/install
+####
+#### Running command: "cmake /home/wcqw/explorb_line_20261121/ws/src -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCATKIN_DEVEL_PREFIX=/home/wcqw/explorb_line_20261121/ws/devel -DCMAKE_INSTALL_PREFIX=/home/wcqw/explorb_line_20261121/ws/install -G Unix Makefiles" in "/home/wcqw/explorb_line_20261121/ws/build"
+####
+####
+#### Running command: "make -j12" in "/home/wcqw/explorb_line_20261121/ws/build"
+####

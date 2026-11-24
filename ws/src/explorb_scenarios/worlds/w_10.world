@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="default">
+    <include><uri>model://sun</uri></include>
+    <include><uri>model://ground_plane</uri></include>
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+	<model name="AirConditionerC_01_001">
+        <include>
+            <uri>model://aws_robomaker_retail_AirConditionerC_01</uri>
+        </include>
+        <pose frame="">7.458202 1.422453 3.290944 0 -0 -1.564217</pose>
+	</model>
+	<model name="Bicycle_01_001">
+        <include>
+            <uri>model://aws_robomaker_retail_Bicycle_01</uri>
+        </include>
+        <pose frame="">5.681248 -2.242451 0.931246 0.000002 -0.000024 0</pose>
+	</model>
+	<model name="BookE_01_001">
+        <include>
+            <uri>model://aws_robomaker_retail_BookE_01</uri>
+        </include>
+        <pose frame="">5.476534 -1.932532 0.948933 0.000004 0.000001 -2.543521</pose>
+	</model>
+	<model name="BookE_01_002">
+        <include>
+            <uri>model://aws_robomaker_retail_BookE_01</uri>
+        </include>
+        <pose frame="">-5.414000 3.330672 0.934015 -0.000001 -0.000001 -1.541094</pose>
+	</model>
+	<model name="BookE_01_003">
+        <include>
+            <uri>model://aws_robomaker_retail_BookE_01</uri>
+        </include>
+        <pose frame="">5.552553 -1.214211 0.948933 0.000004 -0.000001 -2.654312</pose>
+	</model>
+	<model name="BookE_01_004">
+        <include>
+            <uri>model://aws_robomaker_retail_BookE_01</uri>
+        </include>
+        <pose frame="">5.677231 -4.649203 0.946394 0.000100 0.000006 -2.355752</pose>
+	</model>
+	<model name="BookE_01_005">
+        <include>
+            <uri>model://aws_robomaker_retail_BookE_01</uri>
+        </include>
+        <pose frame="">5.538150 -1.610317 0.948933 0 0 -2.526901</pose>
+	</model>
+	<model name="BookE_01_006">
+        <include>
+            <uri>model://aws_robomaker_retail_BookE_01</uri>
+        </include>
+        <pose frame="">-1.889425 3.346395 1.054941 0 0 1.568157</pose>
+	</model>
+	<model name="BookE_01_007">
+        <include>
+            <uri>model://aws_robomaker_retail_BookE_01</uri>
+        </include>
+        <pose frame="">-2.123726 3.346395 1.054941 0 0 1.568157</pose>
+	</model>
+	<model name="BookE_01_008">
+        <include>
+            <uri>model://aws_robomaker_retail_BookE_01</uri>
+        </include>
+        <pose frame="">-5.315121 1.771952 0.955242 3.141243 -0.072268 -2.526906</pose>
+	</model>
+  </world>
+</sdf>

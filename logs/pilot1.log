@@ -1,0 +1,344 @@
+... logging to /home/wcqw/explorb_line_20261121/logs/ros/33abdf90-e721-11f1-bb5f-e52c272fd69b/roslaunch-msxg-22955.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/wcqw/explorb_line_20261121/ws/src/explorb_scenarios/launch/experiment.launch
+[1mstarted roslaunch server http://msxg:41801/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /G_publisher/camera_type: rgbd
+ * /budget_guard/arm_after_sim_s: 25
+ * /budget_guard/budget_sim_s: 60
+ * /budget_guard/run_dir: /home/wcqw/explor...
+ * /decision_maker/cameraInfo_topic: /robot_1/camera/r...
+ * /decision_maker/camera_type: rgbd
+ * /decision_maker/delay_after_assignment: 0.5
+ * /decision_maker/enable_gpu_comp: True
+ * /decision_maker/exploring_time: 9000
+ * /decision_maker/frontiers_topic: /frontier_detecto...
+ * /decision_maker/global_frame: map
+ * /decision_maker/hallucinated_plan_th: 60
+ * /decision_maker/map_topic: /gridmapper/recti...
+ * /decision_maker/max_exploring_time: 9000
+ * /decision_maker/n_robots: 1
+ * /decision_maker/rate: 10
+ * /decision_maker/run_dir: /home/wcqw/explor...
+ * /decision_maker/show_debug_path: True
+ * /decision_maker/strategy: native
+ * /decision_maker/strategy_seed: 0
+ * /decision_maker/type: random
+ * /frontier_detectors/filter/costmap_clearing_threshold: 70
+ * /frontier_detectors/filter/enable_gpu_comp: True
+ * /frontier_detectors/filter/global_costmap_topic: /robot_1/move_bas...
+ * /frontier_detectors/filter/goals_topic: detected_points
+ * /frontier_detectors/filter/info_radius: 0.5
+ * /frontier_detectors/filter/information_threshold: 0.5
+ * /frontier_detectors/filter/map_topic: /gridmapper/recti...
+ * /frontier_detectors/filter/max_t: 1.0
+ * /frontier_detectors/filter/n_robots: 1
+ * /frontier_detectors/filter/rate: 10
+ * /frontier_detectors/global_detector/eta: 1.0
+ * /frontier_detectors/global_detector/map_topic: /gridmapper/recti...
+ * /frontier_detectors/global_detector/rate: 10
+ * /frontier_detectors/local_detector/eta: 0.75
+ * /frontier_detectors/local_detector/map_topic: /gridmapper/recti...
+ * /frontier_detectors/local_detector/rate: 10
+ * /frontier_detectors/local_detector/robot_frame: base_footprint
+ * /frontier_detectors/opencv_detector/map_topic: /gridmapper/recti...
+ * /frontier_detectors/opencv_detector/rate: 10
+ * /frontier_detectors/point_init/rate: 1.0
+ * /gazebo/enable_ros_network: True
+ * /gridmapper/occupancy/projected_map/max_height: 2.1
+ * /gridmapper/occupancy/projected_map/min_height: 0.12
+ * /gridmapper/occupancy/publish_occupancy_grid: True
+ * /gridmapper/occupancy/publish_occupancy_grid_rect: True
+ * /gridmapper/pointcloud_frame_id: map
+ * /gridmapper/rate: 2
+ * /gridmapper/target_frame_id: base_footprint
+ * /namespace_init_count: 1
+ * /octomapper/max_height: 3.0
+ * /octomapper/octomap/rebuild: False
+ * /octomapper/pointcloud_frame_id: map
+ * /octomapper/rate: 1
+ * /octomapper/target_frame_id: base_footprint
+ * /orb_slam2_rgbd/ORBextractor/iniThFAST: 20
+ * /orb_slam2_rgbd/ORBextractor/minThFAST: 7
+ * /orb_slam2_rgbd/ORBextractor/nFeatures: 1000
+ * /orb_slam2_rgbd/ORBextractor/nLevels: 8
+ * /orb_slam2_rgbd/ORBextractor/scaleFactor: 1.2
+ * /orb_slam2_rgbd/ThDepth: 30.0
+ * /orb_slam2_rgbd/camera_bf: 72
+ * /orb_slam2_rgbd/camera_fps: 30
+ * /orb_slam2_rgbd/camera_frame_id: base_footprint
+ * /orb_slam2_rgbd/camera_rgb_encoding: True
+ * /orb_slam2_rgbd/depth_map_factor: 1.0
+ * /orb_slam2_rgbd/load_calibration_from_cam: True
+ * /orb_slam2_rgbd/load_map: False
+ * /orb_slam2_rgbd/localize_only: False
+ * /orb_slam2_rgbd/map_file: map.bin
+ * /orb_slam2_rgbd/min_num_kf_in_map: 5
+ * /orb_slam2_rgbd/pointcloud_frame_id: map
+ * /orb_slam2_rgbd/publish_pointcloud: True
+ * /orb_slam2_rgbd/publish_pose: True
+ * /orb_slam2_rgbd/reset_map: False
+ * /orb_slam2_rgbd/target_frame_id: base_footprint
+ * /orb_slam2_rgbd/voc_file: /home/wcqw/explor...
+ * /robot_1/move_base_node/NavfnROS/allow_unknown: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/acc_lim_theta: 0.7
+ * /robot_1/move_base_node/TebLocalPlannerROS/acc_lim_x: 0.7
+ * /robot_1/move_base_node/TebLocalPlannerROS/costmap_converter_plugin: 
+ * /robot_1/move_base_node/TebLocalPlannerROS/costmap_converter_rate: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/costmap_converter_spin_thread: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/costmap_obstacles_behind_robot_dist: 1.0
+ * /robot_1/move_base_node/TebLocalPlannerROS/dt_hysteresis: 0.1
+ * /robot_1/move_base_node/TebLocalPlannerROS/dt_ref: 0.3
+ * /robot_1/move_base_node/TebLocalPlannerROS/enable_homotopy_class_planning: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/enable_multithreading: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/feasibility_check_no_poses: 5
+ * /robot_1/move_base_node/TebLocalPlannerROS/footprint_model/radius: 0.15
+ * /robot_1/move_base_node/TebLocalPlannerROS/footprint_model/type: circular
+ * /robot_1/move_base_node/TebLocalPlannerROS/free_goal_vel: False
+ * /robot_1/move_base_node/TebLocalPlannerROS/global_plan_overwrite_orientation: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/h_signature_prescaler: 0.5
+ * /robot_1/move_base_node/TebLocalPlannerROS/h_signature_threshold: 0.1
+ * /robot_1/move_base_node/TebLocalPlannerROS/include_costmap_obstacles: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/inflation_dist: 0.0
+ * /robot_1/move_base_node/TebLocalPlannerROS/map_frame: map
+ * /robot_1/move_base_node/TebLocalPlannerROS/max_global_plan_lookahead_dist: 3.0
+ * /robot_1/move_base_node/TebLocalPlannerROS/max_number_classes: 2
+ * /robot_1/move_base_node/TebLocalPlannerROS/max_vel_theta: 0.5
+ * /robot_1/move_base_node/TebLocalPlannerROS/max_vel_x: 0.2
+ * /robot_1/move_base_node/TebLocalPlannerROS/max_vel_x_backwards: 0.2
+ * /robot_1/move_base_node/TebLocalPlannerROS/min_obstacle_dist: 0.05
+ * /robot_1/move_base_node/TebLocalPlannerROS/min_turning_radius: 0.0
+ * /robot_1/move_base_node/TebLocalPlannerROS/no_inner_iterations: 3
+ * /robot_1/move_base_node/TebLocalPlannerROS/no_outer_iterations: 2
+ * /robot_1/move_base_node/TebLocalPlannerROS/obstacle_heading_threshold: 0.45
+ * /robot_1/move_base_node/TebLocalPlannerROS/obstacle_keypoint_offset: 0.1
+ * /robot_1/move_base_node/TebLocalPlannerROS/obstacle_poses_affected: 30
+ * /robot_1/move_base_node/TebLocalPlannerROS/odom_topic: odom
+ * /robot_1/move_base_node/TebLocalPlannerROS/optimization_activate: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/optimization_verbose: False
+ * /robot_1/move_base_node/TebLocalPlannerROS/penalty_epsilon: 0.1
+ * /robot_1/move_base_node/TebLocalPlannerROS/roadmap_graph_area_width: 5
+ * /robot_1/move_base_node/TebLocalPlannerROS/roadmap_graph_no_samples: 15
+ * /robot_1/move_base_node/TebLocalPlannerROS/selection_alternative_time_cost: False
+ * /robot_1/move_base_node/TebLocalPlannerROS/simple_exploration: False
+ * /robot_1/move_base_node/TebLocalPlannerROS/teb_autosize: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/visualize_hc_graph: False
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_acc_lim_theta: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_acc_lim_x: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_dynamic_obstacle: 10
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_kinematics_forward_drive: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_kinematics_nh: 1000
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_kinematics_turning_radius: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_max_vel_theta: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_max_vel_x: 2
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_obstacle: 50
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_optimaltime: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/xy_goal_tolerance: 0.28
+ * /robot_1/move_base_node/TebLocalPlannerROS/yaw_goal_tolerance: 0.2618
+ * /robot_1/move_base_node/aggressive_reset/affected_maps: both
+ * /robot_1/move_base_node/aggressive_reset/force_updating: True
+ * /robot_1/move_base_node/aggressive_reset/reset_distance: 5.0
+ * /robot_1/move_base_node/base_local_planner: teb_local_planner...
+ * /robot_1/move_base_node/controller_frequency: 10.0
+ * /robot_1/move_base_node/global_costmap/always_send_full_costmap: False
+ * /robot_1/move_base_node/global_costmap/combination_method: 1
+ * /robot_1/move_base_node/global_costmap/cost_scaling_factor: 10.0
+ * /robot_1/move_base_node/global_costmap/footprint_clearing_enabled: True
+ * /robot_1/move_base_node/global_costmap/footprint_padding: 0.03
+ * /robot_1/move_base_node/global_costmap/global_frame: map
+ * /robot_1/move_base_node/global_costmap/height: 25.0
+ * /robot_1/move_base_node/global_costmap/inflation_radius: 0.26
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/clearing: True
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/data_type: LaserScan
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/inf_is_valid: True
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/marking: True
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/max_obstacle_height: 1.0
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/min_obstacle_height: 0.0
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/sensor_frame: base_scan
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/topic: /robot_1/scan
+ * /robot_1/move_base_node/global_costmap/lethal_cost_threshold: 100
+ * /robot_1/move_base_node/global_costmap/map_type: costmap
+ * /robot_1/move_base_node/global_costmap/observation_persistence: 0.0
+ * /robot_1/move_base_node/global_costmap/observation_sources: laser_scan_sensor
+ * /robot_1/move_base_node/global_costmap/obstacle_range: 9.5
+ * /robot_1/move_base_node/global_costmap/origin_x: -12.5
+ * /robot_1/move_base_node/global_costmap/origin_y: -12.5
+ * /robot_1/move_base_node/global_costmap/publish_frequency: 1.0
+ * /robot_1/move_base_node/global_costmap/raytrace_range: 10.0
+ * /robot_1/move_base_node/global_costmap/resolution: 0.1
+ * /robot_1/move_base_node/global_costmap/robot_base_frame: base_footprint
+ * /robot_1/move_base_node/global_costmap/robot_radius: 0.2
+ * /robot_1/move_base_node/global_costmap/rolling_window: False
+ * /robot_1/move_base_node/global_costmap/static_map: False
+ * /robot_1/move_base_node/global_costmap/track_unknown_space: True
+ * /robot_1/move_base_node/global_costmap/transform_tolerance: 1.0
+ * /robot_1/move_base_node/global_costmap/update_frequency: 1.0
+ * /robot_1/move_base_node/global_costmap/width: 25.0
+ * /robot_1/move_base_node/local_costmap/combination_method: 1
+ * /robot_1/move_base_node/local_costmap/cost_scaling_factor: 10.0
+ * /robot_1/move_base_node/local_costmap/footprint_clearing_enabled: True
+ * /robot_1/move_base_node/local_costmap/footprint_padding: 0.03
+ * /robot_1/move_base_node/local_costmap/global_frame: map
+ * /robot_1/move_base_node/local_costmap/height: 5
+ * /robot_1/move_base_node/local_costmap/inflation_radius: 0.26
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/clearing: True
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/data_type: LaserScan
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/inf_is_valid: True
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/marking: True
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/max_obstacle_height: 1.0
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/min_obstacle_height: 0.0
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/sensor_frame: base_scan
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/topic: /robot_1/scan
+ * /robot_1/move_base_node/local_costmap/lethal_cost_threshold: 100
+ * /robot_1/move_base_node/local_costmap/map_type: costmap
+ * /robot_1/move_base_node/local_costmap/observation_persistence: 0.0
+ * /robot_1/move_base_node/local_costmap/observation_sources: laser_scan_sensor
+ * /robot_1/move_base_node/local_costmap/obstacle_range: 9.5
+ * /robot_1/move_base_node/local_costmap/publish_frequency: 5.0
+ * /robot_1/move_base_node/local_costmap/raytrace_range: 10.0
+ * /robot_1/move_base_node/local_costmap/resolution: 0.1
+ * /robot_1/move_base_node/local_costmap/robot_base_frame: base_footprint
+ * /robot_1/move_base_node/local_costmap/robot_radius: 0.2
+ * /robot_1/move_base_node/local_costmap/rolling_window: True
+ * /robot_1/move_base_node/local_costmap/static_map: False
+ * /robot_1/move_base_node/local_costmap/track_unknown_space: True
+ * /robot_1/move_base_node/local_costmap/transform_tolerance: 1.2
+ * /robot_1/move_base_node/local_costmap/update_frequency: 5.0
+ * /robot_1/move_base_node/local_costmap/width: 5
+ * /robot_1/move_base_node/max_planning_retries: 1
+ * /robot_1/move_base_node/recovery_behavior_enabled: False
+ * /robot_1/move_base_node/recovery_behaviors: [{'name': 'aggres...
+ * /robot_1/robot_description: <?xml version="1....
+ * /robot_1/robot_state_publisher/publish_frequency: 100.0
+ * /robot_1/robot_state_publisher/use_tf_static: True
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+ * /run_recorder/camera_type: rgbd
+ * /run_recorder/robot_model: robot_1
+ * /run_recorder/robot_ns: robot_1
+ * /run_recorder/run_dir: /home/wcqw/explor...
+ * /use_sim_time: True
+
+NODES
+  /
+    G_publisher (decision_maker/GraphDrawer.py)
+    budget_guard (explorb_scenarios/budget_guard.py)
+    decision_maker (decision_maker/Controller.py)
+    gazebo (gazebo_ros/gzserver)
+    gridmapper (frontier_detector/frontier_detector_gridmapper)
+    octomapper (frontier_detector/frontier_detector_octomapper)
+    orb_slam2_rgbd (orb_slam2_ros/orb_slam2_ros_rgbd)
+    run_recorder (explorb_scenarios/run_recorder.py)
+  /frontier_detectors/
+    filter (frontier_detector/Filter.py)
+    global_detector (frontier_detector/frontier_detector_global_rrt)
+    local_detector (frontier_detector/frontier_detector_local_rrt)
+    opencv_detector (frontier_detector/OpenCV_detector.py)
+    point_init (frontier_detector/Initializer.py)
+  /robot_1/
+    move_base_node (move_base/move_base)
+    robot_state_publisher (robot_state_publisher/robot_state_publisher)
+    spawn_robot_1 (gazebo_ros/spawn_model)
+[INFO] [1795426522.128242172]: Finished loading Gazebo ROS API Plugin.
+[INFO] [1795426522.128989866]: waitForService: Service [/gazebo/set_physics_properties] has not been advertised, waiting...
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+[1;33mWarning [parser.cc:833][0m XML Attribute[version] in element[sdf] not defined in SDF, ignoring.
+../src/intel/isl/isl.c:2105: FINISHME: ../src/intel/isl/isl.c:isl_surf_supports_ccs: CCS for 3D textures is disabled, but a workaround is available.
+[INFO] [1795426522.097772, 0.000000]: Loading model XML from ros parameter robot_description
+[INFO] [1795426522.101670, 0.000000]: Waiting for service /gazebo/spawn_urdf_model
+[INFO] [1795426526.918342, 0.000000]: Calling service /gazebo/spawn_urdf_model
+[INFO] [1795426529.813179, 0.001000]: Spawn status: SpawnModel: Successfully spawned entity
+[INFO] [1795426529.814068, 0.001000]: Unpausing physics
+Segmentation fault (core dumped)

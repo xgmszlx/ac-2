@@ -1,0 +1,20 @@
+# --- big / machine-specific artefacts (re-fetchable, see tools/fetch_assets.sh) ---
+localroot/
+vendor/
+ws/build/
+ws/devel/
+ws/install/
+ws/src/robot_description/launch/include/models/
+ws/src/orb_slam2_ros/orb_slam2/Vocabulary/
+upstream/src/robot_description/launch/include/models/
+ws/src/orb_slam2_ros/orb_slam2/Thirdparty/*/lib/
+ws/src/orb_slam2_ros/orb_slam2/lib/
+
+# --- runtime output ---
+logs/ros/
+logs/roshome/
+results/runs/*/   # per-run CSV streams are reproduced by run_task.sh
+__pycache__/
+*.pyc
+*.bag
+core

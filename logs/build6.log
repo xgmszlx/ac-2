@@ -1,0 +1,7 @@
+Base path: /home/wcqw/explorb_line_20261121/ws
+Source space: /home/wcqw/explorb_line_20261121/ws/src
+Build space: /home/wcqw/explorb_line_20261121/ws/build
+Devel space: /home/wcqw/explorb_line_20261121/ws/devel
+Install space: /home/wcqw/explorb_line_20261121/ws/install
+Error(s) in package '/home/wcqw/explorb_line_20261121/ws/src/explorb_scenarios/package.xml':
+Invalid email "line@local" for person "local"

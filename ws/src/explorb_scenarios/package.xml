@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>explorb_scenarios</name>
+  <version>0.1.0</version>
+  <description>Scenario harness for the ExplORB-SLAM localization-observability line (worlds, dynamic actors, run recorder).</description>
+  <maintainer email="research@example.org">local</maintainer>
+  <license>GPL-3.0</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf</depend>
+  <depend>gazebo_msgs</depend>
+  <exec_depend>robot_description</exec_depend>
+  <exec_depend>decision_maker</exec_depend>
+  <exec_depend>frontier_detector</exec_depend>
+</package>

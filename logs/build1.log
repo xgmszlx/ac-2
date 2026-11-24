@@ -1,0 +1,15 @@
+CMake Error at CMakeLists.txt:1:
+  Parse error.  Expected a command name, got unquoted argument with text
+  "/opt/ros/noetic/share/catkin/cmake/toplevel.cmake".
+
+
+-- Configuring incomplete, errors occurred!
+Base path: /home/wcqw/explorb_line_20261121/ws
+Source space: /home/wcqw/explorb_line_20261121/ws/src
+Build space: /home/wcqw/explorb_line_20261121/ws/build
+Devel space: /home/wcqw/explorb_line_20261121/ws/devel
+Install space: /home/wcqw/explorb_line_20261121/ws/install
+####
+#### Running command: "cmake /home/wcqw/explorb_line_20261121/ws/src -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_BUILD_TYPE=Release -DCATKIN_DEVEL_PREFIX=/home/wcqw/explorb_line_20261121/ws/devel -DCMAKE_INSTALL_PREFIX=/home/wcqw/explorb_line_20261121/ws/install -G Unix Makefiles" in "/home/wcqw/explorb_line_20261121/ws/build"
+####
+Invoking "cmake" failed

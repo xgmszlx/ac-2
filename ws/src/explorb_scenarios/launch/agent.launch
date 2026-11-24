@@ -1,0 +1,67 @@
+<!-- ExplORB-SLAM localization-observability line: exploration agent.
+
+   Mirrors decision_maker/launch/autonomous_agent.launch of the author baseline
+   (same frontier detectors, same fusion filter, same map topic, same camera
+   calibration source, same exploration time budget hook) and adds the harness
+   parameters used by this line:
+
+     strategy        selection rule used by Controller.py. Every value below shares
+                     the *same* candidate pool, the same executable-plan sampling and
+                     the same motion constraints; only the scoring/selection differs.
+                       native          - author ExplORB selection (baseline)
+                       travel_only     - control: author utility + travel-cost term only
+                       loo_full        - full method
+                       loo_notemporal  - ablation: no dynamic-occlusion prediction
+                       loo_noduration  - ablation: no exposure-duration term
+     strategy_seed   seed for the deterministic sampling inside the estimator
+     run_dir         where the decision audit CSV is written ('' disables it)
+-->
+<launch>
+
+    <arg name="map_topic_name"  default="/gridmapper/rectified_map"/>
+    <arg name="global_frame"    default="map"/>
+    <arg name="robot_namespace" default="robot_1"/>
+    <arg name="robot_number"    default="1"/>
+    <arg name="gpu"             default="true"/>
+    <arg name="camera_type"     default="rgbd"/>
+    <arg name="strategy"        default="native"/>
+    <arg name="strategy_seed"   default="0"/>
+    <arg name="run_dir"         default=""/>
+    <arg name="exploring_time"  default="9000"/>
+    <arg name="hallucinated_plan_th" default="60"/>
+    <arg name="delay_after_assignment" default="0.5"/>
+
+    <include file="$(find frontier_detector)/launch/frontiers.launch">
+        <arg name="map_topic_name"  value="$(arg map_topic_name)"/>
+        <arg name="global_frame"    value="$(arg global_frame)"/>
+        <arg name="robot_namespace" value="$(arg robot_namespace)"/>
+        <arg name="gpu"             value="$(arg gpu)"/>
+        <arg name="camera_type"     value="$(arg camera_type)"/>
+    </include>
+
+    <node pkg="decision_maker" type="GraphDrawer.py" name="G_publisher" output="screen">
+        <param name="camera_type" value="$(arg camera_type)"/>
+    </node>
+
+    <node pkg="decision_maker" type="Controller.py" name="decision_maker" output="screen">
+        <param name="map_topic"              value="$(arg map_topic_name)"/>
+        <param name="cameraInfo_topic"       value="/camera/rgb/camera_info"/>
+        <param name="global_frame"           value="$(arg global_frame)"/>
+        <param name="frontiers_topic"        value="/frontier_detectors/filter/filtered_points"/>
+        <param name="n_robots"               value="$(arg robot_number)"/>
+        <param name="delay_after_assignment" value="$(arg delay_after_assignment)"/>
+        <param name="rate"                   value="10"/>
+        <param name="type"                   value="random"/>
+        <param name="show_debug_path"        value="true"/>
+        <param name="exploring_time"         value="$(arg exploring_time)"/>
+        <param name="max_exploring_time"     value="$(arg exploring_time)"/>
+        <param name="enable_gpu_comp"        value="$(arg gpu)"/>
+        <param name="hallucinated_plan_th"   value="$(arg hallucinated_plan_th)"/>
+        <param name="camera_type"            value="$(arg camera_type)"/>
+        <!-- harness / method -->
+        <param name="strategy"               value="$(arg strategy)"/>
+        <param name="strategy_seed"          value="$(arg strategy_seed)"/>
+        <param name="run_dir"                value="$(arg run_dir)"/>
+    </node>
+
+</launch>
