@@ -202,6 +202,8 @@ def main():
     res['n_aborted'] = sum(1 for x in st_status if x == 4)
     res['n_canceled'] = sum(1 for x in st_status if x == 2)
     res['reached_frac'] = (float(res['n_reached']) / res['n_goal']) if res['n_goal'] else 0.0
+    res['n_goal_failed'] = sum(1 for x in st_status if x in (2, 4))
+    res['failed_goal_ids'] = ','.join(str(i + 1) for i, x in enumerate(st_status) if x == 4)
     res['n_cmd'] = len(cm)
     res['max_abs_vx'] = max([abs(fnum(r.get('vx'))) for r in cm], default=0.0)
     res['max_abs_wz'] = max([abs(fnum(r.get('wz'))) for r in cm], default=0.0)

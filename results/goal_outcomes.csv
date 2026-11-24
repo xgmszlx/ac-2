@@ -1,0 +1,96 @@
+task,arm,goal,x,y,t_goal,t_result,status,outcome,reason
+ab_B0_visual_r1,B0,1,2.20,-0.30,40.3,50.9,3,reached,Goal reached.
+ab_B0_visual_r2,B0,1,2.20,-0.30,39.9,50.6,3,reached,Goal reached.
+ab_B0_visual_r3,B0,1,2.20,-0.30,40.2,50.7,3,reached,Goal reached.
+ab_B1_visual_r1,B1,1,2.20,-0.30,40.3,50.7,3,reached,Goal reached.
+ab_B1_visual_r2,B1,1,2.20,-0.30,40.2,50.8,3,reached,Goal reached.
+ab_B1_visual_r3,B1,1,2.20,-0.30,40.2,50.7,3,reached,Goal reached.
+ab_B1_visual_r4_412f1c9,B1,1,2.20,-0.30,40.0,50.4,3,reached,Goal reached.
+ab_Ours_no_cov_visual_r1,Ours_no_cov,1,2.20,-0.30,40.3,50.6,3,reached,Goal reached.
+ab_Ours_no_cov_visual_r2,Ours_no_cov,1,2.20,-0.30,40.2,50.7,3,reached,Goal reached.
+ab_Ours_no_cov_visual_r3,Ours_no_cov,1,2.20,-0.30,40.2,50.5,3,reached,Goal reached.
+ab_Ours_no_cov_visual_r4_49bfe7b,Ours_no_cov,1,2.20,-0.30,40.2,50.7,3,reached,Goal reached.
+ab_Ours_visual_r1,Ours,1,2.20,-0.30,40.2,50.6,3,reached,Goal reached.
+ab_Ours_visual_r2,Ours,1,2.20,-0.30,40.2,50.4,3,reached,Goal reached.
+ab_Ours_visual_r3,Ours,1,2.20,-0.30,40.2,50.6,3,reached,Goal reached.
+ab_Ours_visual_r4_43417b7,Ours,1,2.20,-0.30,40.1,50.4,3,reached,Goal reached.
+corr_ours,corr,1,2.20,-0.30,40.2,50.6,3,reached,Goal reached.
+gate_ours,?,1,2.20,-0.30,40.2,50.8,3,reached,Goal reached.
+gate_ours2,?,1,2.20,-0.30,40.2,50.7,3,reached,Goal reached.
+gate_ours3,?,1,2.20,-0.30,40.1,50.5,3,reached,Goal reached.
+lam_10_visual,lambda,1,2.20,-0.30,40.1,51.5,3,reached,Goal reached.
+lam_40_visual,lambda,1,2.20,-0.30,40.2,56.1,3,reached,Goal reached.
+p0verify_76361ea,p0verify,1,2.20,-0.30,40.1,50.4,3,reached,Goal reached.
+p1loop2,?,1,0.10,0.10,27.9,,-1,no result,
+p1loop3,?,1,0.10,0.10,28.5,,-1,no result,
+p1loop4,?,1,0.10,0.10,210.0,,-1,no result,
+p1loop5,?,1,0.10,0.10,24.7,27.9,3,reached,Goal reached.
+p1loop5,?,2,2.20,-0.30,30.6,42.0,3,reached,Goal reached.
+p1loop5,?,3,5.50,1.50,44.6,95.3,2,canceled(preempted),
+p1loop5,?,4,5.27,0.87,95.8,108.7,3,reached,Goal reached.
+p1loop5,?,5,5.27,0.87,108.7,121.4,3,reached,Goal reached.
+p1loop5,?,6,5.27,0.87,121.5,131.6,2,canceled(preempted),
+p1loop5,?,7,5.27,0.87,132.2,145.6,3,reached,Goal reached.
+p1loop5,?,8,5.27,0.87,145.7,157.6,3,reached,Goal reached.
+p1loop5,?,9,5.27,0.87,157.6,170.5,3,reached,Goal reached.
+p1loop5,?,10,5.27,0.87,170.6,183.7,3,reached,Goal reached.
+p1loop5,?,11,5.27,0.87,183.7,196.9,3,reached,Goal reached.
+p1loop5,?,12,5.27,0.87,197.0,209.3,3,reached,Goal reached.
+p1loop5,?,13,5.27,0.87,209.3,222.1,3,reached,Goal reached.
+p1loop5,?,14,5.27,0.87,222.1,234.5,3,reached,Goal reached.
+p1loop5,?,15,5.27,0.87,234.6,242.4,2,canceled(preempted),
+p1loop5,?,16,5.27,0.87,242.5,242.6,2,canceled(preempted),
+p1loop5,?,17,5.27,0.87,242.6,242.7,2,canceled(preempted),
+p1loop5,?,18,5.27,0.87,242.7,242.8,2,canceled(preempted),
+p1loop5,?,19,5.27,0.87,242.8,242.9,2,canceled(preempted),
+p1loop5,?,20,5.27,0.87,242.9,243.0,2,canceled(preempted),
+p1loop5,?,21,5.27,0.87,243.0,243.1,2,canceled(preempted),
+p1loop5,?,22,5.27,0.87,243.2,243.3,2,canceled(preempted),
+p1loop5,?,23,5.27,0.87,243.3,243.4,2,canceled(preempted),
+p1loop5,?,24,5.27,0.87,243.4,243.5,2,canceled(preempted),
+p1loop5,?,25,5.27,0.87,243.5,243.6,2,canceled(preempted),
+p1loop5,?,26,5.27,0.87,243.7,243.8,2,canceled(preempted),
+p1loop5,?,27,5.27,0.87,243.8,243.9,2,canceled(preempted),
+p1loop5,?,28,5.27,0.87,243.9,244.0,2,canceled(preempted),
+p1loop5,?,29,5.27,0.87,244.0,244.1,2,canceled(preempted),
+p1loop5,?,30,5.27,0.87,244.2,244.3,2,canceled(preempted),
+p1loop5,?,31,5.27,0.87,244.3,244.4,2,canceled(preempted),
+p1loop5,?,32,5.27,0.87,244.4,244.5,2,canceled(preempted),
+p1loop5,?,33,5.27,0.87,244.6,244.6,2,canceled(preempted),
+p1loop5,?,34,5.27,0.87,244.7,244.7,2,canceled(preempted),
+p1loop5,?,35,5.27,0.87,244.8,244.9,2,canceled(preempted),
+p1loop5,?,36,5.27,0.87,244.9,245.0,2,canceled(preempted),
+p1loop5,?,37,5.27,0.87,245.0,245.1,2,canceled(preempted),
+p1loop5,?,38,5.27,0.87,245.1,245.2,2,canceled(preempted),
+p1loop5,?,39,5.27,0.87,245.2,245.3,2,canceled(preempted),
+p1loop5,?,40,5.27,0.87,245.4,245.5,2,canceled(preempted),
+p1loop5,?,41,5.27,0.87,245.5,245.6,2,canceled(preempted),
+p1loop5,?,42,5.27,0.87,245.7,245.8,2,canceled(preempted),
+p1loop5,?,43,5.27,0.87,245.8,245.9,2,canceled(preempted),
+p1loop5,?,44,5.27,0.87,245.9,246.0,2,canceled(preempted),
+p1loop5,?,45,5.27,0.87,246.0,246.1,2,canceled(preempted),
+p1loop5,?,46,5.27,0.87,246.1,246.2,2,canceled(preempted),
+p1loop5,?,47,5.27,0.87,246.3,246.4,2,canceled(preempted),
+p1loop5,?,48,5.27,0.87,246.4,246.5,2,canceled(preempted),
+p1loop5,?,49,5.27,0.87,246.5,246.6,2,canceled(preempted),
+p1loop5,?,50,5.27,0.87,246.6,246.7,2,canceled(preempted),
+p1loop5,?,51,5.27,0.87,246.8,246.9,2,canceled(preempted),
+p1loop5,?,52,5.27,0.87,246.9,247.0,2,canceled(preempted),
+p1loop5,?,53,5.27,0.87,247.1,247.2,2,canceled(preempted),
+p1loop5,?,54,5.27,0.87,247.2,247.3,2,canceled(preempted),
+p1loop5,?,55,5.27,0.87,247.3,247.4,2,canceled(preempted),
+p1loop5,?,56,5.27,0.87,247.4,247.6,2,canceled(preempted),
+p1loop5,?,57,5.27,0.87,247.6,247.7,2,canceled(preempted),
+p1loop5,?,58,5.27,0.87,247.7,247.8,2,canceled(preempted),
+p1loop5,?,59,5.27,0.87,247.8,247.9,2,canceled(preempted),
+p1loop5,?,60,5.27,0.87,247.9,248.0,2,canceled(preempted),
+p1loop5,?,61,5.27,0.87,248.1,248.2,2,canceled(preempted),
+p1loop5,?,62,5.27,0.87,248.2,248.3,2,canceled(preempted),
+p1loop5,?,63,5.27,0.87,248.8,262.2,3,reached,Goal reached.
+p1loop5,?,64,5.27,0.87,262.2,,-1,no result,
+smoke_ours,?,1,2.20,-0.30,57.3,57.4,2,canceled(preempted),This goal was canceled because another goal was received by the simple action se
+smoke_ours,?,2,4.20,-0.50,57.3,85.2,2,canceled(preempted),This goal was canceled because another goal was received by the simple action se
+smoke_ours,?,3,1.50,2.00,85.1,115.2,2,canceled(preempted),This goal was canceled because another goal was received by the simple action se
+smoke_ours,?,4,-1.80,1.10,115.1,134.2,4,aborted(no plan),Failed to find a valid plan. Even after executing recovery behaviors.
+smoke_ours,?,5,0.30,-2.70,145.1,175.2,2,canceled(preempted),This goal was canceled because another goal was received by the simple action se
+smoke_ours,?,6,2.20,-4.30,175.1,175.3,4,aborted(no plan),Failed to find a valid plan. Even after executing recovery behaviors.
