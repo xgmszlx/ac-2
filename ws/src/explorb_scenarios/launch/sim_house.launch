@@ -15,7 +15,7 @@
 -->
 <launch>
 
-    <arg name="world_file" default="$(find explorb_scenarios)/worlds/loc_store.world"/>
+    <arg name="world_file" default="$(find explorb_scenarios)/worlds/loc_store2.world"/>
     <arg name="model_path" default="$(find robot_description)/launch/include/models/aws/bookstore"/>
     <arg name="robot_ns"   default="robot_1"/>
     <arg name="gazebo_gui" default="false"/>

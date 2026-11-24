@@ -1,0 +1,769 @@
+... logging to /home/wcqw/explorb_line_20261121/logs/ros/76d2cc06-e7a9-11f1-a748-27f296b498e7/roslaunch-msxg-40662.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/wcqw/explorb_line_20261121/ws/src/explorb_scenarios/launch/sim_house.launch
+[1mstarted roslaunch server http://msxg:40787/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /gazebo/enable_ros_network: True
+ * /orb_slam2_rgbd/ORBextractor/iniThFAST: 20
+ * /orb_slam2_rgbd/ORBextractor/minThFAST: 7
+ * /orb_slam2_rgbd/ORBextractor/nFeatures: 1000
+ * /orb_slam2_rgbd/ORBextractor/nLevels: 8
+ * /orb_slam2_rgbd/ORBextractor/scaleFactor: 1.2
+ * /orb_slam2_rgbd/ThDepth: 30.0
+ * /orb_slam2_rgbd/camera_bf: 72
+ * /orb_slam2_rgbd/camera_fps: 30
+ * /orb_slam2_rgbd/camera_frame_id: base_footprint
+ * /orb_slam2_rgbd/camera_rgb_encoding: True
+ * /orb_slam2_rgbd/depth_map_factor: 1.0
+ * /orb_slam2_rgbd/load_calibration_from_cam: True
+ * /orb_slam2_rgbd/load_map: False
+ * /orb_slam2_rgbd/localize_only: False
+ * /orb_slam2_rgbd/map_file: map.bin
+ * /orb_slam2_rgbd/min_num_kf_in_map: 5
+ * /orb_slam2_rgbd/pointcloud_frame_id: map
+ * /orb_slam2_rgbd/publish_pointcloud: True
+ * /orb_slam2_rgbd/publish_pose: True
+ * /orb_slam2_rgbd/reset_map: False
+ * /orb_slam2_rgbd/target_frame_id: base_footprint
+ * /orb_slam2_rgbd/voc_file: /home/wcqw/explor...
+ * /robot_1/move_base_node/NavfnROS/allow_unknown: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/acc_lim_theta: 0.7
+ * /robot_1/move_base_node/TebLocalPlannerROS/acc_lim_x: 0.7
+ * /robot_1/move_base_node/TebLocalPlannerROS/costmap_converter_plugin: 
+ * /robot_1/move_base_node/TebLocalPlannerROS/costmap_converter_rate: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/costmap_converter_spin_thread: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/costmap_obstacles_behind_robot_dist: 1.0
+ * /robot_1/move_base_node/TebLocalPlannerROS/dt_hysteresis: 0.1
+ * /robot_1/move_base_node/TebLocalPlannerROS/dt_ref: 0.3
+ * /robot_1/move_base_node/TebLocalPlannerROS/enable_homotopy_class_planning: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/enable_multithreading: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/feasibility_check_no_poses: 5
+ * /robot_1/move_base_node/TebLocalPlannerROS/footprint_model/radius: 0.15
+ * /robot_1/move_base_node/TebLocalPlannerROS/footprint_model/type: circular
+ * /robot_1/move_base_node/TebLocalPlannerROS/free_goal_vel: False
+ * /robot_1/move_base_node/TebLocalPlannerROS/global_plan_overwrite_orientation: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/h_signature_prescaler: 0.5
+ * /robot_1/move_base_node/TebLocalPlannerROS/h_signature_threshold: 0.1
+ * /robot_1/move_base_node/TebLocalPlannerROS/include_costmap_obstacles: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/inflation_dist: 0.0
+ * /robot_1/move_base_node/TebLocalPlannerROS/map_frame: map
+ * /robot_1/move_base_node/TebLocalPlannerROS/max_global_plan_lookahead_dist: 3.0
+ * /robot_1/move_base_node/TebLocalPlannerROS/max_number_classes: 2
+ * /robot_1/move_base_node/TebLocalPlannerROS/max_vel_theta: 0.5
+ * /robot_1/move_base_node/TebLocalPlannerROS/max_vel_x: 0.2
+ * /robot_1/move_base_node/TebLocalPlannerROS/max_vel_x_backwards: 0.2
+ * /robot_1/move_base_node/TebLocalPlannerROS/min_obstacle_dist: 0.05
+ * /robot_1/move_base_node/TebLocalPlannerROS/min_turning_radius: 0.0
+ * /robot_1/move_base_node/TebLocalPlannerROS/no_inner_iterations: 3
+ * /robot_1/move_base_node/TebLocalPlannerROS/no_outer_iterations: 2
+ * /robot_1/move_base_node/TebLocalPlannerROS/obstacle_heading_threshold: 0.45
+ * /robot_1/move_base_node/TebLocalPlannerROS/obstacle_keypoint_offset: 0.1
+ * /robot_1/move_base_node/TebLocalPlannerROS/obstacle_poses_affected: 30
+ * /robot_1/move_base_node/TebLocalPlannerROS/odom_topic: odom
+ * /robot_1/move_base_node/TebLocalPlannerROS/optimization_activate: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/optimization_verbose: False
+ * /robot_1/move_base_node/TebLocalPlannerROS/penalty_epsilon: 0.1
+ * /robot_1/move_base_node/TebLocalPlannerROS/roadmap_graph_area_width: 5
+ * /robot_1/move_base_node/TebLocalPlannerROS/roadmap_graph_no_samples: 15
+ * /robot_1/move_base_node/TebLocalPlannerROS/selection_alternative_time_cost: False
+ * /robot_1/move_base_node/TebLocalPlannerROS/simple_exploration: False
+ * /robot_1/move_base_node/TebLocalPlannerROS/teb_autosize: True
+ * /robot_1/move_base_node/TebLocalPlannerROS/visualize_hc_graph: False
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_acc_lim_theta: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_acc_lim_x: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_dynamic_obstacle: 10
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_kinematics_forward_drive: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_kinematics_nh: 1000
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_kinematics_turning_radius: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_max_vel_theta: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_max_vel_x: 2
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_obstacle: 50
+ * /robot_1/move_base_node/TebLocalPlannerROS/weight_optimaltime: 1
+ * /robot_1/move_base_node/TebLocalPlannerROS/xy_goal_tolerance: 0.28
+ * /robot_1/move_base_node/TebLocalPlannerROS/yaw_goal_tolerance: 0.2618
+ * /robot_1/move_base_node/aggressive_reset/affected_maps: both
+ * /robot_1/move_base_node/aggressive_reset/force_updating: True
+ * /robot_1/move_base_node/aggressive_reset/reset_distance: 5.0
+ * /robot_1/move_base_node/base_local_planner: teb_local_planner...
+ * /robot_1/move_base_node/controller_frequency: 10.0
+ * /robot_1/move_base_node/global_costmap/always_send_full_costmap: False
+ * /robot_1/move_base_node/global_costmap/combination_method: 1
+ * /robot_1/move_base_node/global_costmap/cost_scaling_factor: 10.0
+ * /robot_1/move_base_node/global_costmap/footprint_clearing_enabled: True
+ * /robot_1/move_base_node/global_costmap/footprint_padding: 0.03
+ * /robot_1/move_base_node/global_costmap/global_frame: map
+ * /robot_1/move_base_node/global_costmap/height: 25.0
+ * /robot_1/move_base_node/global_costmap/inflation_radius: 0.26
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/clearing: True
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/data_type: LaserScan
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/inf_is_valid: True
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/marking: True
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/max_obstacle_height: 1.0
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/min_obstacle_height: 0.0
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/sensor_frame: base_scan
+ * /robot_1/move_base_node/global_costmap/laser_scan_sensor/topic: /scan
+ * /robot_1/move_base_node/global_costmap/lethal_cost_threshold: 100
+ * /robot_1/move_base_node/global_costmap/map_type: costmap
+ * /robot_1/move_base_node/global_costmap/observation_persistence: 0.0
+ * /robot_1/move_base_node/global_costmap/observation_sources: laser_scan_sensor
+ * /robot_1/move_base_node/global_costmap/obstacle_range: 9.5
+ * /robot_1/move_base_node/global_costmap/origin_x: -12.5
+ * /robot_1/move_base_node/global_costmap/origin_y: -12.5
+ * /robot_1/move_base_node/global_costmap/publish_frequency: 1.0
+ * /robot_1/move_base_node/global_costmap/raytrace_range: 10.0
+ * /robot_1/move_base_node/global_costmap/resolution: 0.1
+ * /robot_1/move_base_node/global_costmap/robot_base_frame: base_footprint
+ * /robot_1/move_base_node/global_costmap/robot_radius: 0.2
+ * /robot_1/move_base_node/global_costmap/rolling_window: False
+ * /robot_1/move_base_node/global_costmap/static_map: False
+ * /robot_1/move_base_node/global_costmap/track_unknown_space: True
+ * /robot_1/move_base_node/global_costmap/transform_tolerance: 1.0
+ * /robot_1/move_base_node/global_costmap/update_frequency: 1.0
+ * /robot_1/move_base_node/global_costmap/width: 25.0
+ * /robot_1/move_base_node/local_costmap/combination_method: 1
+ * /robot_1/move_base_node/local_costmap/cost_scaling_factor: 10.0
+ * /robot_1/move_base_node/local_costmap/footprint_clearing_enabled: True
+ * /robot_1/move_base_node/local_costmap/footprint_padding: 0.03
+ * /robot_1/move_base_node/local_costmap/global_frame: map
+ * /robot_1/move_base_node/local_costmap/height: 5
+ * /robot_1/move_base_node/local_costmap/inflation_radius: 0.26
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/clearing: True
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/data_type: LaserScan
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/inf_is_valid: True
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/marking: True
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/max_obstacle_height: 1.0
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/min_obstacle_height: 0.0
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/sensor_frame: base_scan
+ * /robot_1/move_base_node/local_costmap/laser_scan_sensor/topic: /scan
+ * /robot_1/move_base_node/local_costmap/lethal_cost_threshold: 100
+ * /robot_1/move_base_node/local_costmap/map_type: costmap
+ * /robot_1/move_base_node/local_costmap/observation_persistence: 0.0
+ * /robot_1/move_base_node/local_costmap/observation_sources: laser_scan_sensor
+ * /robot_1/move_base_node/local_costmap/obstacle_range: 9.5
+ * /robot_1/move_base_node/local_costmap/publish_frequency: 5.0
+ * /robot_1/move_base_node/local_costmap/raytrace_range: 10.0
+ * /robot_1/move_base_node/local_costmap/resolution: 0.1
+ * /robot_1/move_base_node/local_costmap/robot_base_frame: base_footprint
+ * /robot_1/move_base_node/local_costmap/robot_radius: 0.2
+ * /robot_1/move_base_node/local_costmap/rolling_window: True
+ * /robot_1/move_base_node/local_costmap/static_map: False
+ * /robot_1/move_base_node/local_costmap/track_unknown_space: True
+ * /robot_1/move_base_node/local_costmap/transform_tolerance: 1.2
+ * /robot_1/move_base_node/local_costmap/update_frequency: 5.0
+ * /robot_1/move_base_node/local_costmap/width: 5
+ * /robot_1/move_base_node/max_planning_retries: 1
+ * /robot_1/move_base_node/recovery_behavior_enabled: False
+ * /robot_1/move_base_node/recovery_behaviors: [{'name': 'aggres...
+ * /robot_description: <?xml version="1....
+ * /robot_state_publisher/publish_frequency: 100.0
+ * /robot_state_publisher/use_tf_static: True
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+ * /use_sim_time: True
+
+NODES
+  /
+    gazebo (gazebo_ros/gzserver)
+    orb_slam2_rgbd (orb_slam2_ros/orb_slam2_ros_rgbd)
+    robot_state_publisher (robot_state_publisher/robot_state_publisher)
+  /robot_1/
+    move_base_node (move_base/move_base)
+[WARN] [1795485053.741385465, 5.065000000]: Timed out waiting for transform from base_footprint to map to become available before running costmap, tf error: canTransform: target_frame map does not exist.. canTransform returned after 0.1 timeout was 0.1.
+[WARN] [1795485058.849601000, 10.166000000]: Timed out waiting for transform from base_footprint to map to become available before running costmap, tf error: canTransform: target_frame map does not exist.. canTransform returned after 0.1 timeout was 0.1.
+../src/intel/isl/isl.c:2105: FINISHME: ../src/intel/isl/isl.c:isl_surf_supports_ccs: CCS for 3D textures is disabled, but a workaround is available.
+[INFO] [1795485046.102998279]: Listening for camera info on topic /camera/rgb/camera_info
+
+ORB-SLAM2 Copyright (C) 2014-2016 Raul Mur-Artal, University of Zaragoza.
+This program comes with ABSOLUTELY NO WARRANTY;
+This is free software, and you are welcome to redistribute it
+under certain conditions. See LICENSE.txt.
+
+OpenCV version : 4.2.0
+Major version : 4
+Minor version : 2
+Subminor version : 0
+Input sensor was set to: RGB-D
+
+Loading ORB Vocabulary.
+Vocabulary loaded!
+
+
+Camera Parameters: 
+- fx: 402.297
+- fy: 402.297
+- cx: 320.5
+- cy: 240.5
+- k1: 0
+- k2: 0
+- p1: 0
+- p2: 0
+- fps: 30
+- bf: 72
+- color order: RGB (ignored if grayscale)
+
+ORB Extractor Parameters: 
+- Number of Features: 1000
+- Scale Levels: 8
+- Scale Factor: 1.2
+- Initial Fast Threshold: 20
+- Minimum Fast Threshold: 7
+
+Depth Threshold (Close/Far Points): 5.36917
+Enable localization only: false
+[obs-instr] frame=1 N=925 valid_depth_kp=606 depth_px_sampled_valid=2980 state=0 gray_mean=93.9418
+New map created with 606 points
+[WARN] [1795485066.373268847, 15.197000000]: "camera_link_optical" passed to lookupTransform argument source_frame does not exist. 
+[obs-instr] frame=2 N=924 valid_depth_kp=605 depth_px_sampled_valid=2980 state=2 gray_mean=93.9418
+[WARN] [1795485066.439151858, 15.263000000]: "camera_link_optical" passed to lookupTransform argument source_frame does not exist. 
+[WARN] [1795485066.442006706, 15.266000000]: Timed out waiting for transform from base_footprint to map to become available before running costmap, tf error: canTransform: target_frame map does not exist.. canTransform returned after 0.1 timeout was 0.1.
+[obs-instr] frame=3 N=923 valid_depth_kp=603 depth_px_sampled_valid=2980 state=2 gray_mean=93.9417
+[obs-instr] frame=4 N=924 valid_depth_kp=606 depth_px_sampled_valid=2980 state=2 gray_mean=93.9417
+[obs-instr] frame=5 N=923 valid_depth_kp=602 depth_px_sampled_valid=2980 state=2 gray_mean=93.9419
+Warning: Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 15.540000 according to authority unknown_publisher
+         at line TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 15.540000 according to authority unknown_publisher277
+ in          at line /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[WARN] [1795485067.045913822, 15.868000000]: global_costmap: Parameter "plugins" not provided, loading pre-Hydro parameters
+[ERROR] [1795485067.088089264, 15.910000000]: Connectivity Error looking up robot pose: Could not find a connection between 'map' and 'base_footprint' because they are not part of the same tree.Tf has two or more unconnected trees.
+
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 16.040000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[INFO] [1795485067.052568571, 15.875000000]: global_costmap: Using plugin "obstacle_layer"
+[INFO] [1795485067.056052340, 15.878000000]:     Subscribed to Topics: laser_scan_sensor
+[INFO] [1795485067.068891837, 15.891000000]: global_costmap: Using plugin "inflation_layer"
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 16.040000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 16.140000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 16.140000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=60 N=928 valid_depth_kp=605 depth_px_sampled_valid=2980 state=2 gray_mean=93.941
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 16.406000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 16.406000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[WARN] [1795485067.650571645, 16.473000000]: local_costmap: Parameter "plugins" not provided, loading pre-Hydro parameters
+[FATAL] [1795485067.678752032, 16.501000000]: Failed to create the teb_local_planner/TebLocalPlannerROS planner, are you sure it is properly registered and that the containing library is built? Exception: According to the loaded plugin descriptions the class teb_local_planner/TebLocalPlannerROS with base class type nav_core::BaseLocalPlanner does not exist. Declared types are  base_local_planner/TrajectoryPlannerROS dwa_local_planner/DWAPlannerROS
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 16.806000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 16.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[INFO] [1795485067.660585605, 16.483000000]: local_costmap: Using plugin "obstacle_layer"
+[INFO] [1795485067.661667255, 16.484000000]:     Subscribed to Topics: laser_scan_sensor
+[INFO] [1795485067.667160139, 16.489000000]: local_costmap: Using plugin "inflation_layer"
+[obs-instr] frame=120 N=931 valid_depth_kp=602 depth_px_sampled_valid=2980 state=2 gray_mean=93.941
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 18.406000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=180 N=928 valid_depth_kp=610 depth_px_sampled_valid=2981 state=2 gray_mean=93.9419
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 18.973000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 19.173000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 19.406000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 19.773000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 19.973000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=240 N=924 valid_depth_kp=608 depth_px_sampled_valid=2981 state=2 gray_mean=93.9427
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 20.773000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=300 N=922 valid_depth_kp=608 depth_px_sampled_valid=2981 state=2 gray_mean=93.9421
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 21.340000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 21.906000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 22.140000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=360 N=930 valid_depth_kp=610 depth_px_sampled_valid=2981 state=2 gray_mean=93.9417
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 22.606000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 22.640000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=420 N=925 valid_depth_kp=605 depth_px_sampled_valid=2981 state=2 gray_mean=93.9426
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 23.740000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=480 N=929 valid_depth_kp=603 depth_px_sampled_valid=2981 state=2 gray_mean=93.9427
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 24.806000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 24.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 24.973000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=540 N=928 valid_depth_kp=609 depth_px_sampled_valid=2981 state=2 gray_mean=93.9439
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 25.373000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=600 N=930 valid_depth_kp=611 depth_px_sampled_valid=2981 state=2 gray_mean=93.9447
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 26.373000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 26.440000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 26.473000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 26.506000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 26.706000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=660 N=928 valid_depth_kp=609 depth_px_sampled_valid=2981 state=2 gray_mean=93.9448
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 27.573000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 27.906000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=720 N=926 valid_depth_kp=606 depth_px_sampled_valid=2981 state=2 gray_mean=93.9453
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 28.040000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 28.273000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=780 N=918 valid_depth_kp=596 depth_px_sampled_valid=2981 state=2 gray_mean=93.9452
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 28.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 29.206000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=840 N=920 valid_depth_kp=603 depth_px_sampled_valid=2981 state=2 gray_mean=93.9462
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 30.206000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 30.373000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=900 N=921 valid_depth_kp=607 depth_px_sampled_valid=2981 state=2 gray_mean=93.9463
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 30.940000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=960 N=921 valid_depth_kp=606 depth_px_sampled_valid=2981 state=2 gray_mean=93.947
+[obs-instr] frame=1020 N=922 valid_depth_kp=605 depth_px_sampled_valid=2981 state=2 gray_mean=93.9463
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 32.873000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 32.906000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1080 N=922 valid_depth_kp=607 depth_px_sampled_valid=2981 state=2 gray_mean=93.945
+[obs-instr] frame=1140 N=922 valid_depth_kp=608 depth_px_sampled_valid=2981 state=2 gray_mean=93.9445
+[obs-instr] frame=1200 N=922 valid_depth_kp=608 depth_px_sampled_valid=2982 state=2 gray_mean=93.9444
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 35.540000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 35.973000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 36.040000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1260 N=926 valid_depth_kp=613 depth_px_sampled_valid=2982 state=2 gray_mean=93.9444
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 36.206000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 36.340000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 36.440000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 36.473000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 36.673000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 36.773000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 36.906000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1320 N=924 valid_depth_kp=608 depth_px_sampled_valid=2982 state=2 gray_mean=93.9437
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 37.573000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 37.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 37.940000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1380 N=926 valid_depth_kp=610 depth_px_sampled_valid=2982 state=2 gray_mean=93.9442
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 39.173000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 39.473000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1440 N=921 valid_depth_kp=604 depth_px_sampled_valid=2982 state=2 gray_mean=93.9447
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 40.340000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1500 N=925 valid_depth_kp=613 depth_px_sampled_valid=2982 state=2 gray_mean=93.9444
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 40.973000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1560 N=931 valid_depth_kp=614 depth_px_sampled_valid=2982 state=2 gray_mean=93.9445
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 42.006000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 42.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1620 N=929 valid_depth_kp=614 depth_px_sampled_valid=2982 state=2 gray_mean=93.9446
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 43.606000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1680 N=929 valid_depth_kp=611 depth_px_sampled_valid=2982 state=2 gray_mean=93.945
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 44.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1740 N=933 valid_depth_kp=617 depth_px_sampled_valid=2982 state=2 gray_mean=93.9451
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 44.740000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 44.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1800 N=934 valid_depth_kp=620 depth_px_sampled_valid=2982 state=2 gray_mean=93.9451
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 46.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1860 N=934 valid_depth_kp=617 depth_px_sampled_valid=2982 state=2 gray_mean=93.945
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 46.240000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 46.340000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 46.506000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=1920 N=941 valid_depth_kp=617 depth_px_sampled_valid=2982 state=2 gray_mean=93.9503
+[obs-instr] frame=1980 N=939 valid_depth_kp=619 depth_px_sampled_valid=2982 state=2 gray_mean=93.9511
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 48.040000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 48.273000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 48.773000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 48.973000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2040 N=939 valid_depth_kp=617 depth_px_sampled_valid=2982 state=2 gray_mean=93.9512
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 49.006000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2100 N=938 valid_depth_kp=614 depth_px_sampled_valid=2982 state=2 gray_mean=93.9507
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 50.140000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 50.240000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 50.640000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2160 N=934 valid_depth_kp=612 depth_px_sampled_valid=2982 state=2 gray_mean=93.9507
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 51.506000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2220 N=930 valid_depth_kp=616 depth_px_sampled_valid=2982 state=2 gray_mean=93.9514
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 52.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 52.340000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2280 N=934 valid_depth_kp=613 depth_px_sampled_valid=2982 state=2 gray_mean=93.9516
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 52.873000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 53.406000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2340 N=934 valid_depth_kp=616 depth_px_sampled_valid=2982 state=2 gray_mean=93.9519
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 53.640000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 53.806000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 54.006000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2400 N=929 valid_depth_kp=617 depth_px_sampled_valid=2982 state=2 gray_mean=93.9519
+[obs-instr] frame=2460 N=926 valid_depth_kp=611 depth_px_sampled_valid=2982 state=2 gray_mean=93.9526
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 56.740000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2520 N=927 valid_depth_kp=615 depth_px_sampled_valid=2982 state=2 gray_mean=93.9529
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 57.140000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 57.273000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 57.540000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 57.773000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2580 N=937 valid_depth_kp=619 depth_px_sampled_valid=2982 state=2 gray_mean=93.9533
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 57.940000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2640 N=925 valid_depth_kp=611 depth_px_sampled_valid=2982 state=2 gray_mean=93.9541
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 59.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 59.406000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2700 N=929 valid_depth_kp=620 depth_px_sampled_valid=2982 state=2 gray_mean=93.9539
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 59.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 60.173000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2760 N=924 valid_depth_kp=619 depth_px_sampled_valid=2982 state=2 gray_mean=93.9536
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 60.573000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 60.606000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 60.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 61.006000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2820 N=921 valid_depth_kp=615 depth_px_sampled_valid=2982 state=2 gray_mean=93.9546
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 62.040000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2880 N=918 valid_depth_kp=606 depth_px_sampled_valid=2983 state=2 gray_mean=93.9567
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 62.473000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 62.973000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=2940 N=921 valid_depth_kp=606 depth_px_sampled_valid=2983 state=2 gray_mean=93.9568
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 64.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3000 N=924 valid_depth_kp=610 depth_px_sampled_valid=2983 state=2 gray_mean=93.9554
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 64.773000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 65.206000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 65.540000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 65.640000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3060 N=918 valid_depth_kp=609 depth_px_sampled_valid=2983 state=2 gray_mean=93.9557
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 65.973000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 66.306000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3120 N=915 valid_depth_kp=607 depth_px_sampled_valid=2983 state=2 gray_mean=93.9577
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 67.040000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 67.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3180 N=921 valid_depth_kp=614 depth_px_sampled_valid=2983 state=2 gray_mean=93.9577
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 67.806000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 67.873000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3240 N=925 valid_depth_kp=619 depth_px_sampled_valid=2983 state=2 gray_mean=93.958
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 68.206000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 68.406000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 68.573000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3300 N=920 valid_depth_kp=611 depth_px_sampled_valid=2983 state=2 gray_mean=93.957
+[obs-instr] frame=3360 N=920 valid_depth_kp=614 depth_px_sampled_valid=2983 state=2 gray_mean=93.9576
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 69.873000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 70.173000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 70.206000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3420 N=912 valid_depth_kp=608 depth_px_sampled_valid=2983 state=2 gray_mean=93.9577
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 70.506000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 71.306000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3480 N=911 valid_depth_kp=604 depth_px_sampled_valid=2983 state=2 gray_mean=93.958
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 71.406000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 72.073000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 72.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3540 N=919 valid_depth_kp=611 depth_px_sampled_valid=2983 state=2 gray_mean=93.9577
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 72.506000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 72.540000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 72.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3600 N=913 valid_depth_kp=614 depth_px_sampled_valid=2983 state=2 gray_mean=93.9566
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 73.606000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3660 N=920 valid_depth_kp=609 depth_px_sampled_valid=2983 state=2 gray_mean=93.9565
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 73.907000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 73.973000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 74.006000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 74.573000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3720 N=918 valid_depth_kp=607 depth_px_sampled_valid=2983 state=2 gray_mean=93.9567
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 75.073000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3780 N=920 valid_depth_kp=604 depth_px_sampled_valid=2983 state=2 gray_mean=93.9598
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 75.506000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 76.306000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3840 N=920 valid_depth_kp=602 depth_px_sampled_valid=2983 state=2 gray_mean=93.9608
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 77.140000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=3900 N=929 valid_depth_kp=613 depth_px_sampled_valid=2983 state=2 gray_mean=93.9603
+[obs-instr] frame=3960 N=923 valid_depth_kp=602 depth_px_sampled_valid=2982 state=2 gray_mean=93.9605
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 78.740000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 78.773000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4020 N=913 valid_depth_kp=603 depth_px_sampled_valid=2982 state=2 gray_mean=93.9606
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 79.006000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 79.406000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4080 N=910 valid_depth_kp=603 depth_px_sampled_valid=2982 state=2 gray_mean=93.963
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 80.140000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 80.206000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 80.473000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 80.506000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 80.573000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4140 N=916 valid_depth_kp=601 depth_px_sampled_valid=2982 state=2 gray_mean=93.9633
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 81.440000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4200 N=931 valid_depth_kp=609 depth_px_sampled_valid=2982 state=2 gray_mean=93.963
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 81.673000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 82.073000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 82.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 82.406000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4260 N=923 valid_depth_kp=604 depth_px_sampled_valid=2982 state=2 gray_mean=93.9651
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 82.440000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 82.906000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4320 N=927 valid_depth_kp=604 depth_px_sampled_valid=2982 state=2 gray_mean=93.9652
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 84.006000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4380 N=925 valid_depth_kp=603 depth_px_sampled_valid=2982 state=2 gray_mean=93.9652
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 84.340000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 84.740000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4440 N=929 valid_depth_kp=606 depth_px_sampled_valid=2982 state=2 gray_mean=93.9652
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 85.140000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 85.540000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4500 N=927 valid_depth_kp=608 depth_px_sampled_valid=2982 state=2 gray_mean=93.9651
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 86.240000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 86.440000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4560 N=933 valid_depth_kp=614 depth_px_sampled_valid=2982 state=2 gray_mean=93.965
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 86.606000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 86.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4620 N=942 valid_depth_kp=609 depth_px_sampled_valid=2982 state=2 gray_mean=93.9655
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 87.573000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4680 N=934 valid_depth_kp=603 depth_px_sampled_valid=2982 state=2 gray_mean=93.9656
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 88.340000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 88.940000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4740 N=924 valid_depth_kp=601 depth_px_sampled_valid=2982 state=2 gray_mean=93.9658
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 89.006000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 89.473000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 89.740000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4800 N=923 valid_depth_kp=601 depth_px_sampled_valid=2982 state=2 gray_mean=93.9659
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 90.040000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 90.506000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4860 N=919 valid_depth_kp=601 depth_px_sampled_valid=2982 state=2 gray_mean=93.966
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 90.806000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 91.240000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4920 N=920 valid_depth_kp=605 depth_px_sampled_valid=2982 state=2 gray_mean=93.9664
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 91.673000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=4980 N=916 valid_depth_kp=603 depth_px_sampled_valid=2982 state=2 gray_mean=93.9662
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 92.706000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5040 N=918 valid_depth_kp=606 depth_px_sampled_valid=2983 state=2 gray_mean=93.9645
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 93.140000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 93.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5100 N=913 valid_depth_kp=602 depth_px_sampled_valid=2983 state=2 gray_mean=93.9652
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 94.306000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 94.440000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 94.706000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5160 N=905 valid_depth_kp=597 depth_px_sampled_valid=2983 state=2 gray_mean=93.9655
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 94.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 95.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 95.206000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 95.373000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5220 N=909 valid_depth_kp=596 depth_px_sampled_valid=2983 state=2 gray_mean=93.9658
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 95.806000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 95.973000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 96.240000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 96.540000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 96.573000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5280 N=914 valid_depth_kp=592 depth_px_sampled_valid=2983 state=2 gray_mean=93.9654
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 96.873000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 97.373000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5340 N=917 valid_depth_kp=596 depth_px_sampled_valid=2984 state=2 gray_mean=93.9648
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 98.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5400 N=915 valid_depth_kp=600 depth_px_sampled_valid=2984 state=2 gray_mean=93.9663
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 98.440000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 98.606000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 99.273000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5460 N=913 valid_depth_kp=600 depth_px_sampled_valid=2984 state=2 gray_mean=93.9662
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 99.606000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5520 N=918 valid_depth_kp=612 depth_px_sampled_valid=2984 state=2 gray_mean=93.9669
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 101.606000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5580 N=918 valid_depth_kp=606 depth_px_sampled_valid=2985 state=2 gray_mean=93.9677
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 102.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 102.273000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5640 N=918 valid_depth_kp=608 depth_px_sampled_valid=2985 state=2 gray_mean=93.9676
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 103.640000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5700 N=920 valid_depth_kp=602 depth_px_sampled_valid=2985 state=2 gray_mean=93.9676
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 104.540000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 104.673000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 104.773000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5760 N=925 valid_depth_kp=609 depth_px_sampled_valid=2985 state=2 gray_mean=93.9689
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 105.340000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5820 N=927 valid_depth_kp=604 depth_px_sampled_valid=2985 state=2 gray_mean=93.9701
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 106.540000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 106.940000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5880 N=935 valid_depth_kp=612 depth_px_sampled_valid=2985 state=2 gray_mean=93.97
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 107.440000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 107.706000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 108.073000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=5940 N=935 valid_depth_kp=613 depth_px_sampled_valid=2985 state=2 gray_mean=93.9705
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 108.840000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=6000 N=935 valid_depth_kp=618 depth_px_sampled_valid=2985 state=2 gray_mean=93.9707
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 109.273000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 110.040000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=6060 N=921 valid_depth_kp=603 depth_px_sampled_valid=2985 state=2 gray_mean=93.9713
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 110.440000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 110.573000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=6120 N=934 valid_depth_kp=616 depth_px_sampled_valid=2985 state=2 gray_mean=93.971
+Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_footprint (parent map) at time 112.106000 according to authority unknown_publisher
+         at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
+[obs-instr] frame=6180 N=922 valid_depth_kp=609 depth_px_sampled_valid=2985 state=2 gray_mean=93.9721

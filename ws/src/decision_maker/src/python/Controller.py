@@ -174,7 +174,12 @@ def node():
     rospy.loginfo(rospy.get_name() + ": strategy=" + strategy + " seed=" + str(strategy_seed))
 
     rate = rospy.Rate(rate_hz)
-    tf_listener = tf.TransformListener()
+    # Harness fix: with use_sim_time the listener is only useful once /clock is running.
+    # The author created it before the map arrived, which on this stack leaves it with a
+    # wall-clock buffer that never matches the sim-time transforms, so every lookup
+    # failed forever and the planner never reached its first decision. Creating it after
+    # the map wait (and after a short settle) keeps the author's logic identical.
+    tf_listener = None
 
     rospy.Subscriber(map_topic, OccupancyGrid, mapCallBack)
     rospy.Subscriber(frontiers_topic, PointArray, frontiersCallBack)
@@ -195,6 +200,10 @@ def node():
     while len(gridMap_data_.data) < 1:
         pass
     rospy.loginfo(rospy.get_name() + ": Controller received map.")
+
+    rospy.sleep(2.0)
+    tf_listener = tf.TransformListener()
+    rospy.loginfo(rospy.get_name() + ": TF listener created after sim clock settled.")
 
     # Robot
     robot_name = namespace + str(n_robots)
