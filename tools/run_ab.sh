@@ -19,7 +19,8 @@ LINE_ROOT=/home/wcqw/explorb_line_20261121
 SCENARIO=${1:-static}
 BUDGET=${2:-240}
 REPEATS=${3:-1}
-shift 3 2>/dev/null || true
+START_REP=${4:-1}      # allows adding repeats without overwriting the existing ones
+shift 4 2>/dev/null || true
 ARMS=("$@")
 if [ ${#ARMS[@]} -eq 0 ]; then
     ARMS=(B0 B1 Ours Ours_no_cov)
@@ -48,7 +49,7 @@ for arm in "${ARMS[@]}"; do
     if [ "$LG" = "INVALID" ]; then
         echo "[ab] unknown arm: $arm"; continue
     fi
-    for rep in $(seq 1 "$REPEATS"); do
+    for rep in $(seq "$START_REP" $(( START_REP + REPEATS - 1 ))); do
         TASK=$(printf 'ab_%s_%s_r%d' "$arm" "$SCENARIO" "$rep")
         echo "=============================================================="
         echo "[ab] arm=$arm rep=$rep task=$TASK lambda_g=$LG lambda_c=$LC dynamic=$DYN"

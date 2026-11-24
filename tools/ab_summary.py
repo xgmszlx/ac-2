@@ -75,6 +75,25 @@ def main():
         row.update(task=task, arm=arm_of(task), teb_ms=teb_mean(task))
         rows.append(row)
 
+    if '--agg' in sys.argv:
+        import collections
+        by = collections.defaultdict(list)
+        for r in rows:
+            by[r['arm']].append(r)
+        print('| arm | n | reached mean | path m mean | coverage m2 mean | ATE m mean | TEB ms mean |')
+        print('|---|---|---|---|---|---|---|')
+        for arm in ARMS:
+            rs = by.get(arm, [])
+            if not rs:
+                continue
+            def mean(key, nd=3):
+                vals = [float(x[key]) for x in rs if x.get(key) not in (None, '')]
+                return ('%.' + str(nd) + 'f') % (sum(vals) / len(vals)) if vals else '-'
+            print('| %s | %d | %s | %s | %s | %s | %s |' % (
+                arm, len(rs), mean('n_reached', 2), mean('path_len_m'),
+                mean('coverage_m2'), mean('ate_rmse_m'), mean('teb_ms')))
+        return 0
+
     if want_md:
         print('| arm | goals | reached | aborted | cmd_vel | path m | net m | coverage m2 | '
               'ATE m | lost s | track ok pct | TEB ms | all reached |')
