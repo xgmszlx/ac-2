@@ -192,9 +192,14 @@ void TebLocalPlannerROS::initialize(std::string name, tf2_ros::Buffer* tf, costm
 #ifdef TEB_HAS_VISUAL_QUERY
     if (cfg_.optim.weight_visual_observability > 0.0 || cfg_.optim.weight_covisibility > 0.0)
     {
-      std::string map_points_topic = "orb_slam2_rgbd/map_points";
-      std::string occupancy_topic = "gridmapper/rectified_map";
-      std::string objects_topic = "dynamic_objects";
+      // NOTE: absolute names. The plugin's NodeHandle is the *private* one
+      // (~/TebLocalPlannerROS), so a relative name would resolve to
+      // /robot_1/move_base_node/TebLocalPlannerROS/orb_slam2_rgbd/map_points, the
+      // subscription would silently never fire, the query would never become ready and
+      // both visual edges would be skipped (observed: visual_edges=0 in all arms).
+      std::string map_points_topic = "/orb_slam2_rgbd/map_points";
+      std::string occupancy_topic = "/gridmapper/rectified_map";
+      std::string objects_topic = "/dynamic_objects";
       nh.param("visual_map_points_topic", map_points_topic, map_points_topic);
       nh.param("visual_occupancy_topic", occupancy_topic, occupancy_topic);
       nh.param("visual_objects_topic", objects_topic, objects_topic);

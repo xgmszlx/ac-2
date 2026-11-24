@@ -31,17 +31,21 @@ void VisualQueryAdapter::initialize(ros::NodeHandle& nh, const std::string& map_
                                    const std::string& occupancy_topic,
                                    const std::string& objects_topic)
 {
-  sub_points_ = nh.subscribe(map_points_topic, 1, &VisualQueryAdapter::pointsCallback, this);
-  sub_occ_ = nh.subscribe(occupancy_topic, 1, &VisualQueryAdapter::occupancyCallback, this);
+  // resolve and log the *actual* topic names: a silently wrong namespace is exactly how
+  // the visual edges ended up being skipped in every arm of the first A/B round.
+  const std::string mp = ros::names::resolve(map_points_topic);
+  const std::string oc = ros::names::resolve(occupancy_topic);
+  const std::string ob = ros::names::resolve(objects_topic);
+  sub_points_ = nh.subscribe(mp, 1, &VisualQueryAdapter::pointsCallback, this);
+  sub_occ_ = nh.subscribe(oc, 1, &VisualQueryAdapter::occupancyCallback, this);
   bool use_dynamic = true;
   nh.param("visual_use_dynamic", use_dynamic, use_dynamic);
   params_.use_dynamic = use_dynamic;
   if (use_dynamic)
-    sub_objs_ = nh.subscribe(objects_topic, 2, &VisualQueryAdapter::objectsCallback, this);
+    sub_objs_ = nh.subscribe(ob, 2, &VisualQueryAdapter::objectsCallback, this);
   else
     ROS_INFO_STREAM("[visual_query] dynamic occlusion prediction DISABLED for this arm");
-  ROS_INFO_STREAM("[visual_query] adapter subscribed to " << map_points_topic << ", "
-                  << occupancy_topic << ", " << objects_topic);
+  ROS_INFO_STREAM("[visual_query] adapter subscribed to " << mp << ", " << oc << ", " << ob);
 }
 
 void VisualQueryAdapter::pointsCallback(const sensor_msgs::PointCloud2ConstPtr& msg)
@@ -143,6 +147,8 @@ void VisualQueryAdapter::refresh()
   if (!have_points_)
   {
     ready_ = false;
+    ROS_WARN_STREAM_THROTTLE(5.0, "[visual_query] no map_points yet ("
+        << raw_points_.size() << " cached points): visual edges skipped");
     return;
   }
 
@@ -162,6 +168,9 @@ void VisualQueryAdapter::refresh()
   snapshot_size_ = snap.size();
   query_.setDynamicObjects(objects_);
   ready_ = snap.size() >= static_cast<std::size_t>(params_.min_points);
+  if (!ready_)
+    ROS_WARN_STREAM_THROTTLE(5.0, "[visual_query] snapshot too small ("
+        << snap.size() << " < " << params_.min_points << " points): visual edges skipped");
 }
 
 double VisualQueryAdapter::normalizedObservability(double x, double y, double theta, double t) const

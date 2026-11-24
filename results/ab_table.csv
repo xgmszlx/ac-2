@@ -1,3 +1,1 @@
 task,arm,scenario,repeat,git_sha,branch,budget_sim_s,success,n_goal,n_cmd,path_len_m,robot_moved_m,coverage_m2,ate_rmse_m,lost_s,teb_norm,tracking_ok_pct,note
-ab_B0_visual_r1,B0,visual,1,5906fb4,research/explorb-locobs-20261124,230,True,4,335,4.1365698138896505,0.4689066784133417,12.240000364780428,0.12769912232563885,0.0,67.9698,100.0,
-ab_B1_visual_r1,B1,visual,1,5906fb4,research/explorb-locobs-20261124,230,True,3,223,2.900006302198413,2.223720743500708,15.350000457465653,0.2230119515469809,0.0,,100.0,

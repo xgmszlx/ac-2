@@ -147,6 +147,12 @@ def main():
     res['task'] = os.path.basename(run_dir)
     res['n_goal'] = sum(1 for r in gl if r.get('kind') == 'goal')
     res['n_result'] = sum(1 for r in gl if r.get('kind') == 'result')
+    # move_base action status: 3 = SUCCEEDED, 4 = ABORTED, 2 = CANCELED (preempted)
+    st_status = [int(fnum(r.get('status'), -1)) for r in gl if r.get('kind') == 'result']
+    res['n_reached'] = sum(1 for x in st_status if x == 3)
+    res['n_aborted'] = sum(1 for x in st_status if x == 4)
+    res['n_canceled'] = sum(1 for x in st_status if x == 2)
+    res['reached_frac'] = (float(res['n_reached']) / res['n_goal']) if res['n_goal'] else 0.0
     res['n_cmd'] = len(cm)
     res['max_abs_vx'] = max([abs(fnum(r.get('vx'))) for r in cm], default=0.0)
     res['max_abs_wz'] = max([abs(fnum(r.get('wz'))) for r in cm], default=0.0)
@@ -188,8 +194,9 @@ def main():
         res['n_ate_samples'] = 0
     res['rpe_rmse_m'] = rpe(sl_t, sl_xy) if sl_xy else float('nan')
 
-    # crude success criterion: the last dispatched goal was reported as reached
-    res['success'] = bool(res['n_result'] > 0 and res['n_result'] >= res['n_goal'])
+    # strict success: every dispatched goal was reported as reached (status 3).
+    # (An earlier version only compared counts, which counted aborted goals as success.)
+    res['success'] = bool(res['n_goal'] > 0 and res['n_reached'] == res['n_goal'])
 
     with open(os.path.join(run_dir, 'metrics.json'), 'w') as f:
         json.dump(res, f, indent=2)
