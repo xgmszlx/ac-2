@@ -318,6 +318,31 @@ localroot/.../libteb_local_planner.so.deb-orig    EdgeVisualObservability|EdgeCo
   早前四航点路线的各代（`ab_table_round1_badroute.csv` … `round4_slow.csv`）**整表作废但保留**，
   原因见 6.6。
 
+### 6.0.2 ⚠️ 一次真实的记录覆盖事故（已修，并在此留痕）
+
+**事实**：第 1–5 轮我重复使用了同样的 `task_id`（`ab_<arm>_visual_r<rep>`），
+后一轮的 `run_task.sh` 会写同一个 `results/runs/<task_id>/` 目录，
+于是**前一轮的同名运行目录与其日志被覆盖**；同时我为了存档把 `ab_table.csv`
+用 `mv` 移走，导致主窗口 02:25 读到的表只剩 2 行。
+**这违反了任务书"保留全部失败运行""记录每次运行的 git SHA 与参数快照"的硬要求。**
+
+**现在改成了（三处硬约束）**：
+
+1. **task_id 唯一**：`results/runs/<task>_<confighash>/`，`confighash =
+   sha1(git_sha, dirty, scenario, budget, seed, 掩码开关, 决策层开关, 路线文件, 权重参数)[:7]`；
+   目录里已有 `clock.csv`/`metrics.json` 时**直接 FATAL 退出**，绝不覆盖。
+2. **`results/ab_table.csv` 只追加**：不再 `mv`、不再截断；写入前先读全表，
+   同一 `task_id` 已存在时**拒写并警告**。
+3. **表格由脚本从磁盘生成**：`tools/ab_summary.py` 扫描所有
+   `results/runs/*/metrics.json`，产出 `results/ab_table_generated.md` 与 `.csv`
+   —— 本报告 §6.2 的数字就是从这两个文件里取的，**不是手抄**。
+
+**已不可恢复的部分（如实列出）**：第 1–5 轮的同名运行目录与本轮之前的 `logs/ab_*_*.log`。
+**仍然可复核的部分**：每轮当时的 `metrics.json` 快照被保留成了
+`results/ab_table_round1_badroute.csv`、`round2_partial`、`round3_zeroedges`、
+`round4_slow`、`round5_slow_binary`（含 `git_sha` 列），以及 `results/lambda_sweep.csv`。
+**最后一次完整轮（4 臂 × 3 次重复，12 个目录）全部在盘上**，是本报告结论的唯一依据。
+
 ### 6.2 结果表（4 臂 × **3 次重复**，12/12 全部到达）
 
 同一场景 `visual`、同一固定起终点（`results/fixed_goals_ab.csv`：航点 `(2.20,-0.30)`、t=20 s，
@@ -346,7 +371,11 @@ localroot/.../libteb_local_planner.so.deb-orig    EdgeVisualObservability|EdgeCo
   99.6% 的采样为 OK。发布出来的 `/orb_slam2_*/info/state` 在 4/5 之间抖动，是**发布层现象**，
   已从"跟踪丢失时长"里剔除（见 §6.6 口径说明）。
 
-逐次明细（`results/ab_table.csv`，12 行全保留，无一行被删）：
+> 下表的机器生成版本：**`results/ab_table_generated.md` / `.csv`**（由
+> `python3 tools/ab_summary.py --md --agg` 从 12 个 `metrics.json` 生成）。
+> 手写表格仅作阅读用，任何复核请以生成文件为准。
+
+逐次明细（`results/ab_table_generated.csv`，12 行；原始行亦在 `results/ab_table.csv`）：
 
 | task | ATE m | 路径 m | 覆盖 m² | TEB ms |
 |---|---|---|---|---|

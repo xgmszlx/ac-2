@@ -64,14 +64,41 @@ esac
 ls -l "$LINE_ROOT/ws/devel/lib/libteb_local_planner.so" 2>/dev/null \
     && echo "[run_task] teb lib     : $(ldd "$LINE_ROOT/ws/devel/lib/libteb_local_planner.so" | grep -c '=>') deps resolved"
 
-RUN_DIR="$LINE_ROOT/results/runs/$TASK_ID"
-mkdir -p "$RUN_DIR"
-
 # ---------------------------------------------------------------------------
-# Parameter snapshot + git SHA for this run (task book phase 4.3). Written before
-# anything starts so a crashed run still carries its provenance.
+# Parameter snapshot + git SHA for this run (task book phase 4.3).
 # ---------------------------------------------------------------------------
 GIT_SHA=$(git -C "$LINE_ROOT" rev-parse HEAD 2>/dev/null || echo unknown)
+GIT_DIRTY=$(git -C "$LINE_ROOT" status --porcelain 2>/dev/null | head -1 | wc -l)
+
+# ---------------------------------------------------------------------------
+# Unique run id (2026-11-25, after a real accident): two rounds reused the same
+# task_id, so the second run *overwrote* the first directory and its logs, and the
+# result table could no longer be traced back to a run. Every run now carries a short
+# hash of its own configuration; reusing a directory is a hard error, never an overwrite.
+#   <task>_<confighash>   confighash = sha1(sha, weights, dt_vis, switches, scenario,
+#                                         budget, seed, route file)[:7]
+# ---------------------------------------------------------------------------
+CONF_HASH=$(python3 - "$GIT_SHA" "${GIT_DIRTY}" "$EXTRA_ARGS" "$SCENARIO" "$BUDGET" "$SEED" \
+                        "${USE_DYNAMIC_MASK:-true}" "${WITH_DECISION_MAKER:-true}" \
+                        "${FIXED_GOALS:-false}" "${FIXED_GOALS_CSV:-}" <<'PYHASH'
+import hashlib, sys
+sha, dirty, extra, scen, budget, seed, mask, dm, fixed, fcsv = sys.argv[1:11]
+h = hashlib.sha1()
+for part in (sha, dirty, scen, budget, seed, mask, dm, fixed, fcsv, extra):
+    h.update(str(part).encode())
+    h.update(b'|')
+print(h.hexdigest()[:7])
+PYHASH
+)
+TASK_ID="${TASK_ID}_${CONF_HASH}"
+RUN_DIR="$LINE_ROOT/results/runs/$TASK_ID"
+if [ -e "$RUN_DIR/metrics.json" ] || [ -e "$RUN_DIR/clock.csv" ]; then
+    echo "[run_task] FATAL: $RUN_DIR already holds a completed run; refusing to overwrite."
+    echo "[run_task]        Re-runs must get a new run id (the config hash is in the name)."
+    exit 3
+fi
+mkdir -p "$RUN_DIR"
+echo "[run_task] run id    : $TASK_ID (confighash=$CONF_HASH)"
 GIT_BRANCH=$(git -C "$LINE_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)
 TEB_SRC=$(rospack find teb_local_planner 2>/dev/null || echo MISSING)
 TEB_LIB="$LINE_ROOT/ws/devel/lib/libteb_local_planner.so"
@@ -80,13 +107,15 @@ if [ -f "$TEB_LIB" ]; then
 else
     TEB_INFO="absent"
 fi
+TEB_LDD=$(ldd "$TEB_LIB" 2>/dev/null | grep -E 'libteb_local_planner|libvisual_query' | tr '\n' ';')
+ROUTE_HASH=$(sha1sum "${FIXED_GOALS_CSV:-/dev/null}" 2>/dev/null | cut -c1-12)
 python3 - "$RUN_DIR/meta.json" "$TASK_ID" "$STRATEGY" "$SCENARIO" "$BUDGET" "$SEED" \
-         "$GIT_SHA" "$GIT_BRANCH" "$TEB_SRC" "$TEB_INFO" \
+         "$GIT_SHA" "$GIT_BRANCH" "$GIT_DIRTY" "$TEB_SRC" "$TEB_INFO" "$TEB_LDD" "$ROUTE_HASH" \
          "${USE_DYNAMIC_MASK:-true}" "${WITH_DECISION_MAKER:-true}" \
          "${FIXED_GOALS:-false}" "${FIXED_GOALS_CSV:-}" "$EXTRA_ARGS" <<'PYMETA'
 import json, sys, time
-(out, task, strategy, scenario, budget, seed, sha, branch, teb_src, teb_info,
- mask, dm, fixed, fixed_csv, extra) = sys.argv[1:16]
+(out, task, strategy, scenario, budget, seed, sha, branch, dirty, teb_src, teb_info,
+ teb_ldd, route_hash, mask, dm, fixed, fixed_csv, extra) = sys.argv[1:19]
 def grab(name):
     for tok in extra.split():
         tok = tok.strip('"')
@@ -96,8 +125,11 @@ def grab(name):
 doc = dict(
     task=task, strategy=strategy, scenario=scenario, budget_sim_s=float(budget), seed=int(seed),
     git_sha=sha, git_branch=branch,
+    git_dirty=(int(dirty) > 0),
     teb_package=teb_src, teb_library=teb_info,
     teb_library_is_workspace_source=teb_src.startswith('/home/wcqw/explorb_line_20261121/ws/src/'),
+    teb_library_ldd=teb_ldd,
+    route_file=fixed_csv, route_file_sha1_12=route_hash,
     use_dynamic_mask=(mask == 'true'),
     with_decision_maker=(dm == 'true'),
     with_fixed_goals=(fixed == 'true'), fixed_goals_csv=fixed_csv,

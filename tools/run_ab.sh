@@ -46,7 +46,10 @@ TABLE=$LINE_ROOT/results/ab_table.csv
 GIT_SHA=$(git -C "$LINE_ROOT" rev-parse --short HEAD)
 BRANCH=$(git -C "$LINE_ROOT" rev-parse --abbrev-ref HEAD)
 
-[ -f "$TABLE" ] || echo "task,arm,scenario,repeat,git_sha,branch,budget_sim_s,success,n_goal,n_cmd,path_len_m,robot_moved_m,coverage_m2,ate_rmse_m,lost_s,teb_norm,tracking_ok_pct,note" > "$TABLE"
+# Append-only. Never truncate and never move this file: an earlier round archived it with
+# `mv`, which is exactly how the main window lost the traceability of rounds 2-5. Rows are
+# written once per run; a duplicate task id is a hard error.
+[ -f "$TABLE" ] || echo "task,arm,scenario,repeat,git_sha,branch,budget_sim_s,success,n_goal,n_cmd,path_len_m,robot_moved_m,coverage_m2,ate_rmse_m,lost_internal_s,teb_norm,rpe_rmse_m,reached_frac,note" > "$TABLE"
 
 arm_params() {
     case "$1" in
@@ -81,6 +84,11 @@ for arm in "${ARMS[@]}"; do
             continue
         fi
         # offline metrics (GT only here, never online)
+        # keep the source-TEB gate evidence inside the run directory (machine proof that
+        # this episode ran on the workspace build, per the orchestrator's P0)
+        if [ -f "$LINE_ROOT/logs/gate_preflight_gate.log" ] && [ -d "$LINE_ROOT/results/runs/$TASK" ]; then
+            cp "$LINE_ROOT/logs/gate_preflight_gate.log" "$LINE_ROOT/results/runs/$TASK/gate_source_teb.log" 2>/dev/null
+        fi
         if [ -d "$LINE_ROOT/results/runs/$TASK" ]; then
             python3 "$LINE_ROOT/tools/eval_run.py" "$LINE_ROOT/results/runs/$TASK" >/dev/null 2>&1
             python3 - "$TASK" "$arm" "$SCENARIO" "$rep" "$GIT_SHA" "$BRANCH" "$BUDGET" "$TABLE" "$LINE_ROOT/results/runs/$TASK" <<'PY'
@@ -103,11 +111,21 @@ if os.path.exists(simlog):
 row = [task, arm, scen, rep, sha, branch, budget,
        m.get('success'), m.get('n_goal'), m.get('n_cmd'), m.get('path_len_m'),
        m.get('robot_moved_m'), m.get('coverage_m2'), m.get('ate_rmse_m'),
-       m.get('lost_s'), teb_norm, m.get('tracking_ok_pct'),
+       m.get('lost_internal_s'), teb_norm, m.get('rpe_rmse_m'), m.get('reached_frac'),
        '' if m else 'no metrics.json']
-with open(table, 'a', newline='') as f:
-    csv.writer(f).writerow(row)
-print('[ab] row:', row)
+# duplicate guard: the same task id may appear exactly once
+existing = set()
+if os.path.exists(table):
+    with open(table) as f:
+        for r in csv.DictReader(f):
+            existing.add(r.get('task'))
+print('[ab] table=%s existing_rows=%d' % (os.path.basename(table), len(existing)))
+if task in existing:
+    print('[ab] WARNING: %s is already in the table; appending a second row is refused.' % task)
+else:
+    with open(table, 'a', newline='') as f:
+        csv.writer(f).writerow(row)
+    print('[ab] row:', row)
 PY
         fi
     done
