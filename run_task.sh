@@ -108,14 +108,15 @@ else
     TEB_INFO="absent"
 fi
 TEB_LDD=$(ldd "$TEB_LIB" 2>/dev/null | grep -E 'libteb_local_planner|libvisual_query' | tr '\n' ';')
+TEB_REAL=$(readlink -f "$TEB_LIB" 2>/dev/null || echo "$TEB_LIB")
 ROUTE_HASH=$(sha1sum "${FIXED_GOALS_CSV:-/dev/null}" 2>/dev/null | cut -c1-12)
 python3 - "$RUN_DIR/meta.json" "$TASK_ID" "$STRATEGY" "$SCENARIO" "$BUDGET" "$SEED" \
-         "$GIT_SHA" "$GIT_BRANCH" "$GIT_DIRTY" "$TEB_SRC" "$TEB_INFO" "$TEB_LDD" "$ROUTE_HASH" \
+         "$GIT_SHA" "$GIT_BRANCH" "$GIT_DIRTY" "$TEB_SRC" "$TEB_INFO" "$TEB_REAL" "$TEB_LDD" "$ROUTE_HASH" \
          "${USE_DYNAMIC_MASK:-true}" "${WITH_DECISION_MAKER:-true}" \
          "${FIXED_GOALS:-false}" "${FIXED_GOALS_CSV:-}" "$EXTRA_ARGS" <<'PYMETA'
 import json, sys, time
 (out, task, strategy, scenario, budget, seed, sha, branch, dirty, teb_src, teb_info,
- teb_ldd, route_hash, mask, dm, fixed, fixed_csv, extra) = sys.argv[1:19]
+ teb_real, teb_ldd, route_hash, mask, dm, fixed, fixed_csv, extra) = sys.argv[1:20]
 def grab(name):
     for tok in extra.split():
         tok = tok.strip('"')
@@ -126,7 +127,7 @@ doc = dict(
     task=task, strategy=strategy, scenario=scenario, budget_sim_s=float(budget), seed=int(seed),
     git_sha=sha, git_branch=branch,
     git_dirty=(int(dirty) > 0),
-    teb_package=teb_src, teb_library=teb_info,
+    teb_package=teb_src, teb_library=teb_info, teb_library_path=teb_real,
     teb_library_is_workspace_source=teb_src.startswith('/home/wcqw/explorb_line_20261121/ws/src/'),
     teb_library_ldd=teb_ldd,
     route_file=fixed_csv, route_file_sha1_12=route_hash,
