@@ -1,0 +1,5 @@
+task,arm,git_sha,reached,path_m,ate_m,rpe,lost_internal_s,teb_norm,note
+ab_B0_visual_r4_911b20b,B0,3e3e824,0/0,0,nan,nan,,,n_goal=0 (run aborted early)
+ab_B1_visual_r4_412f1c9,B1,3e3e824,1/1,2.035,0.0201,0.0409,,,
+ab_Ours_no_cov_visual_r4_49bfe7b,Ours,3e3e824,1/1,2.024,0.0239,0.04,,,
+ab_Ours_visual_r4_43417b7,Ours,3e3e824,1/1,2.026,0.0072,0.0426,,,
