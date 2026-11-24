@@ -706,7 +706,7 @@ bash tools/run_ab.sh static 240 1
 
 ---
 
-## 8 附录：为什么可以相信"跑的是源码 TEB"（三重自证）
+## 8 附录：为什么可以相信"跑的是源码 TEB，而且两条边真的在 g2o 图里"（四重自证）
 
 这类实验最容易被质疑的一点是"你改了源码但运行时加载的是 deb"。本线用三条互相独立的机械证据
 堵住这个口子，并且都在**每次运行的日志里**，不需要事后回忆：
@@ -725,6 +725,23 @@ bash tools/run_ab.sh static 240 1
 **外加每臂自述**：`[visual_query] enabled (lambda_g=…, lambda_c=…, dt_vis=…)` /
 `[visual_query] disabled (both visual weights are 0: author graph)`——这四个字符串**只存在于源码构建**，
 deb 版一个都没有；所以"B0 臂 = 作者图"和"B1/Ours 臂 = 带边"这两件事，都是运行时可验证的，而不是靠参数推断。
+
+4. **边计数层（最终判据）**：`AddEdges*` 每轮把实际加进图的边数打印成
+   `[visual-constraint] lambda_g=… lambda_c=… dt_vis=… vertices=… visual_edges=…
+   covis_edges=… graph_edges=…`。这是"边真的进了 g2o"的直接证据，而不是"插件被加载"的间接推断。
+   实测：`Ours` 臂 `vertices=15 visual_edges=15 covis_edges=7 graph_edges=97`、
+   `B1` 臂 `vertices=6 visual_edges=6 covis_edges=2`、`Ours_no_cov` `visual_edges=7 covis_edges=0`、
+   `B0` 臂不打印该行（权重为 0，边根本不被创建，日志只写 `[visual_query] disabled (author graph)`）。
+   **编排窗口独立复核到的一行**（同一证据，不同的人、不同的时间）：
+   `vertices=18 visual_edges=18 covis_edges=16 graph_edges=129`（B1）。
+
+> **一条必须记下来的坑**：最初这三行一条都不打印——因为我把输入话题写成了**相对名**
+> `orb_slam2_rgbd/map_points`，而 `TebLocalPlannerROS` 拿到的是**私有** NodeHandle，
+> 于是解析成 `/robot_1/move_base_node/TebLocalPlannerROS/orb_slam2_rgbd/map_points`，
+> 订阅永远收不到 → 查询永不 ready → `AddEdges*` 直接 `return`。**表面上插件加载成功、
+> 参数也读到了，但两条边一条都没进图**——如果不打印边计数，这一整轮 A/B 就是一个"方法无效"的假阴性。
+> 修复：改绝对名 + 打印 `ros::names::resolve()` 后的真实话题名 + 未 ready 时 throttled WARN 说明原因。
+> 这正是为什么第 4 条证据（边计数）不能省。
 
 **编排窗口独立复核到的一行（同一条证据，不同的人不同的时间）**：
 ```
