@@ -5,7 +5,7 @@ LR=$LINE_ROOT/localroot
 source /opt/ros/noetic/setup.bash
 export ROS_PACKAGE_PATH=$LR/opt/ros/noetic/share:$ROS_PACKAGE_PATH
 export LD_LIBRARY_PATH=$LR/opt/ros/noetic/lib:$LR/usr/lib/x86_64-linux-gnu:$LR/usr/lib/python3/dist-packages/llvmlite/binding:${LD_LIBRARY_PATH}
-export PYTHONPATH=$LR/pysite:$LR/usr/lib/python3/dist-packages:${PYTHONPATH}
+export PYTHONPATH=$LR/pysite:$LR/usr/lib/python3/dist-packages:$LINE_ROOT/shims:${PYTHONPATH}
 export CMAKE_PREFIX_PATH=$LR/opt/ros/noetic:${CMAKE_PREFIX_PATH}
 export PKG_CONFIG_PATH=$LR/opt/ros/noetic/lib/pkgconfig:$LR/usr/lib/x86_64-linux-gnu/pkgconfig:${PKG_CONFIG_PATH}
 export PATH=$LR/opt/ros/noetic/bin:$PATH

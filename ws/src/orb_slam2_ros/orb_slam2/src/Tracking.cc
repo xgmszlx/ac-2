@@ -212,6 +212,35 @@ cv::Mat Tracking::GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, const d
 
     mCurrentFrame = Frame(mImGray,imDepth,timestamp,mpORBextractorLeft,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
 
+    // ---------------------------------------------------------------------
+    // observation-only instrumentation added by the localization line: it
+    // prints nothing that the algorithm consumes and changes no state. It exists
+    // because "Not initialized" has three very different causes (no keypoints,
+    // no valid depth, or tracking already running) and the tracker itself never
+    // says which one is happening.
+    // ---------------------------------------------------------------------
+    {
+        static int nInstr = 0;
+        nInstr++;
+        if (nInstr <= 5 || (nInstr % 60) == 0)
+        {
+            int nValidDepth = 0;
+            for (size_t i = 0; i < mCurrentFrame.mvDepth.size(); i++)
+                if (mCurrentFrame.mvDepth[i] > 0) nValidDepth++;
+            int nPixValid = 0;
+            for (int r = 0; r < imDepth.rows; r += 8)
+                for (int c = 0; c < imDepth.cols; c += 8)
+                    if (imDepth.at<float>(r, c) > 0) nPixValid++;
+            std::cout << "[obs-instr] frame=" << nInstr
+                      << " N=" << mCurrentFrame.N
+                      << " valid_depth_kp=" << nValidDepth
+                      << " depth_px_sampled_valid=" << nPixValid
+                      << " state=" << mState
+                      << " gray_mean=" << cv::mean(mImGray)[0]
+                      << std::endl;
+        }
+    }
+
     Track();
 
     return mCurrentFrame.mTcw.clone();

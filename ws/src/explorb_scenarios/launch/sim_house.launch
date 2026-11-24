@@ -23,6 +23,7 @@
     <arg name="with_slam"  default="true"/>
     <arg name="robot_urdf" default="$(find explorb_scenarios)/urdf/explorb_robot.urdf.xacro"/>
     <arg name="init_pose"  default="-x 0.0 -y 0.0 -z 0.02"/>
+    <arg name="spawn"      default="true"/>
 
     <param name="use_sim_time" value="true"/>
 
@@ -38,9 +39,13 @@
 
     <param name="robot_description" command="$(find xacro)/xacro '$(arg robot_urdf)'"/>
 
-    <node pkg="gazebo_ros" type="spawn_model" name="spawn_robot"
-          args="$(arg init_pose) -urdf -param robot_description -model $(arg robot_ns)"
-          respawn="false" output="screen"/>
+    <!-- Spawning is optional: run_task.sh prefers to spawn from outside so it can
+         wait for the world to be fully up and retry (see the note there). -->
+    <group if="$(arg spawn)">
+        <node pkg="gazebo_ros" type="spawn_model" name="spawn_robot"
+              args="$(arg init_pose) -urdf -param robot_description -model $(arg robot_ns)"
+              respawn="false" output="screen"/>
+    </group>
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
         <param name="publish_frequency" type="double" value="100.0"/>

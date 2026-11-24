@@ -1,0 +1,53 @@
+<!-- ExplORB-SLAM localization-observability line: the agent half of a run.
+
+   Started *after* the simulation is up (see run_task.sh). Launching the frontier
+   detectors, the decision maker and the recorders in the same roslaunch as Gazebo
+   makes gzserver die with a libtinyxml segfault right after the robot is spawned on
+   this machine, so the two halves are sequenced: simulation first, agent second.
+-->
+<launch>
+
+    <arg name="task_id"     default="task"/>
+    <arg name="strategy"    default="native"/>
+    <arg name="seed"        default="0"/>
+    <arg name="scenario"    default="static"/>
+    <arg name="budget_sim_s" default="900"/>
+    <arg name="arm_after_sim_s" default="5"/>
+    <arg name="robot_ns"    default="robot_1"/>
+    <arg name="with_recorder" default="true"/>
+    <arg name="with_actors" default="true"/>
+    <arg name="run_dir"     default="$(env HOME)/explorb_line_20261121/results/runs/$(arg task_id)"/>
+
+    <include file="$(find explorb_scenarios)/launch/agent.launch">
+        <arg name="robot_namespace" value="$(arg robot_ns)"/>
+        <arg name="strategy"        value="$(arg strategy)"/>
+        <arg name="strategy_seed"   value="$(arg seed)"/>
+        <arg name="run_dir"         value="$(arg run_dir)"/>
+        <arg name="exploring_time"  value="9000"/>
+    </include>
+
+    <node pkg="explorb_scenarios" type="budget_guard.py" name="budget_guard" output="screen">
+        <param name="budget_sim_s"    value="$(arg budget_sim_s)"/>
+        <param name="arm_after_sim_s" value="$(arg arm_after_sim_s)"/>
+        <param name="run_dir"         value="$(arg run_dir)"/>
+    </node>
+
+    <group if="$(arg with_recorder)">
+        <node pkg="explorb_scenarios" type="run_recorder.py" name="run_recorder" output="screen">
+            <param name="run_dir"     value="$(arg run_dir)"/>
+            <param name="robot_model" value="$(arg robot_ns)"/>
+            <param name="robot_ns"    value="$(arg robot_ns)"/>
+            <param name="camera_type" value="rgbd"/>
+        </node>
+    </group>
+
+    <group if="$(arg with_actors)">
+        <node pkg="explorb_scenarios" type="scenario_driver.py" name="scenario_driver" output="screen">
+            <param name="run_dir"     value="$(arg run_dir)"/>
+            <param name="scenario"    value="$(arg scenario)"/>
+            <param name="seed"        value="$(arg seed)"/>
+            <param name="robot_model" value="$(arg robot_ns)"/>
+        </node>
+    </group>
+
+</launch>

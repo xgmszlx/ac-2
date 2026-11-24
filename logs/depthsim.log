@@ -1,0 +1,6 @@
+../src/intel/isl/isl.c:2105: FINISHME: ../src/intel/isl/isl.c:isl_surf_supports_ccs: CCS for 3D textures is disabled, but a workaround is available.
+[ERROR] [1795483350.507124, 0.001000]: Spawn service failed. Exiting.
+[INFO] [1795483348.668842, 0.000000]: Loading model XML from ros parameter robot_description
+[INFO] [1795483348.671380, 0.000000]: Waiting for service /gazebo/spawn_urdf_model
+[INFO] [1795483348.975916, 0.000000]: Calling service /gazebo/spawn_urdf_model
+Service call failed: transport error completing service call: unable to receive data from sender, check sender's logs for details
