@@ -100,6 +100,7 @@ struct QueryParams {
   // switches (ablations / weight-zero check)
   bool use_dynamic = true;
   bool use_static_occlusion = true;
+  int  max_snapshot = 100;   // points kept in the local snapshot (task book: 80-150)
   double lambda_g = 1.0;  // scales the whole single-pose information term
   double lambda_c = 1.0;  // scales the whole co-visibility term
 };

@@ -10,6 +10,11 @@ TebLocalPlannerROS:
 
   # Trajectory
   teb_autosize: True
+  # platform: hard cap on the band length. With teb_autosize alone the band grew to the
+  # 400-pose default whenever the robot made no progress, and the number of
+  # visual-constraint edges grows with it -- a positive feedback that pushed the solve
+  # time from 74 ms to 1.8 s. Same value for every arm.
+  max_samples: 30
   dt_ref: 0.3
   dt_hysteresis: 0.1
   global_plan_overwrite_orientation: True

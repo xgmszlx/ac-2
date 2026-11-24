@@ -23,6 +23,7 @@ VisualQueryAdapter::VisualQueryAdapter()
   params_.range_max = 3.0;     // m, same order as the SLAM frontend's usable range
   params_.lambda_g = 1.0;
   params_.lambda_c = 1.0;
+  params_.max_snapshot = 100;   // 80-150 representative points, per the task book
 }
 
 VisualQueryAdapter::~VisualQueryAdapter() = default;
@@ -41,6 +42,17 @@ void VisualQueryAdapter::initialize(ros::NodeHandle& nh, const std::string& map_
   bool use_dynamic = true;
   nh.param("visual_use_dynamic", use_dynamic, use_dynamic);
   params_.use_dynamic = use_dynamic;
+
+  // The static-occlusion term is measured (not assumed) to be the dominant cost of a
+  // query: 16 trilinear density samples per map point, per numeric-Jacobian evaluation.
+  // It also duplicates information TEB already has from the costmap, so it is OFF by
+  // default and can be switched on for the diagnostic runs.
+  bool use_static = false;
+  nh.param("visual_use_static_occlusion", use_static, use_static);
+  params_.use_static_occlusion = use_static;
+  ROS_INFO_STREAM("[visual_query] static-occlusion term " << (use_static ? "ON" : "OFF")
+                  << ", dynamic-occlusion term " << (use_dynamic ? "ON" : "OFF")
+                  << ", snapshot " << params_.max_snapshot << " points");
   if (use_dynamic)
     sub_objs_ = nh.subscribe(ob, 2, &VisualQueryAdapter::objectsCallback, this);
   else
@@ -163,7 +175,8 @@ void VisualQueryAdapter::refresh()
     origin = raw_points_.front().p;
   }
   std::vector<visual_query::MapPoint> snap =
-      visual_query::LocalVisualQuery::downsample(raw_points_, origin, 120, 0.35);
+      visual_query::LocalVisualQuery::downsample(raw_points_, origin,
+                                                 static_cast<std::size_t>(params_.max_snapshot), 0.35);
   query_.setSnapshot(snap);
   snapshot_size_ = snap.size();
   query_.setDynamicObjects(objects_);
