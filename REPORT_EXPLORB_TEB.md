@@ -417,23 +417,6 @@ localroot/.../libteb_local_planner.so.deb-orig    EdgeVisualObservability|EdgeCo
 > but are excluded from these means.
 
 
-原始行亦在 `results/ab_table.csv`（历史表）与 `results/ab_table_v2.csv`（新口径追加表）。
-
-**per-arm 均值（同样由脚本生成；`goals=0` 的失败 episode 保留在上表但不进均值）**
-
-## per-arm mean
-
-| arm | n | RPE m | ATE m | path m | coverage m2 | lost inner s | TEB ms |
-|---|---|---|---|---|---|---|---|
-| B0 | 3 | 0.0403 | 0.0456 | 2.056 | 8.27 | 0.00 | 74.2 |
-| B1 | 4 | 0.0435 | 0.0215 | 2.038 | 6.48 | 0.00 | 148.3 |
-| Ours | 4 | 0.0432 | 0.0144 | 2.028 | 6.36 | 0.00 | 158.7 |
-| Ours_no_cov | 4 | 0.0414 | 0.0283 | 2.036 | 7.83 | 0.00 | 125.8 |
-
-> Runs whose `goals` are 0 (failed episodes) stay in the per-run table above
-> but are excluded from these means.
-
-
 | task | ATE m | 路径 m | 覆盖 m² | TEB ms |
 |---|---|---|---|---|
 | ab_B0_visual_r1/r2/r3 | 0.0493 / 0.0393 / 0.0483 | 2.067 / 2.038 / 2.063 | 8.58 / 7.24 / 9.00 | 74.7 / 76.7 / 71.3 |
