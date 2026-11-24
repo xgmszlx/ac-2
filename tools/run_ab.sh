@@ -57,7 +57,7 @@ for arm in "${ARMS[@]}"; do
         export FIXED_GOALS_CSV="$GOALS_CSV"
         export WITH_DECISION_MAKER=false
         export USE_DYNAMIC_MASK=true
-        heavy --line A --note "ab-$arm-r$rep" --max-wait 1200 --timeout 3000 -- \
+        heavy --line A --note "ab-$arm-r$rep" --max-wait 2700 --timeout 3600 -- \
             "$LINE_ROOT/run_task.sh" native "$SCENARIO" "$TASK" "$BUDGET" 0 \
             "lambda_g:=$LG" "lambda_c:=$LC" "visual_use_dynamic:=$DYN"
         RC=$?

@@ -86,11 +86,21 @@ class FixedGoalDispatcher(object):
             rospy.loginfo('goto_goal: action server up')
 
     def run(self):
+        # The schedule is *relative to this node's start*, not absolute simulated time.
+        # The simulation is already ~1 min old when the agent half starts (stage 1 boots
+        # Gazebo, spawns the robot and waits for a visually rich frame), so absolute
+        # times would fire several goals at once and cancel each other. Relative timing
+        # makes every arm see the identical goal sequence.
+        t0 = rospy.get_time()
+        relative = bool(rospy.get_param('~relative', True))
+        rospy.loginfo('goto_goal: t0=%.2f s, %s schedule' % (t0, 'relative' if relative else 'absolute'))
+
         for (t_sim, x, y, yaw) in self.goals:
             # wait for the simulated clock to reach the scheduled time
             while not rospy.is_shutdown():
                 now = rospy.get_time()
-                if now >= t_sim:
+                target = (t0 + t_sim) if relative else t_sim
+                if now >= target:
                     break
                 rospy.sleep(0.2)
             if rospy.is_shutdown():
