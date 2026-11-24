@@ -59,7 +59,23 @@ for pat in "${PATTERNS[@]}"; do
     done
 done
 sleep 1
-remaining=$(pgrep -cf "$LINE_ROOT/logs/ros/" 2>/dev/null || true)
-echo "cleanup: killed=$killed remaining=$remaining gzserver=$(pgrep -cf 'gzserver -e ode' 2>/dev/null || echo 0)"
+# Count only *real* leftovers: exclude this script's own ancestry, otherwise
+# the pattern string inside the invoking shell's command line is counted as
+# a "remaining" process (a cosmetic false alarm seen twice today).
+count_real() {
+    local pat="$1" n=0 pid skip a
+    for pid in $(pgrep -f "$pat" 2>/dev/null); do
+        skip=0
+        for a in "${ANC[@]}"; do
+            [ "$pid" = "$a" ] && skip=1 && break
+        done
+        [ "$skip" = "1" ] && continue
+        n=$((n + 1))
+    done
+    echo "$n"
+}
+remaining=$(count_real "$LINE_ROOT/logs/ros/")
+gz=$(count_real "gzserver -e ode")
+echo "cleanup: killed=$killed remaining=$remaining gzserver=$gz"
 # a non-zero exit here is what run_task.sh turns into "the machine is dirty, stop"
 [ "${remaining:-0}" = "0" ]
