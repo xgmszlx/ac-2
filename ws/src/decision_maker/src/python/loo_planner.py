@@ -13,13 +13,17 @@ Objective per candidate frontier ``c``::
 
     W(c) = sum_k  g(deficit_k) * dtau_k        (bounded per pose and in total)
 
-    deficit_k = clip( log( ref / (strength_k * (1 - p_occ_k)) ), 0, cap )
+    deficit_k = clip( log( ref / (strength_k * w_rel_k) ), 0, cap )
                 * (1 - rho_k)^gamma
 
     strength_k : weakest normalised marginal std of the pose's 6x6 information
                  matrix (translation and rotation on one scale)
-    p_occ_k    : upper-confidence occlusion probability predicted for the pose's
-                 arrival time from *past* frontend observations
+    w_rel_k    : measured observation reliability of the pose (lower confidence
+                 bound), i.e. the fraction of the structurally visible map points the
+                 frontend really matched at comparable viewpoints. It discounts the
+                 strength that the pose can be expected to keep. It is *not* a dynamic
+                 occlusion probability: see loo_occlusion.py for why that attribution
+                 is not supported by the measurement.
     rho_k      : exploration credit = unknown-cell fraction in the pose's view
                  wedge (new-feature prior, so unmapped space is not punished)
     dtau_k     : exposure time between consecutive samples (duration matters:
@@ -36,7 +40,7 @@ import numpy as np
 import rospy
 
 from loo_observability import (CameraModel, ObservabilityEstimator, PathSampler, _yaw_from_quat)
-from loo_occlusion import OcclusionField, ExplorationCredit
+from loo_occlusion import ReliabilityField, ExplorationCredit
 
 
 DEF_SCORE = dict(
@@ -61,7 +65,7 @@ class LOOScorer(object):
         self.cam = CameraModel(m.fx, m.fy, m.cx, m.cy, m.imCols, m.imRows,
                                m.rot_camera_base.as_dcm(), m.t_camera_base)
         self.obs = ObservabilityEstimator(params)
-        self.occ = OcclusionField(params)
+        self.occ = ReliabilityField(params)
         self.credit = ExplorationCredit(
             max_range=self.obs.p['max_visual_range'],
             half_fov_deg=params.get('half_fov_deg', 32.0) if params else 32.0)
@@ -131,7 +135,7 @@ class LOOScorer(object):
     def score(self, plan, xy_robot, t_now, grid_data, grid_info):
         """Score one candidate frontier from its executable plan."""
         out = dict(W=0.0, T=0.0, n_samples=0, samples=[],
-                   mean_deficit=0.0, mean_pocc=0.0, mean_credit=0.0)
+                   mean_deficit=0.0, mean_wrel=1.0, mean_credit=0.0)
         if not plan:
             return out
 
@@ -159,11 +163,15 @@ class LOOScorer(object):
             strength = ev['strength']
 
             if self.p['use_temporal']:
-                p_occ, p_mean, _sig = self.occ.predict(xy[i], yaw[i], t_now, tau[i])
+                # lower confidence bound on the measured reliability: uncertainty must
+                # raise the cost, never lower it
+                w_rel, _w_mean, _sig = self.occ.predict_reliability(xy[i], yaw[i], t_now, tau[i])
+                if w_rel <= 0.0 and len(self.occ) == 0:
+                    w_rel = 1.0          # no evidence yet: assume the map is usable
             else:
-                p_occ, p_mean = 0.0, 0.0
+                w_rel = 1.0              # loo_notemporal ablation: no reliability discount
 
-            strength_eff = strength * max(0.0, 1.0 - p_occ)
+            strength_eff = strength * max(0.0, min(1.0, w_rel))
 
             rho = 0.0
             if self.p['use_credit'] and grid_data is not None and len(grid_data) > 0:
@@ -172,11 +180,11 @@ class LOOScorer(object):
             d = self.obs.deficit(strength_eff, rho, ref=ref)
             W += d * dtau[i]
             samples.append((float(xy[i, 0]), float(xy[i, 1]), float(yaw[i]), float(tau[i]),
-                            float(strength), float(p_occ), float(d), float(dtau[i]), int(ev['n_vis'])))
+                            float(strength), float(w_rel), float(d), float(dtau[i]), int(ev['n_vis'])))
 
         out.update(W=float(W), T=float(tau[-1]), n_samples=n, samples=samples,
                    mean_deficit=float(np.mean([s[6] for s in samples])),
-                   mean_pocc=float(np.mean([s[5] for s in samples])),
+                   mean_wrel=float(np.mean([s[5] for s in samples])),
                    mean_credit=float(np.mean([s[7] for s in samples])))
         return out
 
@@ -209,7 +217,7 @@ class DecisionAudit(object):
 
     COLS = ['t', 'cycle', 'strategy', 'ip', 'chosen', 'x', 'y',
             'info_gain', 'travel_s', 'W_deficit', 'score',
-            'mean_deficit', 'mean_pocc', 'mean_credit', 'n_samples',
+            'mean_deficit', 'mean_wrel', 'mean_credit', 'n_samples',
             'ref_strength', 'occ_records', 'planner_ms']
 
     def __init__(self, run_dir):

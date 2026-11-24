@@ -1,29 +1,43 @@
 #!/usr/bin/env python3
-"""Short-horizon dynamic-occlusion model for the ExplORB-SLAM line.
+"""Measured *observation reliability* field for the ExplORB-SLAM line.
 
-Measurement, not simulation truth
+Semantics corrected on 2026-11-25 (task book, phase 2.1)
+-------------------------------------------------------
+The quantity that the frontend actually measures is
+
+    w_rel(k) = n_real(k) / n_exp(k)
+
+  n_real(k)  points the frontend really matched from keyframe pose k
+             (= |{p : k in observations(p)}|, straight from point_list)
+  n_exp(k)   points the current map says are geometrically visible from the same
+             pose (projection + range + image bounds + depth sign)
+
+This ratio is an **empirical observation reliability**: how much of the structure
+that geometry says should be in view the tracker actually used. Its shortfall has
+many causes -- dynamic structure in front of the background, motion blur, low
+texture, frontend gating -- and the frontend alone cannot attribute the share of
+each. It was therefore *wrong* (previous version of this file) to call
+``1 - w_rel`` a dynamic occlusion probability and feed it to the planner as
+``p_dyn``: that asserts a cause the measurement does not identify, and it also
+mixes an empirical reliability (which the map can never exceed) with a physical
+occlusion probability (which the future can change).
+
+What each model is allowed to say
 ---------------------------------
-ORB-SLAM's published map already contains, for every map point, the set of
-keyframes that actually observe it. Two independent quantities are therefore
-available for any keyframe pose ``k`` *at the moment it is published*:
+    w_rel(k)     *measured* reliability of a viewpoint, dimensionless in [0, 1],
+                 viewpoint-conditioned by construction (it is computed at a pose).
+                 Used as a discount on the constraint strength the planner expects:
+                     strength_eff = strength(z) * w_rel
+    p_dyn(t)     *predicted* dynamic-occlusion probability at a future time, from
+                 tracked dynamic objects with ego-motion compensation and constant
+                 velocity extrapolation. It is NOT derived from w_rel; see the
+                 C++ query module (visual_query) in phase 2.3.
 
-    n_real(k)  points the frontend really matched from that pose
-               (= |{p : k in observations(p)}|, straight from point_list)
-    n_exp(k)   points that the current map says are geometrically visible from
-               that same pose (projection + range + image bounds + depth sign)
+The planner consumes the lower confidence bound of w_rel, because this module's
+uncertainty must push the cost up, not down.
 
-Their ratio is a *measured* visibility ratio: structure that the map contains,
-that the geometry says should be in view, but that the tracker did not match.
-Causes are exactly the ones this line is about -- dynamic structure passing in
-front of the background, blur, low texture. It is viewpoint-conditioned by
-construction, so evaluating it at the *future* pose of the plan (instead of at
-the current pose) is the ego-motion compensation.
-
-The field is then a kernel smoother over recent keyframes in (x, y, yaw, time)
-with a Beta posterior for the occlusion probability, and the planner consumes the
-upper confidence bound, which is how the uncertainty enters the cost. Only
-already-published map/graph data and past timestamps are used: no future image,
-no future trajectory, no simulator state.
+Everything here uses only already-published map/graph data and past timestamps: no
+future image, no future trajectory, no simulator state.
 """
 from __future__ import print_function
 
@@ -32,19 +46,26 @@ import math
 import numpy as np
 
 DEF = dict(
-    spatial_sigma=1.15,      # m, how far an occlusion observation transfers
+    spatial_sigma=1.15,      # m, how far a reliability observation transfers
     yaw_sigma_deg=65.0,      # deg, viewpoint similarity of the camera direction
-    time_tau=9.0,            # s, short-horizon decay (dynamics are not stationary)
+    time_tau=9.0,            # s, short-horizon decay (reliability is not stationary)
     time_hard_cut=45.0,      # s, older records are dropped entirely
-    prior_a=1.0,             # Beta prior: "structure usually visible"
-    prior_b=0.25,
-    ucb_z=1.0,               # conservative quantile used by the planner
+    prior_a=2.0,             # Beta prior: "structure is usually observed reliably"
+    prior_b=0.5,
+    ucb_z=1.0,               # width of the confidence bound used by the planner
     min_points_expected=8,   # below this the ratio is too noisy to use
     max_records=400,
 )
 
 
-class OcclusionField(object):
+class ReliabilityField(object):
+    """Kernel-smoothed empirical observation reliability over (x, y, yaw, t).
+
+    Renamed from ``OcclusionField``: the field no longer claims to be an occlusion
+    probability (see the module docstring). ``OcclusionField`` is kept as an alias
+    so that older ablation scripts keep importing something meaningful.
+    """
+
     def __init__(self, params=None):
         self.p = dict(DEF)
         if params:
@@ -53,7 +74,7 @@ class OcclusionField(object):
         self._t = []
         self._xy = []
         self._yaw = []
-        self._occ = []
+        self._rel = []          # measured reliability w_rel in [0, 1]
         self._w = []
         self._seen = set()
 
@@ -71,13 +92,13 @@ class OcclusionField(object):
             if n_exp < self.p['min_points_expected']:
                 continue
             n_real = float(r.get('n_real', 0.0))
-            ratio = min(1.0, n_real / n_exp)
+            ratio = min(1.0, max(0.0, n_real / n_exp))     # w_rel, NOT an occlusion term
             # measurement confidence grows with the number of expected points
             w = n_exp / (n_exp + 25.0)
             self._t.append(float(r['t']))
             self._xy.append((float(r['x']), float(r['y'])))
             self._yaw.append(float(r['yaw']))
-            self._occ.append(1.0 - ratio)
+            self._rel.append(ratio)
             self._w.append(w)
             added += 1
         self._prune()
@@ -91,35 +112,38 @@ class OcclusionField(object):
         self._t = [self._t[i] for i in order]
         self._xy = [self._xy[i] for i in order]
         self._yaw = [self._yaw[i] for i in order]
-        self._occ = [self._occ[i] for i in order]
+        self._rel = [self._rel[i] for i in order]
         self._w = [self._w[i] for i in order]
 
     def __len__(self):
         return len(self._t)
 
     # -------------------------------------------------------------- predict
-    def predict(self, xy, yaw, t_now, tau):
-        """Occlusion probability of the background constraints at a future pose.
+    def predict_reliability(self, xy, yaw, t_now, tau):
+        """Empirical observation reliability of the plan's future viewpoint.
 
         xy, yaw : the pose the plan reaches      (map frame)
         t_now   : current time
         tau     : seconds from now at which the pose is reached
 
-        Returns (p_ucb, p_mean, sigma) with p in [0, 1].
+        Returns (w_lo, w_mean, sigma_eff): ``w_lo`` is the lower confidence bound
+        the planner must use (uncertainty increases the cost), ``w_mean`` the
+        posterior mean.
         """
+        none = (0.0, 0.0, 0.0)
         if not self._t:
-            return 0.0, 0.0, 0.0
+            return none
 
         t = np.asarray(self._t)
         age = (t_now - t)
         dt_future = np.clip(age + float(tau), 0.0, None)     # the pose is reached later
         keep = (dt_future <= self.p['time_hard_cut'])
         if not np.any(keep):
-            return 0.0, 0.0, 0.0
+            return none
 
         xy_a = np.asarray(self._xy)
         yaw_a = np.asarray(self._yaw)
-        occ_a = np.asarray(self._occ)
+        rel_a = np.asarray(self._rel)
         w_a = np.asarray(self._w)
 
         d2 = np.sum((xy_a - np.asarray(xy, dtype=float)[None, :]) ** 2, axis=1)
@@ -134,11 +158,11 @@ class OcclusionField(object):
         w = np.where(keep, w, 0.0)
         sw = float(np.sum(w))
         if sw < 1e-6:
-            return 0.0, 0.0, 0.0
+            return none
 
-        # Beta posterior over the occlusion probability of this viewpoint.
-        a = self.p['prior_a'] + float(np.sum(w * occ_a))
-        b = self.p['prior_b'] + float(np.sum(w * (1.0 - occ_a)))
+        # Beta posterior over the reliability of this viewpoint.
+        a = self.p['prior_a'] + float(np.sum(w * rel_a))
+        b = self.p['prior_b'] + float(np.sum(w * (1.0 - rel_a)))
         mean = a / (a + b)
         var = (a * b) / ((a + b) ** 2 * (a + b + 1.0))
         sigma = math.sqrt(max(var, 0.0))
@@ -147,12 +171,23 @@ class OcclusionField(object):
         # us: sw counts kernel-weighted evidence, not observations.
         conf = sw / (sw + 1.5)
         sigma_eff = sigma + (1.0 - conf) * 0.5
-        p_ucb = min(1.0, mean + self.p['ucb_z'] * sigma_eff)
-        return float(p_ucb), float(mean), float(sigma_eff)
+        w_lo = max(0.0, mean - self.p['ucb_z'] * sigma_eff)
+        return float(w_lo), float(mean), float(sigma_eff)
 
     def debug_state(self):
         return dict(n=len(self._t),
-                    mean_occ=float(np.mean(self._occ)) if self._occ else 0.0)
+                    mean_rel=float(np.mean(self._rel)) if self._rel else 0.0,
+                    mean_unreliable=float(np.mean(1.0 - np.asarray(self._rel))) if self._rel else 0.0)
+
+    # -- alias kept for older ablation scripts / dashboards -----------------
+    def predict(self, xy, yaw, t_now, tau):
+        """Deprecated alias of :meth:`predict_reliability` (same return values)."""
+        return self.predict_reliability(xy, yaw, t_now, tau)
+
+
+# ``1 - w_rel`` is *not* a dynamic occlusion probability; the old name is kept only
+# so that imports in existing scripts do not break.
+OcclusionField = ReliabilityField
 
 
 def _wrap(a):

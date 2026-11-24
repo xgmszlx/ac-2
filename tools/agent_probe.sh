@@ -11,7 +11,9 @@ RUN=$L/results/runs/$TASK
 mkdir -p $RUN
 $L/cleanup.sh > /dev/null 2>&1
 
-roslaunch explorb_scenarios sim_house.launch spawn:=false > $L/logs/${TASK}_sim.log 2>&1 &
+WORLD_ARG=""
+if [ -n "${WORLD:-}" ]; then WORLD_ARG="world_file:=$WORLD model_path:=${MODELS:-$(rospack find robot_description)/launch/include/models/aws/house}"; fi
+roslaunch explorb_scenarios sim_house.launch spawn:=false $WORLD_ARG > $L/logs/${TASK}_sim.log 2>&1 &
 SIM=$!
 for i in $(seq 1 50); do timeout 5 rosservice list 2>/dev/null | grep -q '/gazebo/spawn_urdf_model' && break; sleep 3; done
 sleep 14

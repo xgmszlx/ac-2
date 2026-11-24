@@ -11,6 +11,8 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Include modules~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import os
+
 import rospy
 import tf
 import dynamic_reconfigure.client
@@ -37,12 +39,39 @@ from frontier_detector.cfg import informationGainConfig
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Callbacks~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 map_data_ = OccupancyGrid()
+map_arr_ = np.zeros((0,), dtype=np.int64)   # int64 copy of map_data_.data (see mapCallBack)
 frontiers_ = []
 f_timestamps_ = []
 global_map_ = []
 max_t_ = 0
 
 INFORMATION_THRESHOLD_ = 0.5
+
+# ---------------------------------------------------------------------------
+# Read-only instrumentation (explorb_line_20261121).
+#
+# Set EXPLORB_FILTER_DEBUG=1 in the environment of the roslaunch that starts this
+# node to get one log line per second with *why* each frontier centroid was thrown
+# away, plus the raw numbers that drove the decision. It changes no decision and no
+# published message -- it only logs. Used to locate the "filtered_points is empty"
+# blocker without guessing at thresholds.
+# ---------------------------------------------------------------------------
+DEBUG = os.environ.get('EXPLORB_FILTER_DEBUG', '0').lower() in ('1', 'true', 'yes', 'on')
+_STATS = {'rx': 0, 'alive': 0, 'n_cent': 0, 'zero': 0, 'near': 0, 'cost': 0, 'ig': 0, 'plan': 0, 'kept': 0}
+_LAST_LOG_T = [0.0]
+_IG_ERROR_REPORTED = [False]
+
+
+def _vf(v):
+    try:
+        return '%.3f' % float(v)
+    except Exception:
+        return str(v)
+
+
+def _fdbg(msg, *args):
+    if DEBUG:
+        rospy.logwarn('[fdbg] ' + (msg % args if args else msg))
 
 
 def reconfigureCallback(config, level=0):
@@ -58,6 +87,11 @@ def frontiersCallBack(data, args):
     transformed_point = args[0].transformPoint(args[1], data)
     x = np.array([transformed_point.point.x, transformed_point.point.y])
     x_t = data.header.stamp.to_sec()
+    _STATS['rx'] += 1
+    if DEBUG and _STATS['rx'] in (1, 10, 100) or (DEBUG and _STATS['rx'] % 500 == 0):
+        _fdbg('raw frontier #%d  src_frame=%s -> %s  raw=(%.2f,%.2f)  x=(%.2f,%.2f)  stamp=%.3f now=%.3f',
+              _STATS['rx'], data.header.frame_id, args[1], data.point.x, data.point.y,
+              x[0], x[1], x_t, rospy.get_time())
 
     # Only add if not already there
     # Use temp variables to avoid errors due to global variables dimension (multiple ROS cb same time)
@@ -94,8 +128,18 @@ def frontiersCallBack(data, args):
 
 
 def mapCallBack(data):
-    global map_data_
+    global map_data_, map_arr_
     map_data_ = data
+    # rospy deserialises int8[] as array.array('b'), so np.array(map_data_.data) is an
+    # *int8* array while informationGain_NUMBA is compiled for nb.int64[:]. Calling it
+    # with int8 raises "No matching definition for argument type(s) ... array(int8, 1d, C)"
+    # on every centroid of every cycle -> the node dies and respawns, and filtered_points
+    # is never published. Converted once per map message instead of once per centroid
+    # (verified offline with tools/selfcheck_filter_ig.py).
+    try:
+        map_arr_ = np.asarray(data.data, dtype=np.int64)
+    except Exception:
+        map_arr_ = np.array(data.data)
 
 
 def globalMapCallback(data):
@@ -128,6 +172,12 @@ def node():
 
     srv = Server(informationGainConfig, reconfigureCallback)
 
+    if DEBUG:
+        _fdbg('params: map_topic=%s global_costmap_topic=%s goals_topic=%s cost_thr=%s ig_thr=%s '
+              'info_radius=%s rate=%s robot_frame=%s max_t=%s gpu=%s',
+              map_topic, global_costmap_topic, goals_topic, threshold, ig_th,
+              info_radius, rate_hz, robot_frame, max_t_, use_gpu)
+
     rate = rospy.Rate(rate_hz)
     rospy.Subscriber(map_topic, OccupancyGrid, mapCallBack)
 
@@ -155,7 +205,17 @@ def node():
 
     global_frame = "/" + map_data_.header.frame_id
     tf_lstnr = tf.TransformListener()
-    tf_lstnr.waitForTransform(global_frame[1:], robot_frame, rospy.Time(0), rospy.Duration(10))
+    # platform: this warm-up used to be fatal. tf2 raises TransformException when the
+    # two frames are momentarily in different trees (map -> base_footprint is
+    # (re)published by ORB-SLAM), and the node has respawn_delay=3s, so one hiccup cost
+    # a whole restart *and* the costmap message that had already been received. A
+    # missing transform here is not a reason to stop the fusion filter: the historical
+    # transformPoint() calls below report their own state.
+    try:
+        tf_lstnr.waitForTransform(global_frame[1:], robot_frame, rospy.Time(0), rospy.Duration(3))
+    except Exception as e:
+        rospy.logwarn(rospy.get_name() + ': warm-up transform %s -> %s not available yet (%s); continuing.'
+                      % (global_frame[1:], robot_frame, e))
 
     rospy.Subscriber(goals_topic, PointStamped, callback=frontiersCallBack, callback_args=[tf_lstnr, global_frame[1:]])
 
@@ -166,10 +226,13 @@ def node():
 
     # Wait if no frontier is received yet
     counter = 0
-    while len(frontiers_) < 1:
+    while len(frontiers_) < 1 and not rospy.is_shutdown():
         if counter == 0:
             rospy.loginfo(rospy.get_name() + ': Filter is waiting for frontiers.')
             counter = 1
+        # platform: the author version spins here without sleeping, which pins a core
+        # for as long as the detectors take to produce their first point.
+        rospy.sleep(0.1)
 
     rospy.loginfo(rospy.get_name() + ': Filter received frontiers.')
 
@@ -195,6 +258,7 @@ def node():
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     while not rospy.is_shutdown():
+        _STATS['alive'] += 1
 
         # Clustering frontier points
         centroids = []
@@ -211,22 +275,29 @@ def node():
 
         # Clearing frontiers
         original_centroids_len = len(centroids)
+        _cycle = {'n': int(original_centroids_len), 'zero': 0, 'near': 0, 'cost': 0, 'ig': 0, 'plan': 0}
+        _detail = []
         for zp in range(0, original_centroids_len):
             z = zp - original_centroids_len + len(centroids)
 
             cond = False
             temp_point_stamped.point.x = centroids[z][0]
             temp_point_stamped.point.y = centroids[z][1]
+            _why = ''
+            _vals = {}
 
             # Remove frontiers at ~(0,0) // probably errors of the RRT frontier detectors
             if abs(centroids[z][0]) + abs(centroids[z][1]) < .1:
                 cond = True
+                _why = 'zero'
 
             # Remove frontiers too close to the robot
             if not cond:
                 distance = np.linalg.norm(robot.getPosition() - centroids[z])
+                _vals['d'] = distance
                 if distance < 0.25:
                     cond = True
+                    _why = 'near'
                     # rospy.logwarn(rospy.get_name() + ": Will delete a centroid too close to the robot.")
 
             # Remove any frontier inside an occupied cell (threshold)
@@ -234,22 +305,36 @@ def node():
                 transformed_point = tf_lstnr.transformPoint(global_map_.header.frame_id, temp_point_stamped)
                 x = np.array([transformed_point.point.x, transformed_point.point.y])
                 gval = gridValue(global_map_, x)
+                _vals['gval'] = gval
                 if gval >= threshold:
                     cond = True
+                    _why = 'cost'
                     # rospy.logwarn(rospy.get_name() + ': Will delete a frontier in occupied cell with value: '
                     #               + str(gval))
 
             # Remove frontiers with low information gain
             if not cond:
                 if use_gpu:
-                    ig = informationGain_NUMBA(map_data_.info.resolution, map_data_.info.width,
-                                               map_data_.info.origin.position.x,
-                                               map_data_.info.origin.position.y, np.array(map_data_.data),
-                                               centroids[z][0], centroids[z][1], 1.0)
+                    try:
+                        ig = informationGain_NUMBA(map_data_.info.resolution, map_data_.info.width,
+                                                   map_data_.info.origin.position.x,
+                                                   map_data_.info.origin.position.y, map_arr_,
+                                                   centroids[z][0], centroids[z][1], 1.0)
+                    except Exception as e:
+                        # read-only instrumentation: never let a numba/dispatch problem
+                        # silently kill the fusion node (it has respawn=3s, so the visible
+                        # symptom would be "filtered_points never published at all").
+                        if not _IG_ERROR_REPORTED[0]:
+                            _IG_ERROR_REPORTED[0] = True
+                            rospy.logerr(rospy.get_name() + ': numba information gain failed (%s: %s); '
+                                         'falling back to the python implementation.' % (type(e).__name__, e))
+                        ig = informationGain(map_data_, [centroids[z][0], centroids[z][1]], 1.0)
                 else:
                     ig = informationGain(map_data_, [centroids[z][0], centroids[z][1]], 1.0)
+                _vals['ig'] = ig
                 if ig < INFORMATION_THRESHOLD_:
                     cond = True
+                    _why = 'ig'
                     # rospy.logwarn(rospy.get_name() + ': Will delete a frontier with information gain = ' + str(ig))
 
             # Remove frontiers in unreachable locations
@@ -267,15 +352,54 @@ def node():
                 pose_frontier.orientation.y = q_frontier[1]
                 pose_frontier.orientation.z = q_frontier[2]
                 pose_frontier.orientation.w = q_frontier[3]
-                plan = robot.makePlan(robot.getPoseAsGeometryMsg(), pose_frontier)
-                n_points = int(len(plan))
+                # platform: a transient failure of the make_plan service must not kill the
+                # fusion filter (observed: rospy ServiceException "Connection refused"
+                # while move_base was still coming up -> node died, respawned, and the
+                # 3 s respawn delay cost the costmap message it had already received).
+                # A frontier whose reachability cannot be checked is kept, not deleted.
+                try:
+                    plan = robot.makePlan(robot.getPoseAsGeometryMsg(), pose_frontier)
+                    n_points = int(len(plan))
+                except Exception as e:
+                    rospy.logwarn_throttle(2.0, rospy.get_name() + ': make_plan failed (%s: %s); '
+                                           'keeping the frontier unchecked.' % (type(e).__name__, e))
+                    n_points = -1
+                _vals['plan'] = n_points
                 if n_points == 0:
                     cond = True
+                    _why = 'plan'
                     # rospy.logwarn(rospy.get_name() + ': Will delete an unreachable frontier.')
 
             if cond:
+                if _why in _cycle:
+                    _cycle[_why] += 1
+                if DEBUG and len(_detail) < 6:
+                    _detail.append('(%.2f,%.2f) why=%s %s' % (centroids[z][0], centroids[z][1], _why,
+                                                              ' '.join('%s=%s' % (k, _vf(v)) for k, v in _vals.items())))
                 centroids = np.delete(centroids, z, axis=0)
                 # rospy.logwarn(rospy.get_name() + ': Frontier deleted.')
+            elif DEBUG and len(_detail) < 6:
+                _detail.append('(%.2f,%.2f) KEPT %s' % (centroids[z][0], centroids[z][1],
+                                                        ' '.join('%s=%s' % (k, _vf(v)) for k, v in _vals.items())))
+
+        _STATS['n_cent'] += _cycle['n']
+        _STATS['kept'] += int(len(centroids))
+        for _k in ('zero', 'near', 'cost', 'ig', 'plan'):
+            _STATS[_k] += _cycle[_k]
+        _now = rospy.get_time()
+        if DEBUG and (_now - _LAST_LOG_T[0] > 1.0 or _now < _LAST_LOG_T[0]):
+            _LAST_LOG_T[0] = _now
+            _fdbg('t=%.2f alive=%d raw_rx=%d stored=%d centroids=%d kept=%d | del zero=%d near=%d cost=%d '
+                  'ig=%d plan=%d (cum) | cost_thr=%s ig_thr=%.3f | map=%dx%d res=%.3f origin=(%.2f,%.2f) '
+                  'frame=%s | costmap=%dx%d | %s',
+                  _now, _STATS['alive'], _STATS['rx'], len(frontiers_), _cycle['n'], len(centroids),
+                  _cycle['zero'], _cycle['near'], _cycle['cost'], _cycle['ig'], _cycle['plan'],
+                  threshold, INFORMATION_THRESHOLD_,
+                  map_data_.info.width, map_data_.info.height, map_data_.info.resolution,
+                  map_data_.info.origin.position.x, map_data_.info.origin.position.y,
+                  map_data_.header.frame_id,
+                  global_map_.info.width, global_map_.info.height,
+                  ' ;; '.join(_detail) if _detail else '-')
 
         rospy.logdebug(rospy.get_name() + ': Frontier centroids len=' + str(len(centroids)) + ', frontiers len=' + str(
             len(front)) + '. Centroids: \n' + str(centroids))

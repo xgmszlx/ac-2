@@ -18,10 +18,11 @@ This module supplies, for an executable plan:
 
   * a per-pose 6x6 information matrix built from the projection Jacobians of the
     map points that are actually visible with usable observation quality;
-  * a *dimensionless* scalar, ``constraint_strength`` = 1 / max_i (C_ii / s_i^2),
-    i.e. the weakest normalised marginal standard deviation of the pose. s_i are
-    the required translational (m) and rotational (rad) accuracies, which is what
-    unifies the two blocks instead of adding metres to radians;
+  * a *dimensionless* scalar, ``constraint_strength`` = 1 / max_i sigma_z,i with
+    H_z = S^T H S and dxi = S z, i.e. the worst marginal precision over the six
+    axes *in units of the required accuracy* (S = diag(sigma_t.., sigma_r..)). This
+    is the corrected normalisation: the earlier S^-1 H S^-1 multiplied the marginal
+    sigma by s_i instead of dividing by it and so rewarded a loose requirement;
   * a bounded information deficit relative to the *reference* strength that the
     same environment currently provides (a running median over measured
     keyframes), so no absolute calibration of the frontend is invented;
@@ -51,6 +52,8 @@ DEF = dict(
     explore_gamma=1.0,        # exponent of the exploration-credit discount
     min_points_for_rank=12,   # below this the pose is treated as rank deficient
     singular_floor=1e-9,
+    softmax_frac=0.1,         # temperature of the smooth worst-direction metric,
+                              # as a fraction of the largest normalised deviation
 )
 
 
@@ -88,7 +91,7 @@ class CameraModel(object):
         which is exactly ``(T_camera_base^-1 * T_map_base^-1) * p3D`` in Map.py.
         """
         pb = (X_cb - t_base[None, :]).dot(R_base)            # R_base^T (x - t)
-        pc = (pb - t_cb[None, :]).dot(self.R_cb)             # R_cb^T  (pb - t_cb)
+        pc = (pb - self.t_cb[None, :]).dot(self.R_cb)        # R_cb^T  (pb - t_cb)
         return pc
 
 
@@ -199,22 +202,77 @@ class ObservabilityEstimator(object):
 
     # -- analysis of one information matrix --------------------------------
     def _analyse(self, H, n_pts):
+        """Normalised geometric quality of one pose's information matrix.
+
+        Convention (corrected 2026-11-25)
+        ---------------------------------
+        The perturbation the Jacobians above are written in is the *physical* SE(3)
+        increment dxi = (dt, dphi) in metres and radians, and the required accuracy is
+            S = diag(sigma_t, sigma_t, sigma_t, sigma_r, sigma_r, sigma_r).
+        Writing the perturbation in units of the required accuracy, i.e.
+
+            dxi = S z          (z is dimensionless: "how many required sigmas")
+
+        the information matrix of z is, by the chain rule for f(dxi) = 1/2 dxi^T H dxi,
+
+            H_z = S^T H_xi S            <-- *not* S^-1 H_xi S^-1
+
+        The previous version used S^-1 H S^-1, which multiplies the unnormalised
+        marginal sigma by s_i instead of dividing it, so it *rewarded* a large required
+        accuracy (a rank-deficient direction with a big sigma looked well constrained).
+        That inverts the very quantity the planner is supposed to minimise.
+
+        With H_z, (H_z)^-1 has diagonal entries (sigma_xi,i / s_i)^2, i.e. the squared
+        standard deviation of z_i -- directly the "fraction of the requirement that the
+        pose cannot guarantee", and dimensionless, so translation and rotation finally
+        share one scale.
+
+        Weakest direction
+        -----------------
+        The scalar quality is the *worst normalised marginal precision*,
+
+            strength = 1 / max_i sigma_z,i        with sigma_z,i^2 = [(H_z)^-1]_ii
+
+        i.e. the inverse of the largest standard deviation (in units of the required
+        accuracy) that the pose cannot avoid, over the six axes. sigma_z is a smooth
+        function of H for an invertible H (only sqrt and matrix inverse), which an
+        eigen-minimum is not: min_i lambda_i(H_z) has a kink every time two
+        eigenvalues cross, and a kinked cost is felt by the g2o optimiser as a
+        discontinuity. The ``max`` over six marginal deviations is replaced by a
+        shifted log-sum-exp soft maximum (always >= the true max, hence deliberately
+        conservative, and C^inf in the marginals). The hard values are reported too so
+        the logs can show how much the smoothing costs.
+        """
         s = self.s
-        Hn = H * np.outer(1.0 / s, 1.0 / s)      # dimensionless information
-        # regularised inverse: an unobservable direction must read as "very
-        # uncertain", not as a numerical explosion
-        evals, evecs = np.linalg.eigh(Hn)
+        Hn = H * np.outer(s, s)                  # H_z = S^T H S
         floor = self.p['singular_floor']
-        evals_c = np.maximum(evals, floor)
-        Cn = (evecs / evals_c).dot(evecs.T)
-        Cn = 0.5 * (Cn + Cn.T)
-        marginal_std = np.sqrt(np.maximum(np.diag(Cn), 0.0))   # in units of s_i
+        marginal_std = np.full(6, np.inf)
+        hard_max = float('inf')
+        try:
+            evals, evecs = np.linalg.eigh(Hn)    # ascending
+            evals_c = np.maximum(evals, floor)
+            Cn = (evecs / evals_c).dot(evecs.T)   # (H_z)^-1  =  cov of z
+            Cn = 0.5 * (Cn + Cn.T)
+            marginal_std = np.sqrt(np.maximum(np.diag(Cn), 0.0))
+            hard_max = float(np.max(marginal_std))
+        except np.linalg.LinAlgError:
+            return dict(Hn=Hn, strength=0.0, marginal_std=marginal_std,
+                        worst_marginal_std=float('inf'), lam_min_hard=0.0,
+                        softmax_frac=float(self.p['softmax_frac']))
+
         # rank deficiency: with few points the weakest direction is not meaningful
-        if n_pts < self.p['min_points_for_rank']:
-            marginal_std = marginal_std + (self.p['min_points_for_rank'] - n_pts) * 10.0
-        worst = float(np.max(marginal_std))
-        strength = 0.0 if not np.isfinite(worst) or worst <= 0 else 1.0 / worst
-        return dict(Hn=Hn, strength=strength, marginal_std=marginal_std)
+        if n_pts < self.p['min_points_for_rank'] or not np.isfinite(hard_max) or hard_max <= 0.0:
+            return dict(Hn=Hn, strength=0.0, marginal_std=marginal_std,
+                        worst_marginal_std=float(hard_max), lam_min_hard=0.0,
+                        softmax_frac=float(self.p['softmax_frac']))
+
+        tau = max(self.p['softmax_frac'] * hard_max, 1e-12)
+        m = marginal_std
+        soft_max = float(tau * np.log(np.sum(np.exp((m - hard_max) / tau))) + hard_max)
+        strength = 1.0 / soft_max
+        return dict(Hn=Hn, strength=float(strength), marginal_std=marginal_std,
+                    worst_marginal_std=float(hard_max), lam_min_hard=float(evals[0]),
+                    softmax_frac=float(self.p['softmax_frac']))
 
     # -- reference strength -------------------------------------------------
     def update_reference(self, strengths):

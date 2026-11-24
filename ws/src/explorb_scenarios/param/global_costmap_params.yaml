@@ -8,7 +8,12 @@ global_costmap:
     update_frequency: 1.0
     publish_frequency: 1.0
 
-    always_send_full_costmap: false
+    # platform: Filter.py consumes the *full* costmap (it looks up the value of an
+    # arbitrary cell with gridValue()), so it must be republished continuously. With
+    # the author's value (false) costmap_2d publishes the full grid once at startup and
+    # afterwards only deltas on costmap_updates, which made the fusion filter wait for
+    # /robot_1/move_base_node/global_costmap/costmap forever after any respawn.
+    always_send_full_costmap: true
     transform_tolerance: 1.0
 
     static_map: false # We're not using any previous saved map

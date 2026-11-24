@@ -7106,3 +7106,47 @@ Warning: TF_REPEATED_DATA ignoring data with redundant timestamp for frame base_
          at line 277 in /tmp/binarydeb/ros-noetic-tf2-0.7.10/src/buffer_core.cpp
 [WARN] [1795484324.495672626, 260.332000000]: /octomapper: Cleared OctoMap.
 [WARN] [1795484324.495758557, 260.333000000]: /octomapper: Not updating OctoMap if ORB-SLAM is UNKNOWN, NOT_READY, NOT_INITIALIZED.
+[INFO] [1795484156.308772, 0.000000]: /decision_maker: Initializing...
+[INFO] [1795484156.318954, 92.470000]: /decision_maker: strategy=native seed=0
+[INFO] [1795484158.116705, 94.255000]: /decision_maker: Controller received map.
+[INFO] [1795484158.118349, 94.266000]: /decision_maker: Robot Class started with robot name: robot_1
+[INFO] [1795484158.170901, 94.319000]: /decision_maker: Robot Class is waiting for the robot transform.
+[INFO] [1795484158.172378, 94.320000]: /decision_maker: Robot Class received the robot transform.
+Traceback (most recent call last):
+  File "/home/wcqw/explorb_line_20261121/ws/src/decision_maker/src/python/Controller.py", line 477, in <module>
+    
+  File "/home/wcqw/explorb_line_20261121/ws/src/decision_maker/src/python/Controller.py", line 201, in node
+    pass
+  File "/home/wcqw/explorb_line_20261121/ws/src/decision_maker/src/python/Robot.py", line 73, in __init__
+    self.plan_service = rospy.get_param('~plan_service', '/move_base_node/NavfnROS/make_plan')
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/client.py", line 468, in get_param
+    return _param_server[param_name] #MasterProxy does all the magic for us
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/msproxy.py", line 121, in __getitem__
+    code, msg, value = self.target.getParam(rospy.names.get_caller_id(), resolved_key)
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1109, in __call__
+    return self.__send(self.__name, args)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/core.py", line 696, in _ServerProxy__request
+    return xmlrpcclient.ServerProxy._ServerProxy__request(
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1450, in __request
+    response = self.__transport.request(
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1153, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1165, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1278, in send_request
+    self.send_content(connection, request_body)
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1308, in send_content
+    connection.endheaders(request_body)
+  File "/usr/lib/python3.8/http/client.py", line 1251, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.8/http/client.py", line 1011, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.8/http/client.py", line 951, in send
+    self.connect()
+  File "/usr/lib/python3.8/http/client.py", line 922, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.8/socket.py", line 808, in create_connection
+    raise err
+  File "/usr/lib/python3.8/socket.py", line 796, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused

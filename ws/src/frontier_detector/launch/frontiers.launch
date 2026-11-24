@@ -84,6 +84,11 @@
             <param name="goals_topic"   value="detected_points"/>
             <param name="rate"          value="$(arg rate_filter_hz)"/>
             <param name="n_robots"      value="$(arg robot_number)"/>
+            <!-- platform: the filter waits for <map> -> <robot_frame>; the author file
+                 left this at Filter.py's default ('base_link'), a frame that this
+                 platform's TF tree does not contain, and the resulting
+                 tf2.TransformException killed the node (respawn then lost the costmap). -->
+            <param name="robot_frame"   value="$(arg robot_frame)"/>
             <param name="info_radius"   value="0.5"/>
             <param name="max_t"         value="1.0"/>
         </node>

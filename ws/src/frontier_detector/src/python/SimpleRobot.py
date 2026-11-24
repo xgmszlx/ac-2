@@ -36,7 +36,16 @@ class Robot:
         self.global_frame = rospy.get_param('~global_frame', 'map')
         self.robot_frame = rospy.get_param('~robot_frame', 'base_footprint')
         self.listener = tf.TransformListener()
-        self.listener.waitForTransform(self.global_frame, self.robot_frame, rospy.Time(0), rospy.Duration(5))
+        # platform: this warm-up used to be fatal. tf2 raises TransformException while
+        # map -> base_footprint is momentarily disconnected (ORB-SLAM republishes it), and
+        # both Filter.py and Controller.py have respawn enabled, so a single hiccup turned
+        # into a restart loop. The retry loop right below is the real gate.
+        try:
+            self.listener.waitForTransform(self.global_frame, self.robot_frame,
+                                           rospy.Time(0), rospy.Duration(5))
+        except Exception as e:
+            rospy.logwarn(rospy.get_name() + ': Robot Class warm-up transform %s -> %s not ready (%s)'
+                          % (self.global_frame, self.robot_frame, e))
         cond = 0
         while cond == 0:
             try:

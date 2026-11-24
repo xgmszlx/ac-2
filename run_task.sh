@@ -30,6 +30,26 @@ export GAZEBO_MASTER_URI=${GAZEBO_MASTER_URI:-http://localhost:11346}
 
 source "$LINE_ROOT/ws/devel/setup.bash"
 
+# ---------------------------------------------------------------------------
+# catkin's devel/setup.bash *replaces* ROS_PACKAGE_PATH with "<ws>/src:/opt/ros/noetic/share",
+# which silently drops the no-sudo local prefix set by env.sh. The packages that live
+# only in localroot (teb_local_planner, costmap_converter, octomap_ros, mbf_*) then stop
+# being discoverable: on 2026-11-25 that made move_base die with
+#
+#   [FATAL] Failed to create the teb_local_planner/TebLocalPlannerROS planner ...
+#   Declared types are  base_local_planner/TrajectoryPlannerROS dwa_local_planner/DWAPlannerROS
+#
+# and every downstream symptom of the first three rounds (no global costmap publisher,
+# Filter.py blocked in wait_for_service(make_plan), no goal, no cmd_vel) followed from it.
+# Re-prepending the prefix here keeps both the workspace and the local prefix visible.
+# ---------------------------------------------------------------------------
+export ROS_PACKAGE_PATH="$LINE_ROOT/localroot/opt/ros/noetic/share:$ROS_PACKAGE_PATH"
+if ! rospack find teb_local_planner >/dev/null 2>&1; then
+    echo "[run_task] ERROR: teb_local_planner is not discoverable - move_base would start without"
+    echo "[run_task]        its local planner (see the ROS_PACKAGE_PATH note above)."
+fi
+echo "[run_task] teb_local_planner -> $(rospack find teb_local_planner 2>/dev/null || echo MISSING)"
+
 RUN_DIR="$LINE_ROOT/results/runs/$TASK_ID"
 mkdir -p "$RUN_DIR"
 SIMLOG="$LINE_ROOT/logs/${TASK_ID}_sim.log"
