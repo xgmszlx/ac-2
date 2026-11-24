@@ -26,6 +26,20 @@ if [ ${#ARMS[@]} -eq 0 ]; then
     ARMS=(B0 B1 Ours Ours_no_cov)
 fi
 
+# ---- pre-flight gate (task book discipline, added 2026-11-25) -------------------
+# A/B numbers are only meaningful if move_base actually loaded the source-built TEB with
+# the two visual-constraint edges. tools/verify_source_teb.sh proves that from the live
+# process ( /proc/<pid>/maps + visual_edges>0 + [teb-solve] ) and exits non-zero when the
+# deb planner is in use. Set SKIP_GATE=1 only for a deliberately documented run.
+if [ "${SKIP_GATE:-0}" != "1" ]; then
+    echo "[ab] pre-flight gate: verify_source_teb.sh ..."
+    if ! bash "$LINE_ROOT/tools/verify_source_teb.sh" "gate_preflight" 1.0 1.0; then
+        echo "[ab] ABORT: the running planner is not the source-built TEB (see above)."
+        echo "[ab] No A/B numbers may be produced; fix the plugin resolution first."
+        exit 1
+    fi
+fi
+
 export PATH=/home/wcqw/.dsh_heavy:$PATH
 GOALS_CSV=$LINE_ROOT/results/fixed_goals_ab.csv
 TABLE=$LINE_ROOT/results/ab_table.csv

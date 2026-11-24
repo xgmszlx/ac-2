@@ -259,6 +259,43 @@ Ours       : mean=155.2 ± 18.7 ms      <- 再加动态遮挡预测
 
 ## 6 阶段四.2：4 臂 A/B（固定起终点、动态横穿遮挡场景）
 
+### 6.0.1 前置门禁：A/B 数必须来自源码 TEB（不是 deb）
+
+这条门禁是本报告所有 §6 数字的**前提**，并且已经脚本化、可重跑：
+
+```bash
+tools/verify_source_teb.sh <task_id> <lambda_g> <lambda_c>     # 退出码 0 才算通过
+```
+
+三项判定（实测全部命中）：
+
+```
+===== sample 3 pid=1391115 =====
+cmdline: /opt/ros/noetic/lib/move_base/move_base cmd_vel:=/cmd_vel ...
+/home/wcqw/explorb_line_20261121/ws/devel/lib/libteb_local_planner.so        <-- 进程实际加载的库
+[visual-constraint] ... vertices=15 visual_edges=15 covis_edges=7 graph_edges=97 <-- 边进了 g2o
+[teb-solve] n=67 last=96.5 ms mean=149.6 ms max=378.4 ms                        <-- 只有新代码才打这行
+[gate] PASS   maps_lines=2 source_path_hits=2 visual_edges=6 covis_edges=2 teb_solve_lines=2
+```
+
+符号对比（deb vs 源码）：
+
+```
+ws/devel/lib/libteb_local_planner.so              EdgeVisualObservability|EdgeCoVisibility = 45
+localroot/.../libteb_local_planner.so.deb-orig    EdgeVisualObservability|EdgeCoVisibility =  0
+```
+
+**已完成的 12 次 A/B 全部满足这条门禁**：12/12 日志都有 `[teb-solve]`；λ>0 的三臂
+`visual_edges = 6 / 15 / 7`；B0（λ=0）打印
+`[visual_query] disabled (both visual weights are 0: author graph)` 且没有任何边计数
+——这就是"权重清零"自检的**实机版**（离线版是 `[PASS] lambda_g = 0 gives exactly zero cost`）。
+`tools/run_ab.sh` 现在把这条门禁做成**起跑前断言**：验证不过就直接 `exit 1`，不产出任何 A/B 数字。
+
+> 背景：本地前缀里也有一份 deb 的 `teb_local_planner`，早期版本会被它 shadow 掉，
+> 表现为"四臂完全一样"的假阴性。修复分两层：`run_task.sh` 把 `ws/src` 与 `ws/devel/lib`
+> 前置；编排窗口另外把 `localroot` 里那个 `.so` 换成了指向源码构建的符号链接（原库备份为
+> `.deb-orig`），两条路都指向源码库。
+
 ### 6.1 协议
 
 - 场景：`scenario:=visual`（两块**无碰撞体**的视觉遮挡板分别横穿
