@@ -236,27 +236,24 @@ Ours 臂（lambda>0）: [visual_query] adapter subscribed to orb_slam2_rgbd/map_
 
 即 **B0 臂在真跑里复现了作者图**（权重清零检验的在线版本），而 Ours 臂的查询确实挂上了。
 
-### 5.2 实测 TEB 单次求解耗时（自检第 4 项）——**不达标，如实报告**
+### 5.2 实测 TEB 单次求解耗时（自检第 4 项）——**仍不达标，如实报告**
 
-`[teb-solve]` 是每周期一对 `ros::WallTime` 的实测统计（不是估算）：
+`[teb-solve]` 是每周期一对 `ros::WallTime` 的实测统计（不是估算）。
+最终一轮（4 臂 × 3 次重复，`results/ab_table.csv`）：
 
 ```
-B0        : n=1059  mean=142.23 ms  max=573.898 ms
-B1        : mean=129.22 ms
-Ours      : mean=134.75 ms
-Ours_no_cov: mean=125.79 ms
+B0         : mean= 74.2 ±  2.7 ms      <- 原生 TEB 就用掉 74% 的 100 ms 周期
+Ours_no_cov: mean=127.6 ±  2.7 ms      <- 只加一元边
+B1         : mean=144.9 ±  8.0 ms      <- 一元 + 共视二元边
+Ours       : mean=155.2 ± 18.7 ms      <- 再加动态遮挡预测
 ```
 
-而 `controller_frequency: 10.0`（100 ms 周期）。move_base 自己在真跑里也报了
+`controller_frequency: 10.0`（100 ms）。真跑里 move_base 也会报
 `Control loop missed its desired rate of 10.0000Hz`。
 
-**结论**：**当前配置下 TEB 本身就跑不进 100 ms**，添加两条视觉边还要再慢 2–12 ms。
-这是底座的既有问题（`enable_homotopy_class_planning: true` × `no_outer_iterations: 2`
-× `no_inner_iterations: 3` × 2 个同伦类），不是视觉边引入的；但**它直接决定了本轮 A/B
-不可解释的部分**：控制周期从 100 ms 掉到 ~140 ms，四臂的轨迹差异里混入了"采样时刻不同"
-的成分。下一步必须先把这个解决掉（降 `max_number_classes` / 迭代数，或换
-`optimization_algorithm_levenberg` 的稀疏求解设置），再谈视觉边带来的差异。
-**未解决，如实记录。**
+**结论**：**10 Hz 在任何一臂都没满足**；原生 TEB 已经占掉 74%，两条视觉边再加 53–81 ms。
+更严重的一次（未优化时）是 `Ours` 达 **1857.7 ms、单次最坏 28.7 s** ——
+那一步的代价结构与三步优化见 §6.3/§6.4。**未解决，如实记录。**
 
 ---
 
@@ -365,7 +362,7 @@ bin (masked px quartile) -> mean usable depth keypoints
 而对原始 `N`（关键点数）相关性弱（+0.02 / −0.21），因为 `N` 被 `ORBextractor` 的 1000 特征预算
 截顶，遮挡更多表现为"可用深度少"而不是"关键点少"。逐帧数据：`export/occlusion_vs_inliers.csv`。
 
-### 6.4 失败与未跑（保留）
+### 6.6 失败与未跑（保留）
 
 | 项 | 说明 |
 |---|---|
