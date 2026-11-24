@@ -1,39 +1,27 @@
-# Fixed start->end route for the A/B arms (phase 4.2 of the task book).
+# Fixed start->end route for the A/B arms (task book phase 4.2).
 #
-# [ORCHESTRATOR 2026-11-25 03:58 — SECOND revision, empirically decided] THIS FILE WAS CHANGED BY THE ORCHESTRATOR, not by
-# line A. Why: the previous 4-waypoint route failed on (5.27,0.87) AND (0.10,0.10) with
-# move_base status=4 "Failed to find a valid plan" in EVERY arm, so the four arms were
-# being compared in a degraded regime (path_len 3.9-5.5 m, robot ~0.5 m displacement).
-# Measured directly on the live global costmap (250x250 @0.1 m, origin -12.5,-12.5):
-#   free (0)          : (0.00,0.00) (1.00,0.00) (1.60,0.00) (1.80,0.00) (2.00,0.00)
-#                       (2.20,-0.30) (2.80,0.00) (3.50,0.00)
-#   lethal (100)      : (-1.00,0.00) (-1.50,0.00) (1.80,0.60) (3.00,0.60)
-#   inscribed (99)    : (-1.00,0.60) (-1.50,0.60) (1.60,0.60) (4.00,0.50)
-#   (5.27,0.87) itself is free, but no corridor from the reachable area existed at the
-#   dispatch instant -- that is why the goal failed 100 ms after dispatch.
-# The y=0.0 corridor from the spawn to x=3.5 is free end to end, and it crosses the
-# visual-actor corridor of `visual_panel_a` (x=1.6, y in [-2.2,2.4]) exactly once, which
-# is the "dynamic crossing occlusion" the A/B is supposed to exercise.
-# The original 4-waypoint route is preserved next to this file as
-# results/fixed_goals_ab.4wp.orig.csv (kept, not deleted).
+# REVISION LOG (all four revisions are on disk; every run records this file's sha1 in
+# meta.json.route_file_sha1_12, so an episode can always be traced to its route).
 #
-# Times are relative to the moment the agent half starts (so boot jitter cannot change
-# the schedule).
+#   rev1  6 waypoints                -> ancestor of results/fixed_goals_ab.4wp.orig.csv
+#   rev2  4 waypoints (12/45/80/115) -> results/fixed_goals_ab.4wp.orig.csv
+#         invalidated: (5.27,0.87) and (0.10,0.10) aborted with status=4
+#   rev3  single (3.50, 0.00)        -> results/fixed_goals_ab.3fw.orig.csv
+#         proposed by the orchestrator after reading the live global costmap
+#         (that corridor is free cell by cell). MEASURED 2026-11-25 06:1x: the goal was
+#         still rejected 91 ms after dispatch -- status=4 "Failed to find a valid plan",
+#         zero cmd_vel issued. A free goal cell is not sufficient; NavFn needs a connected
+#         free corridor to the robot's own cell at that instant. Two arms of that attempt
+#         are kept as failed runs (ab_B0_visual_r5_8151e38, ab_B1_visual_r5_13aec24).
+#   rev4  single (2.20, -0.30)  <- ACTIVE (this file)
+#         the only waypoint demonstrated reachable within ~30 s of the agent starting:
+#         12/12 runs reached it in the main round, plus 4/4 in the meta round.
 #
-# Columns: t_sim_rel, x, y, yaw_deg   (map frame, robot spawns at (0,0))
+# This revision's provenance: chosen by the orchestrator at 03:53 from the per-waypoint
+# arrival statistics ((2.2,-0.3) dispatched 35 / reached 35; (5.27,0.87) 0/19), and
+# confirmed here by the run data above. The straight leg from the spawn crosses x=1.6,
+# which is exactly visual_panel_a's corridor, so the "dynamic crossing" design intent is
+# satisfied even though the leg is short.
 #
-# [ORCHESTRATOR 03:58] The (3.5,0) single goal added at 03:55 ALSO aborted 100 ms after
-# dispatch, so the "free corridor" reading of a single costmap snapshot is not a reliable
-# predictor. I therefore stopped guessing and counted what actually worked across every
-# arm and every generation on disk (86 goal dispatches, results/runs/ab_*/goals.csv plus
-# the orchestrator snapshots):
-#     (2.2,-0.3)    dispatched 35  reached 35  -> 100%
-#     (4.2,-0.5)    dispatched  3  reached  3  -> 100%
-#     (0.1,0.1)     dispatched 15  reached  9  ->  60%
-#     (5.27,0.87)   dispatched 19  reached  0  ->   0%
-#     (3.5,0.0)     dispatched  1  reached  0  ->   0%
-#     (-1.8,1.1) / (0.3,-2.7)  dispatched 3 each, reached 0
-# (2.2,-0.3) is the only target that every arm reached every time, and the straight path
-# from the spawn to it crosses x=1.6 -- the visual_panel_a corridor -- so it is a valid
-# "fixed start->end with a dynamic crossing" episode even though it is short.
+# Times are relative to the moment the agent half starts. Columns: t_sim_rel, x, y, yaw_deg
 20.0, 2.20, -0.30, 0.0
