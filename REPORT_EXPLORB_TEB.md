@@ -204,9 +204,52 @@
 | 动态遮挡预测时序/坐标/外参一致性 | ⚠️ 部分 | 常速度预测的时序一致性在 C++ 自检里过了（3 s 后遮挡清除、10 ms 平滑）；**投影核对日志需要一轮带动态演员的真跑**，见 §6 |
 | TEB 单次求解耗时 | ⚠️ 已插桩待跑 | `[teb-solve] n=… last=… mean=… max=… ms`（每周期一对 steady_clock），与 10 Hz 控制周期对比 |
 
-### 5.1 构建状态（诚实记录）
+### 5.1 构建状态与"deb 还是源码包"的证据（任务书 §2.2）
 
-（待填：见 `docs/STATUS_20261125.md` 最后一次 build 的结论）
+```
+SUMMARY stage1=0 stage2=0                       # logs/build_final.log，两个阶段全绿、0 error
+[run_task] teb source : SOURCE (workspace build) # rospack -> ws/src/teb_local_planner
+[run_task] teb lib     : 49 deps resolved        # ldd 全部解析
+rospack plugins --attrib=plugin nav_core | grep teb
+  teb_local_planner .../ws/src/teb_local_planner/teb_local_planner_plugin.xml
+ctypes.CDLL("libteb_local_planner.so")
+  -> /home/wcqw/.../ws/devel/lib/libteb_local_planner.so
+ldd ws/devel/lib/libteb_local_planner.so
+  libvisual_query.so => /home/wcqw/.../ws/devel/lib/libvisual_query.so
+```
+
+真跑里的"插件确实是我这份源码包"的直接证据，是这些**只存在于新代码里的日志行**：
+
+```
+B0 臂（lambda=0）:  [visual_query] disabled (both visual weights are 0: author graph)
+Ours 臂（lambda>0）: [visual_query] adapter subscribed to orb_slam2_rgbd/map_points,
+                                     gridmapper/rectified_map, dynamic_objects
+                     [visual_query] enabled (lambda_g=1, lambda_c=1, dt_vis=0.45 s)
+```
+
+即 **B0 臂在真跑里复现了作者图**（权重清零检验的在线版本），而 Ours 臂的查询确实挂上了。
+
+### 5.2 实测 TEB 单次求解耗时（自检第 4 项）——**不达标，如实报告**
+
+`[teb-solve]` 是每周期一对 `ros::WallTime` 的实测统计（不是估算）：
+
+```
+B0        : n=1059  mean=142.23 ms  max=573.898 ms
+B1        : mean=129.22 ms
+Ours      : mean=134.75 ms
+Ours_no_cov: mean=125.79 ms
+```
+
+而 `controller_frequency: 10.0`（100 ms 周期）。move_base 自己在真跑里也报了
+`Control loop missed its desired rate of 10.0000Hz`。
+
+**结论**：**当前配置下 TEB 本身就跑不进 100 ms**，添加两条视觉边还要再慢 2–12 ms。
+这是底座的既有问题（`enable_homotopy_class_planning: true` × `no_outer_iterations: 2`
+× `no_inner_iterations: 3` × 2 个同伦类），不是视觉边引入的；但**它直接决定了本轮 A/B
+不可解释的部分**：控制周期从 100 ms 掉到 ~140 ms，四臂的轨迹差异里混入了"采样时刻不同"
+的成分。下一步必须先把这个解决掉（降 `max_number_classes` / 迭代数，或换
+`optimization_algorithm_levenberg` 的稀疏求解设置），再谈视觉边带来的差异。
+**未解决，如实记录。**
 
 ---
 

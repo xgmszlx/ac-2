@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
-# Kill leftover simulation processes of this line.
+# Kill leftover simulation processes of this line -- and *only* this line's.
 #
-# Safety: the patterns live in this file (so the invoking shell's own command line
-# never matches them) and every ancestor of this script is excluded, so a caller
-# can never kill its own shell.
+# Why the extra pass exists (2026-11-25): the pattern list below only covered the nodes
+# that roslaunch itself starts. Nodes that roslaunch loses track of (a respawned
+# Controller.py after a master restart, a rosout orphaned by a killed launch) kept
+# running, reparented to systemd --user, and burned CPU for hours -- which pollutes the
+# "[teb-solve]" real-time self-check and steals cycles from the other research line.
+#
+# Safety: every node started by this line carries `--log:=<LINE_ROOT>/logs/ros/...` on
+# its command line (or lives in our own python paths), so matching on
+# "$LINE_ROOT/logs/ros/" catches all of them and nothing belonging to another line.
 set +u
+LINE_ROOT=/home/wcqw/explorb_line_20261121
 SELF=$$
 ANC=()
 p=$SELF
@@ -33,6 +40,11 @@ PATTERNS=(
     "run_recorder.py"
     "budget_guard.py"
     "scenario_driver.py"
+    "dynamic_mask.py"
+    "slam_export.py"
+    "goto_goal.py"
+    # catch-all: every node of THIS line's ROS master carries this --log:= path
+    "$LINE_ROOT/logs/ros/"
 )
 
 killed=0
@@ -47,4 +59,7 @@ for pat in "${PATTERNS[@]}"; do
     done
 done
 sleep 1
-echo "cleanup: killed=$killed remaining=$(pgrep -cf 'gzserver -e ode')"
+remaining=$(pgrep -cf "$LINE_ROOT/logs/ros/" 2>/dev/null || true)
+echo "cleanup: killed=$killed remaining=$remaining gzserver=$(pgrep -cf 'gzserver -e ode' 2>/dev/null || echo 0)"
+# a non-zero exit here is what run_task.sh turns into "the machine is dirty, stop"
+[ "${remaining:-0}" = "0" ]

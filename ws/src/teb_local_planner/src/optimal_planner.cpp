@@ -365,11 +365,29 @@ bool TebOptimalPlanner::buildGraph(double weight_multiplier)
   // EXPLORB-LOCOBS: the two bounded visual-constraint soft costs. Both are skipped
   // when their weight is zero, so weight==0 reproduces the author graph exactly
   // (this is the "weight clearing" self-check of the task book).
+  n_visual_edges_ = 0;
+  n_covis_edges_ = 0;
   AddEdgesVisualObservability();
   AddEdgesCoVisibility();
 
-  return true;  
+  // Evidence that the custom edges really entered the g2o graph (they are skipped when
+  // their weight is 0 or when no map snapshot is available yet, and a silent skip would
+  // make an A/B look "identical" for the wrong reason).
+  if (cfg_->optim.weight_visual_observability > 0.0 || cfg_->optim.weight_covisibility > 0.0)
+  {
+    ROS_INFO_STREAM_THROTTLE(5.0, "[visual-constraint] lambda_g="
+        << cfg_->optim.weight_visual_observability
+        << " lambda_c=" << cfg_->optim.weight_covisibility
+        << " dt_vis=" << cfg_->optim.visual_dt
+        << " vertices=" << teb_.sizePoses()
+        << " visual_edges=" << n_visual_edges_
+        << " covis_edges=" << n_covis_edges_
+        << " graph_edges=" << optimizer_->edges().size());
+  }
+
+  return true;
 }
+
 
 bool TebOptimalPlanner::optimizeGraph(int no_iterations,bool clear_after)
 {
@@ -941,6 +959,7 @@ void TebOptimalPlanner::AddEdgesVisualObservability()
     e->setDt(vertexExposure(i));
     e->setArrivalTime(vertexArrivalTime(i));
     optimizer_->addEdge(e);
+    n_visual_edges_++;
   }
 }
 
@@ -989,6 +1008,7 @@ void TebOptimalPlanner::AddEdgesCoVisibility()
     e->setTimes(vertexArrivalTime(i), vertexArrivalTime(j));
     e->setParallaxRef(cfg_->optim.visual_parallax_ref_deg);
     optimizer_->addEdge(e);
+    n_covis_edges_++;
   }
 }
 

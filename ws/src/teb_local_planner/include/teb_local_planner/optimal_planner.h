@@ -665,6 +665,10 @@ protected:
   void AddEdgesVisualObservability();
   void AddEdgesCoVisibility();
 
+  /// Number of visual-constraint edges added in the most recent buildGraph() call.
+  int lastVisualEdgeCount() const { return n_visual_edges_; }
+  int lastCoVisibilityEdgeCount() const { return n_covis_edges_; }
+
   /**
    * @brief Attach the (externally owned) visual query and the absolute time origin.
    *
@@ -724,6 +728,8 @@ protected:
   bool initialized_; //!< Keeps track about the correct initialization of this class
 
   // EXPLORB-LOCOBS
+  int n_visual_edges_ = 0;                     //!< edges added by AddEdgesVisualObservability
+  int n_covis_edges_ = 0;                      //!< edges added by AddEdgesCoVisibility
   const IVisualQuery* visual_query_ = nullptr; //!< not owned; refreshed by the ROS layer
   double visual_time_origin_ = 0.0;            //!< absolute time of the first vertex
   bool optimized_; //!< This variable is \c true as long as the last optimization has been completed successful
