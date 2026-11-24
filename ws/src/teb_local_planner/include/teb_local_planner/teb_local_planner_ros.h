@@ -71,6 +71,13 @@
 #include <costmap_2d/costmap_2d_ros.h>
 #include <costmap_converter/costmap_converter_interface.h>
 
+// EXPLORB-LOCOBS: the concrete visual query (visual_query package + ROS inputs).
+// Only compiled when CMake found visual_query; a stock configuration never sees it.
+#ifdef TEB_HAS_VISUAL_QUERY
+#include <memory>
+#include <teb_local_planner/visual_query_adapter.h>
+#endif
+
 
 // dynamic reconfigure
 #include <teb_local_planner/TebLocalPlannerReconfigureConfig.h>

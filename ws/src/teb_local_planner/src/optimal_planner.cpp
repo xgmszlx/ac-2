@@ -903,7 +903,7 @@ void TebOptimalPlanner::AddEdgesTimeOptimal()
 // ---------------------------------------------------------------------------
 double TebOptimalPlanner::vertexArrivalTime(int i) const
 {
-  double t = visual_time_origin_;
+  double t = (visual_time_origin_ > 0.0) ? visual_time_origin_ : VisualQueryRegistry::getTimeOrigin();
   const int n = std::min(i, static_cast<int>(teb_.sizeTimeDiffs()));
   for (int k = 0; k < n; ++k)
     t += teb_.TimeDiff(k);
@@ -924,7 +924,8 @@ void TebOptimalPlanner::AddEdgesVisualObservability()
 {
   if (cfg_->optim.weight_visual_observability <= 0.0)
     return;                       // weight cleared -> the author graph is untouched
-  if (visual_query_ == nullptr || !visual_query_->ready())
+  const IVisualQuery* q = visual_query_ ? visual_query_ : VisualQueryRegistry::get();
+  if (q == nullptr || !q->ready())
     return;                       // no map snapshot yet: behave like stock TEB
 
   Eigen::Matrix<double,1,1> information;
@@ -936,7 +937,7 @@ void TebOptimalPlanner::AddEdgesVisualObservability()
     e->setVertex(0, teb_.PoseVertex(i));
     e->setInformation(information);
     e->setTebConfig(*cfg_);
-    e->setQuery(visual_query_);
+    e->setQuery(q);
     e->setDt(vertexExposure(i));
     e->setArrivalTime(vertexArrivalTime(i));
     optimizer_->addEdge(e);
@@ -947,7 +948,8 @@ void TebOptimalPlanner::AddEdgesCoVisibility()
 {
   if (cfg_->optim.weight_covisibility <= 0.0)
     return;
-  if (visual_query_ == nullptr || !visual_query_->ready())
+  const IVisualQuery* q = visual_query_ ? visual_query_ : VisualQueryRegistry::get();
+  if (q == nullptr || !q->ready())
     return;
 
   const int n = teb_.sizePoses();
@@ -981,7 +983,7 @@ void TebOptimalPlanner::AddEdgesCoVisibility()
     e->setVertex(1, teb_.PoseVertex(j));
     e->setInformation(information);
     e->setTebConfig(*cfg_);
-    e->setQuery(visual_query_);
+    e->setQuery(q);
     e->setWeight(cfg_->optim.weight_covisibility *
                  0.5 * (vertexExposure(i) + vertexExposure(j)));
     e->setTimes(vertexArrivalTime(i), vertexArrivalTime(j));

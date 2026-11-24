@@ -73,6 +73,35 @@ public:
 };
 
 /**
+ * @class VisualQueryRegistry
+ * @brief Process-wide handle to the (externally owned) visual query.
+ *
+ * TEB builds one TebOptimalPlanner per homotopy class, and the ROS layer that owns the
+ * query does not get to poke into each of them. A tiny registry keeps the two decoupled:
+ * the ROS layer publishes "this is the query and this is the absolute time of the first
+ * vertex" once per outer planning cycle, and every optimizer that builds its graph
+ * reads it. The pointer is not owned here.
+ */
+class VisualQueryRegistry
+{
+public:
+  static const IVisualQuery*& instance()
+  {
+    static const IVisualQuery* q = nullptr;
+    return q;
+  }
+  static double& timeOrigin()
+  {
+    static double t = 0.0;
+    return t;
+  }
+  static void set(const IVisualQuery* q) { instance() = q; }
+  static const IVisualQuery* get() { return instance(); }
+  static void setTimeOrigin(double t) { timeOrigin() = t; }
+  static double getTimeOrigin() { return timeOrigin(); }
+};
+
+/**
  * @class EdgeVisualObservability
  * @brief Unary bounded cost on a single pose: penalise poor visual geometry,
  *        proportionally to the exposure time.

@@ -302,7 +302,11 @@ uint32_t TebLocalPlannerROS::computeVelocityCommands(const geometry_msgs::PoseSt
   if (visual_query_)
   {
     visual_query_->refresh();
-    optimizer_.setVisualQuery(visual_query_.get(), ros::Time::now().toSec());
+    // The planner object is created (and re-created) by TEB -- for homotopy class
+    // planning there is one per candidate -- so the query and the absolute time origin
+    // are published through a registry instead of poking into each planner.
+    VisualQueryRegistry::set(visual_query_.get());
+    VisualQueryRegistry::setTimeOrigin(ros::Time::now().toSec());
   }
 #endif
 
