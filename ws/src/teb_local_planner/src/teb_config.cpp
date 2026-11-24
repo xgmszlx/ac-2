@@ -140,6 +140,7 @@ void TebConfig::loadRosParamFromNodeHandle(const ros::NodeHandle& nh)
   nh.param("weight_covisibility", optim.weight_covisibility, optim.weight_covisibility);
   nh.param("visual_dt", optim.visual_dt, optim.visual_dt);
   nh.param("visual_parallax_ref_deg", optim.visual_parallax_ref_deg, optim.visual_parallax_ref_deg);
+  nh.param("visual_covis_stride", optim.visual_covis_stride, optim.visual_covis_stride);
   nh.param("weight_viapoint", optim.weight_viapoint, optim.weight_viapoint);
   nh.param("weight_prefer_rotdir", optim.weight_prefer_rotdir, optim.weight_prefer_rotdir);
   nh.param("weight_adapt_factor", optim.weight_adapt_factor, optim.weight_adapt_factor);

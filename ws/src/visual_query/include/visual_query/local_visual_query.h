@@ -204,7 +204,11 @@ class LocalVisualQuery {
 
   // ---- the two required entry points -------------------------------------
   SingleResult query(const Pose2D& pose, double t) const;
-  PairResult query_pair(const Pose2D& a, double t_a, const Pose2D& b, double t_b) const;
+  /// need_info=false skips the two internal single-pose queries (they only fill
+  /// info_a/info_b, which the co-visibility edge does not use). Each of them costs as
+  /// much as the whole pair, and this function is called ~13 times per numeric Jacobian.
+  PairResult query_pair(const Pose2D& a, double t_a, const Pose2D& b, double t_b,
+                        bool need_info = false) const;
 
   // ---- exposed pieces, used by the self-checks and by the debug logs ------
   double pointWeight(const MapPoint& mp, const Pose2D& pose, double t,

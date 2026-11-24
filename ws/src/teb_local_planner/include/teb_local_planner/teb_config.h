@@ -178,6 +178,7 @@ public:
     double weight_covisibility;         //!< Weight of the binary co-visibility cost (0 = edge never added)
     double visual_dt;                   //!< Fixed perceptual interval (s) between the two poses of a co-visibility edge
     double visual_parallax_ref_deg;     //!< Parallax (deg) below which the co-visibility edge starts to complain
+    int visual_covis_stride = 2;        //!< Add a co-visibility edge only every N-th vertex
     double weight_viapoint; //!< Optimization weight for minimizing the distance to via-points
     double weight_prefer_rotdir; //!< Optimization weight for preferring a specific turning direction (-> currently only activated if an oscillation is detected, see 'oscillation_recovery'
 
@@ -352,6 +353,7 @@ public:
     optim.weight_covisibility = 0;
     optim.visual_dt = 0.45;
     optim.visual_parallax_ref_deg = 3.0;
+    optim.visual_covis_stride = 2;
     optim.weight_viapoint = 1;
     optim.weight_prefer_rotdir = 50;
 

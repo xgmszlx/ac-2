@@ -984,7 +984,12 @@ void TebOptimalPlanner::AddEdgesCoVisibility()
   Eigen::Matrix<double,1,1> information;
   information.fill(1.0);
 
-  for (int i = 0; i < n; ++i)
+  // Only every second vertex starts a pair: the co-visibility edge is a *continuity*
+  // cost, and a 2-pose stride still covers every interval while halving the edge count.
+  // Measured motivation: with one edge per vertex this term alone cost ~1.2 s per
+  // control cycle (numeric Jacobian on two vertices x ~13 evaluations).
+  const int stride = std::max(1, static_cast<int>(cfg_->optim.visual_covis_stride));
+  for (int i = 0; i < n; i += stride)
   {
     // find the first index j whose accumulated time is >= t_i + dt_vis
     double t = 0.0;

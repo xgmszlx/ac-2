@@ -1,0 +1,5 @@
+task,arm,scenario,repeat,git_sha,branch,budget_sim_s,success,n_goal,n_cmd,path_len_m,robot_moved_m,coverage_m2,ate_rmse_m,lost_s,teb_norm,tracking_ok_pct,note
+ab_B0_visual_r1,B0,visual,1,adef6ea,research/explorb-locobs-20261124,230,False,4,328,3.8905031985165466,0.7101052786962335,11.960000356435778,0.3538058869622426,0.0,67.3093,100.0,
+ab_B1_visual_r1,B1,visual,1,adef6ea,research/explorb-locobs-20261124,230,False,4,106,15.017372093419919,2.0657613229007428,36.61000109106303,0.17478723140687,206.46199999999996,1336.58,53.333333333333336,
+ab_Ours_visual_r1,Ours,visual,1,adef6ea,research/explorb-locobs-20261124,230,False,1,2,0.0019049485793296884,0.0018990845586466763,0.0,0.0009091331185639308,0.0,,100.0,
+ab_Ours_no_cov_visual_r1,Ours_no_cov,visual,1,adef6ea,research/explorb-locobs-20261124,230,True,1,96,2.0418649272150464,2.040163116056376,9.230000275075438,0.028908214358913747,0.0,104.267,100.0,

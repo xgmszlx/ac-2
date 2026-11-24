@@ -1,0 +1,16 @@
+# Fixed start->end route for the A/B arms (phase 4.2 of the task book).
+#
+# Times are relative to the moment the agent half starts (so boot jitter cannot change
+# the schedule) and every waypoint was *verified reachable* in the native exploration
+# run p1loop5 (goals.csv #1 reached (2.20,-0.30), #3/#4 reached (5.27,0.87), #0 the
+# start). An earlier version used (2.20,-4.30) and every arm ended with
+# "Failed to find a valid plan" -- a goal-route problem, not a planner result.
+#
+# The route crosses both visual actor corridors of scenario `visual`
+# (panel_a: x=1.6, y in [-2.2,2.4]; panel_b: y=1.2, x in [-2.0,2.6]).
+#
+# Columns: t_sim_rel, x, y, yaw_deg   (map frame, robot spawns at (0,0))
+12.0, 2.20, -0.30, 0.0
+45.0, 5.27, 0.87, 90.0
+80.0, 2.20, -0.30, 180.0
+115.0, 0.10, 0.10, 180.0

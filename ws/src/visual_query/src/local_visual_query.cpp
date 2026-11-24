@@ -294,7 +294,7 @@ SingleResult LocalVisualQuery::query(const Pose2D& pose, double t) const {
 }
 
 PairResult LocalVisualQuery::query_pair(const Pose2D& a, double t_a, const Pose2D& b,
-                                       double t_b) const {
+                                       double t_b, bool need_info) const {
   PairResult out;
   const Eigen::Vector3d ca(a.x, a.y, a.z), cb(b.x, b.y, b.z);
   double sum_min = 0.0, sum_a = 0.0, sum_b = 0.0, wsum = 0.0;
@@ -319,18 +319,21 @@ PairResult LocalVisualQuery::query_pair(const Pose2D& a, double t_a, const Pose2
     par_sum += wm * ang;
     if (wm > 1e-3) par_min = std::min(par_min, ang);
   }
-  SingleResult ia = query(a, t_a);
-  SingleResult ib = query(b, t_b);
-  out.n_a = ia.n_used;
-  out.n_b = ib.n_used;
+  if (need_info)
+  {
+    const SingleResult ia = query(a, t_a);
+    const SingleResult ib = query(b, t_b);
+    out.info_a = ia.info;
+    out.info_b = ib.info;
+    out.n_a = ia.n_used;
+    out.n_b = ib.n_used;
+  }
   out.n_covis = n_cov;
   out.covis = p_.lambda_c * sum_min;
   const double weaker = std::max(kEps, std::min(sum_a, sum_b));
   out.continuity = std::min(1.0, sum_min / weaker);
   out.parallax_mean_deg = wsum > kEps ? par_sum / wsum : 0.0;
   out.parallax_min_deg = n_cov > 0 ? par_min : 0.0;
-  out.info_a = ia.info;
-  out.info_b = ib.info;
   return out;
 }
 

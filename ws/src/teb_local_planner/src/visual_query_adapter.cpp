@@ -219,7 +219,7 @@ void VisualQueryAdapter::coVisibility(double xa, double ya, double theta_a, doub
   visual_query::Pose2D a, b;
   a.x = xa; a.y = ya; a.theta = theta_a; a.z = 0.30;
   b.x = xb; b.y = yb; b.theta = theta_b; b.z = 0.30;
-  const visual_query::PairResult r = query_.query_pair(a, ta, b, tb);
+  const visual_query::PairResult r = query_.query_pair(a, ta, b, tb, /*need_info=*/false);
   if (continuity) *continuity = std::min(1.0, std::max(0.0, r.continuity));
   if (parallax_min_deg) *parallax_min_deg = r.parallax_min_deg;
 }
