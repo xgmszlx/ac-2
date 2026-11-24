@@ -46,7 +46,11 @@
     </node>
 
     <group ns="$(arg namespace)">
-        <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
+        <!-- platform: respawn=true. A throwing local planner kills move_base with
+             SIGABRT (exit code -6, observed 2026-11-25); with respawn=false the whole
+             closed loop then goes silent for the rest of the run (no costmap, no
+             make_plan service, robot parked). -->
+        <node pkg="move_base" type="move_base" respawn="true" respawn_delay="3" name="move_base_node" output="screen">
             <!-- platform: the TurtleBot3 diff-drive plugin listens on /cmd_vel (root namespace) -->
             <remap from="cmd_vel" to="/cmd_vel"/>
             <remap from="move_base_node/TebLocalPlannerROS/global_plan" to="move_base_node/global_plan"/>

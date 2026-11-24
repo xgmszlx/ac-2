@@ -29,7 +29,7 @@ from nav_msgs.msg import Odometry, OccupancyGrid
 from actionlib_msgs.msg import GoalID
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseActionResult
 from gazebo_msgs.msg import ModelStates
-from std_msgs.msg import Float64MultiArray
+from nav_msgs.msg import Path as NavPath
 from rosgraph_msgs.msg import Clock
 
 try:
@@ -112,7 +112,10 @@ class Recorder(object):
         if ORBState is not None:
             rospy.Subscriber('/%s/info/state' % self.slam_ns(), ORBState, self.on_state, queue_size=20)
         rospy.Subscriber('/gridmapper/rectified_map', OccupancyGrid, self.on_map, queue_size=5)
-        rospy.Subscriber('/%s/move_base_node/global_plan' % robot_ns, Float64MultiArray,
+        # platform: move_base publishes the global plan as nav_msgs/Path (it was
+        # subscribed as Float64MultiArray, so roscpp dropped the connection and
+        # path_len stayed 0.0 in coverage.csv).
+        rospy.Subscriber('/%s/move_base_node/global_plan' % robot_ns, NavPath,
                          self.on_plan_len, queue_size=5)
         rospy.Timer(rospy.Duration(1.0), self.on_clock)
 
@@ -176,9 +179,10 @@ class Recorder(object):
             self.state.row(rospy.get_time(), msg.state, str(msg.state), rospy.get_time() - self.t0)
 
     def on_plan_len(self, msg):
-        # move_base publishes its current global plan; count points as a sanity signal only
+        # move_base publishes its current global plan (nav_msgs/Path); the number of
+        # poses is a sanity signal, the actual length comes from odom integration.
         try:
-            self.n_path_pts = len(msg.data) // 2
+            self.n_path_pts = len(msg.poses)
         except Exception:
             pass
 

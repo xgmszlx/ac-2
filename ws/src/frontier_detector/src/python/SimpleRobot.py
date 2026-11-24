@@ -62,7 +62,8 @@ class Robot:
                 self.pose.orientation.w = rot[3]
                 cond = 1
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-                rospy.logerr(tf.LookupException)
+                rospy.logerr_throttle(2.0, str(tf.LookupException))
+                rospy.sleep(0.02)   # platform: do not spin a core while waiting for TF
                 cond = 0
         rospy.loginfo(rospy.get_name() + ': Robot Class received the robot transform.')
 
@@ -107,7 +108,8 @@ class Robot:
                 self.pose.orientation.w = rot[3]
                 cond = 1
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-                rospy.logerr(tf.LookupException)
+                rospy.logerr_throttle(2.0, str(tf.LookupException))
+                rospy.sleep(0.02)   # platform: do not spin a core while waiting for TF
                 cond = 0
 
         return self.pose

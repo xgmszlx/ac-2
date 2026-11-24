@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>visual_query</name>
+  <version>0.1.0</version>
+  <description>
+    Pure C++ local visual-observability query for the TEB local trajectory optimiser:
+    a bounded downsampled map snapshot, a smooth four-factor point weight
+    (w_fov * w_stat * w_dyn(t) * w_rel), query(pose, time) and query_pair().
+    Read-only with respect to ORB-SLAM: it only consumes a snapshot.
+  </description>
+  <maintainer email="research@example.org">local</maintainer>
+  <license>GPL-3.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>eigen</depend>
+
+  <export>
+  </export>
+</package>

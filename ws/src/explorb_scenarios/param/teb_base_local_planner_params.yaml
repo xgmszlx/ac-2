@@ -25,7 +25,11 @@ TebLocalPlannerROS:
   min_turning_radius: 0.0
   footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
     type: "circular"
-    radius: 0.15
+    # platform: TurtleBot3 Waffle. The author value (0.15) was smaller than the
+    # costmap's own inscribed radius (0.225 with padding), which TEB warns about and
+    # then fails on ("Infeasible optimization results might occur frequently"); on
+    # this machine that surfaced as move_base dying with exit code -6 (SIGABRT).
+    radius: 0.22
 
   # GoalTolerance
   xy_goal_tolerance: 0.28 # 0.2 m in each direction
@@ -33,7 +37,7 @@ TebLocalPlannerROS:
   free_goal_vel: False
 
   # Obstacles
-  min_obstacle_dist: 0.05
+  min_obstacle_dist: 0.10   # platform: keeps radius + min_obstacle_dist >= 0.22
   include_costmap_obstacles: True
   inflation_dist: 0.0 # Costmap is already inflated!
   costmap_obstacles_behind_robot_dist: 1.0
