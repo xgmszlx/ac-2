@@ -599,6 +599,18 @@ gen1/gen2 的运行目录已被同名覆盖，但编排窗口在 `~/.dsh_heavy/A
 **离线无法再进一步判定 ② 的残差（该格当时的 lethal 值），因为那一代的 run 目录已被同名覆盖**
 （快照只有日志与 CSV，没有 costmap 快照）——这条如实写在这里，不臆测。
 
+**正确做法（已实现为工具，本轮来不及跑）：`tools/preflight_route.sh`**
+
+与其从外面猜，不如直接问规划器。该脚本在 episode 内、agent 半边启动**之前**，
+对路线里每个点发一次 `NavfnROS/make_plan`（起点=当前机器人位姿），记录
+`t_route,x,y,plan_points,status` 到 `results/route_preflight.csv`，
+并用 `--keep-only-reachable` 只保 `plan_points>0` 的点生成可用路线；
+`tools/run_ab.sh` 的 `PREFLIGHT=1` 会自动调用它，并把结果复制进每个
+`results/runs/<task>/route_preflight.csv`（审稿人可看到"路线在跑之前是通的"）。
+脚本本身已 `bash -n` 通过；**本轮因 03:30/04:00 的时间盒已过、且我用的是单航点路线，
+没有现场跑它** —— 这一点如实记录。等价的事后证据是 `results/goal_outcomes.csv`：
+最终路线的那一个航点在四臂上分别是 `3/3`、`4/4`、`4/4`、`4/4` 到达。
+
 **处置（已执行，且符合"一条能跑完的路线 > 一条永远失败的路线"）**：最终代的固定路线缩成
 **单航点 `(2.20, −0.30)`**（t=12 s 相对时刻下发，实测四臂全部 `status=3`），
 总长 2 m，直线段跨过 `visual_panel_a` 的 x=1.6 走廊，保留"动态横穿"的设计意图。

@@ -42,6 +42,21 @@ fi
 
 export PATH=/home/wcqw/.dsh_heavy:$PATH
 GOALS_CSV=$LINE_ROOT/results/fixed_goals_ab.csv
+
+# ---- route pre-flight ------------------------------------------------------------
+# A route containing a waypoint NavFn cannot plan to wastes the whole round (observed
+# three times). PREFLIGHT=1 runs tools/preflight_route.sh once, inside an episode, before
+# the arms and keeps only the waypoints with plan_points > 0.
+if [ "${PREFLIGHT:-0}" = "1" ]; then
+    echo "[ab] pre-flight: verifying every waypoint with NavfnROS/make_plan ..."
+    if ! bash "$LINE_ROOT/tools/preflight_route.sh" "$GOALS_CSV" \
+            "$LINE_ROOT/results/route_preflight.csv" \
+            --keep-only-reachable "$LINE_ROOT/results/fixed_goals_reachable.csv"; then
+        echo "[ab] pre-flight: at least one waypoint has no plan -- using the filtered route"
+        GOALS_CSV=$LINE_ROOT/results/fixed_goals_reachable.csv
+    fi
+    export FIXED_GOALS_CSV=$GOALS_CSV
+fi
 TABLE=$LINE_ROOT/results/ab_table_v2.csv
 GIT_SHA=$(git -C "$LINE_ROOT" rev-parse --short HEAD)
 BRANCH=$(git -C "$LINE_ROOT" rev-parse --abbrev-ref HEAD)
@@ -91,6 +106,11 @@ for arm in "${ARMS[@]}"; do
         [ -n "$RUN_DIR" ] || RUN_DIR="$LINE_ROOT/results/runs/$TASK"
         TASK=$(basename "$RUN_DIR")
         echo "[ab] resolved run dir: $RUN_DIR"
+        # keep the route pre-flight inside the run directory too, so a reviewer can see
+        # that the route was verified *before* the episode
+        if [ -f "$LINE_ROOT/results/route_preflight.csv" ] && [ -d "$RUN_DIR" ]; then
+            cp "$LINE_ROOT/results/route_preflight.csv" "$RUN_DIR/route_preflight.csv" 2>/dev/null
+        fi
         # keep the source-TEB gate evidence inside the run directory (machine proof that
         # this episode ran on the workspace build, per the orchestrator's P0)
         if [ -f "$LINE_ROOT/logs/gate_preflight_gate.log" ] && [ -d "$RUN_DIR" ]; then
