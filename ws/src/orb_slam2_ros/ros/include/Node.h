@@ -92,6 +92,10 @@ class Node
     const orb_slam2_ros::ORBState toORBStateMessage(int trackingState);
 
     void OdomCallback(const nav_msgs::Odometry::ConstPtr& msg);
+    // EXPLORB-LOCOBS: single shared dynamic-pixel-mask input (sensor_msgs/Image, mono8,
+    // non-zero = dynamic). Only subscribed when the ~use_dynamic_mask param is true, so
+    // with the switch off the frontend is byte-identical to the author's.
+    void DynamicMaskCallback(const sensor_msgs::Image::ConstPtr& msg);
 
     void PublishPositionAsTransform (cv::Mat position);
     void PublishPositionAsPoseStamped(cv::Mat position);
@@ -129,6 +133,10 @@ class Node
     ros::Publisher point_publisher_;
 
     ros::Subscriber odom_subscriber_;
+    ros::Subscriber dynamic_mask_subscriber_;
+    bool use_dynamic_mask_param_ = false;
+    std::string dynamic_mask_topic_param_;
+    long unsigned int n_dynamic_mask_msgs_ = 0;
 
     ros::ServiceServer service_server_;
 

@@ -30,6 +30,9 @@
     <arg name="exploring_time"  default="9000"/>
     <arg name="hallucinated_plan_th" default="60"/>
     <arg name="delay_after_assignment" default="0.5"/>
+    <!-- phase 1.2/1.3 of the task book: one shared perception base for every arm -->
+    <arg name="use_dynamic_mask" default="true"/>
+    <arg name="with_export"      default="true"/>
 
     <include file="$(find frontier_detector)/launch/frontiers.launch">
         <arg name="map_topic_name"  value="$(arg map_topic_name)"/>
@@ -38,6 +41,27 @@
         <arg name="gpu"             value="$(arg gpu)"/>
         <arg name="camera_type"     value="$(arg camera_type)"/>
     </include>
+
+    <!-- Perception-only dynamic pixel mask: the single shared input that the ORB-SLAM
+         frontend filters with (orb_slam2_ros/use_dynamic_mask). Both arms run with the
+         same value, so no A/B difference can come from the mask.
+         NOTE: it is built from depth and ego-motion only, never from simulator truth. -->
+    <group if="$(arg use_dynamic_mask)">
+        <node pkg="explorb_scenarios" type="dynamic_mask.py" name="dynamic_mask" output="screen">
+            <param name="run_dir" value="$(arg run_dir)"/>
+            <param name="rate"    value="10.0"/>
+        </node>
+    </group>
+
+    <!-- Read-only export (map points, keyframes, edges, pose+state, intrinsics/extrinsics,
+         static occupancy). No C++ change, no effect on the estimator. -->
+    <group if="$(arg with_export)">
+        <node pkg="explorb_scenarios" type="slam_export.py" name="slam_export" output="screen">
+            <param name="run_dir"     value="$(arg run_dir)"/>
+            <param name="camera_type" value="$(arg camera_type)"/>
+            <param name="rate"        value="5.0"/>
+        </node>
+    </group>
 
     <node pkg="decision_maker" type="GraphDrawer.py" name="G_publisher" output="screen">
         <param name="camera_type" value="$(arg camera_type)"/>

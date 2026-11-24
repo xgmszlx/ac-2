@@ -60,6 +60,21 @@ void Node::Init () {
     // Robot odometry subscriber
     odom_subscriber_ = node_handle_.subscribe<nav_msgs::Odometry>("/odom", 10, &Node::OdomCallback, this);
 
+    // EXPLORB-LOCOBS: the shared dynamic-pixel-mask switch. Both arms of the A/B run
+    // use exactly this one path; turning it off makes the frontend identical to the
+    // author's (no subscriber is even created).
+    if (use_dynamic_mask_param_)
+    {
+        ROS_INFO_STREAM ("[" << name_of_node_ << "] dynamic pixel mask ENABLED from topic "
+                         << dynamic_mask_topic_param_);
+        dynamic_mask_subscriber_ = node_handle_.subscribe<sensor_msgs::Image>(
+            dynamic_mask_topic_param_, 2, &Node::DynamicMaskCallback, this);
+    }
+    else
+    {
+        ROS_INFO_STREAM ("[" << name_of_node_ << "] dynamic pixel mask DISABLED (author frontend)");
+    }
+
     // Graph publisher
     vertex_publisher_ = node_handle_.advertise<std_msgs::Float64MultiArray> (name_of_node_+"/vertex_list", 1);
     edge_publisher_ = node_handle_.advertise<std_msgs::Float64MultiArray> (name_of_node_+"/edge_list", 1);
@@ -69,6 +84,9 @@ void Node::Init () {
 
 
 void Node::initializeParams(ros::NodeHandle &nh){
+    nh.param<bool>(name_of_node_+ "/use_dynamic_mask", use_dynamic_mask_param_, false);
+    nh.param<std::string>(name_of_node_+ "/dynamic_mask_topic", dynamic_mask_topic_param_,
+                          name_of_node_ + "/dynamic_mask");
     nh.param<bool>(name_of_node_+ "/publish_pointcloud", publish_pointcloud_param_, true);
     nh.param<bool>(name_of_node_+ "/publish_pose", publish_pose_param_, true);
     nh.param<bool>(name_of_node_+ "/publish_tf", publish_tf_param_, true);
@@ -501,6 +519,36 @@ sensor_msgs::PointCloud2 Node::MapPointsToPointCloud (std::vector<ORB_SLAM2::Map
     }
 
     return cloud;
+}
+
+
+// EXPLORB-LOCOBS: forward the external dynamic-pixel mask to the tracker. This is a
+// filter on the *feature extraction entry* only: nothing here touches matching
+// policies, keyframe insertion, local mapping or BA.
+void Node::DynamicMaskCallback(const sensor_msgs::Image::ConstPtr& msg)
+{
+    if (!orb_slam_)
+        return;
+    cv::Mat mask;
+    try
+    {
+        cv_bridge::CvImageConstPtr cv_ptr = cv_bridge::toCvShare(msg);
+        if (cv_ptr->image.channels() != 1)
+            cv::cvtColor(cv_ptr->image, mask, CV_BGR2GRAY);
+        else
+            mask = cv_ptr->image.clone();
+    }
+    catch (cv_bridge::Exception& e)
+    {
+        ROS_ERROR("dynamic mask: cv_bridge exception: %s", e.what());
+        return;
+    }
+    orb_slam_->SetDynamicMask(mask);
+    n_dynamic_mask_msgs_++;
+    if (n_dynamic_mask_msgs_ == 1 || (n_dynamic_mask_msgs_ % 300) == 0)
+        ROS_INFO_STREAM("[" << name_of_node_ << "] dynamic masks received: " << n_dynamic_mask_msgs_
+                        << " (last " << mask.cols << "x" << mask.rows
+                        << ", masked px " << cv::countNonZero(mask) << ")");
 }
 
 

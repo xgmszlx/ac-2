@@ -77,6 +77,10 @@ public:
     void SetLocalMapper(LocalMapping* pLocalMapper);
     void SetLoopClosing(LoopClosing* pLoopClosing);
     void SetMinimumKeyFrames (int min_num_kf) {mnMinimumKeyFrames = min_num_kf;}
+    // EXPLORB-LOCOBS: hand over the external dynamic-pixel mask. The newest mask is
+    // used for the next RGBD frame; tracking never reads anything else from it.
+    void SetDynamicMask(const cv::Mat &mask);
+    long unsigned int GetDynamicMaskedOutTotal() const {return mnDynamicMaskedOutTotal;}
 
     // Load new settings
     // The focal lenght should be similar or scale prediction will fail when projecting points
@@ -107,6 +111,11 @@ public:
     // Current Frame
     Frame mCurrentFrame;
     cv::Mat mImGray;
+
+    // EXPLORB-LOCOBS: external dynamic-pixel mask plumbing (see Frame::ApplyDynamicMask)
+    cv::Mat mDynamicMask;                        // latest mask received from the mask node
+    mutable std::mutex mMaskMutex;               // the ROS thread writes, tracking reads
+    long unsigned int mnDynamicMaskedOutTotal = 0;
 
     // Initialization Variables (Monocular)
     std::vector<int> mvIniLastMatches;

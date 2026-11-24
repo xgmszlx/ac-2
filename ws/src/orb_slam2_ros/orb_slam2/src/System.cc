@@ -472,6 +472,13 @@ void System::SaveTrajectoryKITTI(const string &filename)
     cout << endl << "trajectory saved!" << endl;
 }
 
+void System::SetDynamicMask(const cv::Mat &mask)
+{
+    if(mpTracker)
+        mpTracker->SetDynamicMask(mask);
+}
+
+
 void System::SetMinimumKeyFrames (int min_num_kf) {
   mpTracker->SetMinimumKeyFrames(min_num_kf);
 }

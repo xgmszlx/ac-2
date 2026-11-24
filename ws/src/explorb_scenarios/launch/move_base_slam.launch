@@ -10,6 +10,23 @@
 
     <arg name="namespace"/>
     <arg name="paused" default="false"/>
+    <!-- The single shared dynamic-pixel-mask switch of this line (task book phase 1.2).
+         Both arms run with the same value, so the comparison keeps one perception base.
+         use_dynamic_mask:=false restores the author frontend byte for byte. -->
+    <arg name="use_dynamic_mask" default="true"/>
+    <arg name="dynamic_mask_topic" default="/orb_slam2_rgbd/dynamic_mask"/>
+
+    <!-- EXPLORB-LOCOBS: the four A/B arms differ ONLY in these TEB-side weights (the
+         perception base, the mask, the costmap and the decision layer are shared):
+           B0            lambda_g=0    lambda_c=0    dynamic=any (edges never added)
+           B1            lambda_g>0    lambda_c>0    visual_use_dynamic=false
+           Ours          lambda_g>0    lambda_c>0    visual_use_dynamic=true
+           Ours_no_cov   lambda_g>0    lambda_c=0    visual_use_dynamic=true
+         In every arm the goal sequence is the fixed one produced by goto_goal.py. -->
+    <arg name="lambda_g"           default="0.0"/>
+    <arg name="lambda_c"           default="0.0"/>
+    <arg name="visual_use_dynamic" default="true"/>
+    <arg name="visual_dt"          default="0.45"/>
 
     <param name="use_sim_time" value="true" />
 
@@ -43,6 +60,10 @@
         <param name="ThDepth" type="double" value="30.0" />
         <param name="depth_map_factor" type="double" value="1.0" />
         <param name="load_calibration_from_cam" type="bool" value="true" />
+
+        <!-- EXPLORB-LOCOBS: unified external dynamic pixel mask -->
+        <param name="use_dynamic_mask" type="bool" value="$(arg use_dynamic_mask)" />
+        <param name="dynamic_mask_topic" type="string" value="$(arg dynamic_mask_topic)" />
     </node>
 
     <group ns="$(arg namespace)">
@@ -66,6 +87,12 @@
             <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
             <param name="controller_frequency" value="10.0" />
             <rosparam file="$(find explorb_scenarios)/param/teb_base_local_planner_params.yaml" command="load" />
+
+            <!-- EXPLORB-LOCOBS visual-constraint weights (see the args above) -->
+            <param name="TebLocalPlannerROS/weight_visual_observability" value="$(arg lambda_g)"/>
+            <param name="TebLocalPlannerROS/weight_covisibility"         value="$(arg lambda_c)"/>
+            <param name="TebLocalPlannerROS/visual_dt"                   value="$(arg visual_dt)"/>
+            <param name="TebLocalPlannerROS/visual_use_dynamic"          value="$(arg visual_use_dynamic)"/>
 
             <param name="max_planning_retries" value="1"/>
             <param name="recovery_behavior_enabled" value="false"/>

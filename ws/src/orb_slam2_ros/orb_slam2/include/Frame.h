@@ -52,13 +52,22 @@ public:
     Frame(const cv::Mat &imLeft, const cv::Mat &imRight, const double &timeStamp, ORBextractor* extractorLeft, ORBextractor* extractorRight, ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth);
 
     // Constructor for RGB-D cameras.
-    Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth);
+    // EXPLORB-LOCOBS: the optional dynamicMask is the *single* shared entry point for
+    // the external dynamic-pixel mask. Empty mask (the default) => byte-identical
+    // behaviour to the author's frontend, which is what keeps the two arms fair.
+    Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth, const cv::Mat &dynamicMask = cv::Mat());
 
     // Constructor for Monocular cameras.
     Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth);
 
     // Extract ORB on the image. 0 for left image and 1 for right image.
     void ExtractORB(int flag, const cv::Mat &im);
+    // Drop the keypoints (and their descriptor rows) that fall inside the external
+    // dynamic mask. Applied once, immediately after extraction, before any matching,
+    // keyframe insertion, local mapping or BA sees the frame.
+    int ApplyDynamicMask(const cv::Mat &mask);
+    /// Keypoints dropped by the external dynamic mask in this frame (0 = no mask).
+    int mnDynamicMaskedOut = 0;
 
     // Compute Bag of Words representation.
     void ComputeBoW();

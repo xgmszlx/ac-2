@@ -185,6 +185,13 @@ cv::Mat Tracking::GrabImageStereo(const cv::Mat &imRectLeft, const cv::Mat &imRe
 }
 
 
+void Tracking::SetDynamicMask(const cv::Mat &mask)
+{
+    std::lock_guard<std::mutex> lock(mMaskMutex);
+    mDynamicMask = mask.clone();
+}
+
+
 cv::Mat Tracking::GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, const double &timestamp)
 {
     mImGray = imRGB;
@@ -210,7 +217,16 @@ cv::Mat Tracking::GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, const d
 
     imDepth_ = imDepth.clone();
 
-    mCurrentFrame = Frame(mImGray,imDepth,timestamp,mpORBextractorLeft,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
+    // EXPLORB-LOCOBS: copy the newest external mask under the lock, then hand it to the
+    // frame constructor. An empty mask (no mask node, or use_dynamic_mask:=false) means
+    // the frontend behaves exactly as the author's.
+    cv::Mat dynamicMask;
+    {
+        std::lock_guard<std::mutex> lock(mMaskMutex);
+        dynamicMask = mDynamicMask;
+    }
+
+    mCurrentFrame = Frame(mImGray,imDepth,timestamp,mpORBextractorLeft,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth,dynamicMask);
 
     // ---------------------------------------------------------------------
     // observation-only instrumentation added by the localization line: it
@@ -237,6 +253,8 @@ cv::Mat Tracking::GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, const d
                       << " depth_px_sampled_valid=" << nPixValid
                       << " state=" << mState
                       << " gray_mean=" << cv::mean(mImGray)[0]
+                      << " masked_out=" << mCurrentFrame.mnDynamicMaskedOut
+                      << " mask_active=" << (dynamicMask.empty()?0:1)
                       << std::endl;
         }
     }

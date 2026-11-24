@@ -116,7 +116,7 @@ Frame::Frame(const cv::Mat &imLeft, const cv::Mat &imRight, const double &timeSt
     AssignFeaturesToGrid();
 }
 
-Frame::Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth)
+Frame::Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth, const cv::Mat &dynamicMask)
     :mpORBvocabulary(voc),mpORBextractorLeft(extractor),mpORBextractorRight(static_cast<ORBextractor*>(NULL)),
      mTimeStamp(timeStamp), mK(K.clone()),mDistCoef(distCoef.clone()), mbf(bf), mThDepth(thDepth)
 {
@@ -189,6 +189,14 @@ Frame::Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extra
 
     // ORB extraction
     ExtractORB(0,imGray);
+
+    // EXPLORB-LOCOBS: unified external dynamic-pixel mask. This is the only place a
+    // mask is applied, and it is applied to the extraction result, i.e. before the
+    // frame is matched, before keyframe insertion, and long before local mapping or
+    // BA. An empty mask leaves the frame exactly as the author left it.
+    mnDynamicMaskedOut = 0;
+    if(!dynamicMask.empty())
+        mnDynamicMaskedOut = ApplyDynamicMask(dynamicMask);
 
     N = mvKeys.size();
 
@@ -708,3 +716,62 @@ void Frame::saveData(cv::Mat& imDepth){
 }
 
 } //namespace ORB_SLAM
+
+
+// ---------------------------------------------------------------------------
+// EXPLORB-LOCOBS: unified external dynamic-pixel mask (read the header comment of
+// the RGBD constructor). The mask is a CV_8U image, non-zero = "do not extract here".
+// Keypoints and their descriptor rows are filtered together so that all downstream
+// consumers keep the invariant mvKeys[i] <-> mDescriptors.row(i).
+// ---------------------------------------------------------------------------
+int Frame::ApplyDynamicMask(const cv::Mat &mask)
+{
+    if(mvKeys.empty())
+        return 0;
+
+    cv::Mat m8;
+    if(mask.type() != CV_8U)
+        mask.convertTo(m8, CV_8U);
+    else
+        m8 = mask;
+    if(m8.channels() != 1)
+        cv::extractChannel(m8, m8, 0);
+
+    const int mw = m8.cols;
+    const int mh = m8.rows;
+
+    std::vector<cv::KeyPoint> keptKeys;
+    keptKeys.reserve(mvKeys.size());
+    std::vector<int> keepIdx;
+    keepIdx.reserve(mvKeys.size());
+
+    for(size_t i = 0; i < mvKeys.size(); i++)
+    {
+        const cv::KeyPoint &kp = mvKeys[i];
+        const int u = static_cast<int>(kp.pt.x + 0.5f);
+        const int v = static_cast<int>(kp.pt.y + 0.5f);
+        bool masked = false;
+        if(u >= 0 && v >= 0 && u < mw && v < mh)
+            masked = (m8.at<unsigned char>(v, u) != 0);
+        if(!masked)
+        {
+            keptKeys.push_back(kp);
+            keepIdx.push_back(static_cast<int>(i));
+        }
+    }
+
+    const int nRemoved = static_cast<int>(mvKeys.size() - keptKeys.size());
+    if(nRemoved <= 0)
+        return 0;
+
+    if(mDescriptors.rows == static_cast<int>(mvKeys.size()))
+    {
+        cv::Mat desc(static_cast<int>(keepIdx.size()), mDescriptors.cols, mDescriptors.type());
+        for(size_t i = 0; i < keepIdx.size(); i++)
+            mDescriptors.row(keepIdx[i]).copyTo(desc.row(static_cast<int>(i)));
+        mDescriptors = desc;
+    }
+
+    mvKeys.swap(keptKeys);
+    return nRemoved;
+}

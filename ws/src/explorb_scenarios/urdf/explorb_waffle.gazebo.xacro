@@ -68,7 +68,13 @@
       <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <odometrySource>world</odometrySource>
-      <publishOdomTF>true</publishOdomTF>
+      <!-- platform: MUST stay false. ORB-SLAM publishes map -> base_footprint (the
+           estimator owns the map pose); if the wheel plugin also publishes
+           odom -> base_footprint, the frame has two parents and tf2 keeps swapping
+           between two unconnected trees. Observed consequence: move_base's costmap
+           logs "Connectivity Error looking up robot pose" and never plans, while the
+           nodes that happen to catch a good instant work - a flapping tree. -->
+      <publishOdomTF>false</publishOdomTF>
       <robotBaseFrame>base_footprint</robotBaseFrame>
       <publishWheelTF>false</publishWheelTF>
       <publishTf>true</publishTf>
