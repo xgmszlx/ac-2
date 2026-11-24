@@ -135,6 +135,14 @@ Frame::Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeSt
     // ORB extraction
     ExtractORB(0,imGray);
 
+    // EXPLORB-LOCOBS: unified external dynamic-pixel mask. This is the only place a
+    // mask is applied: to the extraction result, i.e. before the frame is matched,
+    // before keyframe insertion, and long before local mapping or BA. An empty mask
+    // leaves the frame exactly as the author left it.
+    mnDynamicMaskedOut = 0;
+    if(!dynamicMask.empty())
+        mnDynamicMaskedOut = ApplyDynamicMask(dynamicMask);
+
     N = mvKeys.size();
 
     if(mvKeys.empty())
@@ -189,14 +197,6 @@ Frame::Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extra
 
     // ORB extraction
     ExtractORB(0,imGray);
-
-    // EXPLORB-LOCOBS: unified external dynamic-pixel mask. This is the only place a
-    // mask is applied, and it is applied to the extraction result, i.e. before the
-    // frame is matched, before keyframe insertion, and long before local mapping or
-    // BA. An empty mask leaves the frame exactly as the author left it.
-    mnDynamicMaskedOut = 0;
-    if(!dynamicMask.empty())
-        mnDynamicMaskedOut = ApplyDynamicMask(dynamicMask);
 
     N = mvKeys.size();
 
@@ -715,15 +715,6 @@ void Frame::saveData(cv::Mat& imDepth){
     myfile.close();
 }
 
-} //namespace ORB_SLAM
-
-
-// ---------------------------------------------------------------------------
-// EXPLORB-LOCOBS: unified external dynamic-pixel mask (read the header comment of
-// the RGBD constructor). The mask is a CV_8U image, non-zero = "do not extract here".
-// Keypoints and their descriptor rows are filtered together so that all downstream
-// consumers keep the invariant mvKeys[i] <-> mDescriptors.row(i).
-// ---------------------------------------------------------------------------
 int Frame::ApplyDynamicMask(const cv::Mat &mask)
 {
     if(mvKeys.empty())
@@ -775,3 +766,5 @@ int Frame::ApplyDynamicMask(const cv::Mat &mask)
     mvKeys.swap(keptKeys);
     return nRemoved;
 }
+
+} //namespace ORB_SLAM

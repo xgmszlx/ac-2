@@ -43,12 +43,26 @@ source "$LINE_ROOT/ws/devel/setup.bash"
 # Filter.py blocked in wait_for_service(make_plan), no goal, no cmd_vel) followed from it.
 # Re-prepending the prefix here keeps both the workspace and the local prefix visible.
 # ---------------------------------------------------------------------------
-export ROS_PACKAGE_PATH="$LINE_ROOT/localroot/opt/ros/noetic/share:$ROS_PACKAGE_PATH"
+# order matters: the *workspace* copy of teb_local_planner (source build, with the two
+# visual-constraint edges) must win over the deb-extracted copy in the local prefix.
+export ROS_PACKAGE_PATH="$LINE_ROOT/ws/src:$LINE_ROOT/localroot/opt/ros/noetic/share:/opt/ros/noetic/share"
+# same for the runtime library: ws/devel/lib must precede the local prefix, otherwise
+# pluginlib/dlopen loads the deb's libteb_local_planner.so and the edges silently vanish.
+export LD_LIBRARY_PATH="$LINE_ROOT/ws/devel/lib:$LINE_ROOT/localroot/opt/ros/noetic/lib:$LINE_ROOT/localroot/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH"
 if ! rospack find teb_local_planner >/dev/null 2>&1; then
     echo "[run_task] ERROR: teb_local_planner is not discoverable - move_base would start without"
     echo "[run_task]        its local planner (see the ROS_PACKAGE_PATH note above)."
 fi
 echo "[run_task] teb_local_planner -> $(rospack find teb_local_planner 2>/dev/null || echo MISSING)"
+# deb-vs-source evidence, as the brief asks for (phase 2.2)
+TEBPKG=$(rospack find teb_local_planner 2>/dev/null)
+case "$TEBPKG" in
+    "$LINE_ROOT/ws/src/"*) echo "[run_task] teb source : SOURCE (workspace build)" ;;
+    "") echo "[run_task] teb source : MISSING" ;;
+    *)  echo "[run_task] teb source : DEB ($TEBPKG)" ;;
+esac
+ls -l "$LINE_ROOT/ws/devel/lib/libteb_local_planner.so" 2>/dev/null \
+    && echo "[run_task] teb lib     : $(ldd "$LINE_ROOT/ws/devel/lib/libteb_local_planner.so" | grep -c '=>') deps resolved"
 
 RUN_DIR="$LINE_ROOT/results/runs/$TASK_ID"
 mkdir -p "$RUN_DIR"

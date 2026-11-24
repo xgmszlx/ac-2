@@ -68,6 +68,11 @@
 #include <nav_msgs/Odometry.h>
 #include <limits.h>
 
+// EXPLORB-LOCOBS: the two visual-constraint edge types (must be included at global
+// scope -- including it below the `namespace teb_local_planner` opening line would pull
+// the whole g2o header tree into that namespace and break every g2o symbol).
+#include <teb_local_planner/g2o_types/edge_visual_observability.h>
+
 namespace teb_local_planner
 {
 
@@ -97,8 +102,6 @@ typedef std::vector< Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> 
  *        However, we have not tested this mode intensively yet, so we keep
  *        the legacy fast mode as default until we finish our tests.
  */
-#include <teb_local_planner/g2o_types/edge_visual_observability.h>
-
 class TebOptimalPlanner : public PlannerInterface
 {
 public:
