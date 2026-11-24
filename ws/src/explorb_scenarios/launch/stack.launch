@@ -17,6 +17,10 @@
     <arg name="with_recorder" default="true"/>
     <arg name="with_actors" default="true"/>
     <arg name="run_dir"     default="$(env HOME)/explorb_line_20261121/results/runs/$(arg task_id)"/>
+    <arg name="with_fixed_goals" default="false"/>
+    <arg name="fixed_goals_csv"  default=""/>
+    <arg name="use_dynamic_mask" default="true"/>
+    <arg name="with_decision_maker" default="true"/>
 
     <include file="$(find explorb_scenarios)/launch/agent.launch">
         <arg name="robot_namespace" value="$(arg robot_ns)"/>
@@ -24,6 +28,10 @@
         <arg name="strategy_seed"   value="$(arg seed)"/>
         <arg name="run_dir"         value="$(arg run_dir)"/>
         <arg name="exploring_time"  value="9000"/>
+        <arg name="with_fixed_goals" value="$(arg with_fixed_goals)"/>
+        <arg name="fixed_goals_csv"  value="$(arg fixed_goals_csv)"/>
+        <arg name="use_dynamic_mask" value="$(arg use_dynamic_mask)"/>
+        <arg name="with_decision_maker" value="$(arg with_decision_maker)"/>
     </include>
 
     <node pkg="explorb_scenarios" type="budget_guard.py" name="budget_guard" output="screen">

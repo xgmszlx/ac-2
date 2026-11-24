@@ -33,6 +33,13 @@
     <!-- phase 1.2/1.3 of the task book: one shared perception base for every arm -->
     <arg name="use_dynamic_mask" default="true"/>
     <arg name="with_export"      default="true"/>
+    <!-- Optional fixed start/end route (phase 4.2 comparisons). Off by default so the
+         native exploration run is unchanged. -->
+    <arg name="with_fixed_goals" default="false"/>
+    <arg name="fixed_goals_csv"  default=""/>
+    <!-- With a fixed goal route the author's decision maker must not also dispatch
+         frontier goals, otherwise two goal sources fight over move_base. -->
+    <arg name="with_decision_maker" default="true"/>
 
     <include file="$(find frontier_detector)/launch/frontiers.launch">
         <arg name="map_topic_name"  value="$(arg map_topic_name)"/>
@@ -63,10 +70,18 @@
         </node>
     </group>
 
+    <group if="$(arg with_fixed_goals)">
+        <node pkg="explorb_scenarios" type="goto_goal.py" name="goto_goal" output="screen">
+            <param name="run_dir"   value="$(arg run_dir)"/>
+            <param name="goals_csv" value="$(arg fixed_goals_csv)"/>
+        </node>
+    </group>
+
     <node pkg="decision_maker" type="GraphDrawer.py" name="G_publisher" output="screen">
         <param name="camera_type" value="$(arg camera_type)"/>
     </node>
 
+    <group if="$(arg with_decision_maker)">
     <node pkg="decision_maker" type="Controller.py" name="decision_maker" output="screen">
         <param name="map_topic"              value="$(arg map_topic_name)"/>
         <param name="cameraInfo_topic"       value="/camera/rgb/camera_info"/>
@@ -87,5 +102,6 @@
         <param name="strategy_seed"          value="$(arg strategy_seed)"/>
         <param name="run_dir"                value="$(arg run_dir)"/>
     </node>
+    </group>
 
 </launch>

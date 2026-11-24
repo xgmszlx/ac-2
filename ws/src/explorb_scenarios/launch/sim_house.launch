@@ -24,6 +24,14 @@
     <arg name="robot_urdf" default="$(find explorb_scenarios)/urdf/explorb_robot.urdf.xacro"/>
     <arg name="init_pose"  default="-x 0.0 -y 0.0 -z 0.02"/>
     <arg name="spawn"      default="true"/>
+    <!-- EXPLORB-LOCOBS: passed straight through to the local planner so that the A/B
+         arms differ in nothing but these weights (run_task.sh forwards extra args
+         to this file only). -->
+    <arg name="lambda_g"           default="0.0"/>
+    <arg name="lambda_c"           default="0.0"/>
+    <arg name="visual_use_dynamic" default="true"/>
+    <arg name="visual_dt"          default="0.45"/>
+    <arg name="use_dynamic_mask"   default="true"/>
 
     <param name="use_sim_time" value="true"/>
 
@@ -54,7 +62,12 @@
 
     <group if="$(arg with_slam)">
         <include file="$(find explorb_scenarios)/launch/move_base_slam.launch">
-            <arg name="namespace" value="$(arg robot_ns)"/>
+            <arg name="namespace"         value="$(arg robot_ns)"/>
+            <arg name="lambda_g"          value="$(arg lambda_g)"/>
+            <arg name="lambda_c"          value="$(arg lambda_c)"/>
+            <arg name="visual_use_dynamic" value="$(arg visual_use_dynamic)"/>
+            <arg name="visual_dt"         value="$(arg visual_dt)"/>
+            <arg name="use_dynamic_mask"  value="$(arg use_dynamic_mask)"/>
         </include>
     </group>
 

@@ -142,6 +142,9 @@ timeout --signal=INT --kill-after=20 "$(( WALL_CAP - WAITED ))" \
   roslaunch explorb_scenarios stack.launch \
     task_id:="$TASK_ID" strategy:="$STRATEGY" scenario:="$SCENARIO" \
     seed:="$SEED" budget_sim_s:="$BUDGET" run_dir:="$RUN_DIR" \
+    with_fixed_goals:="${FIXED_GOALS:-false}" fixed_goals_csv:="${FIXED_GOALS_CSV:-}" \
+    with_decision_maker:="${WITH_DECISION_MAKER:-true}" \
+    use_dynamic_mask:="${USE_DYNAMIC_MASK:-true}" \
     > "$AGENTLOG" 2>&1
 RC=$?
 echo "[run_task] agent half exited rc=$RC"
