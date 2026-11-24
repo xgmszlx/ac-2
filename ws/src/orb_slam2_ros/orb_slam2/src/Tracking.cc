@@ -261,6 +261,29 @@ cv::Mat Tracking::GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, const d
 
     Track();
 
+    // Read-only instrumentation: how many keypoints were actually matched to map points
+    // after tracking (outliers excluded). This is the "actual tracking inlier" number
+    // that the predicted occlusion / co-visibility cost is supposed to correlate with.
+    int nInstrMatched = 0;
+    for (size_t i = 0; i < mCurrentFrame.mvpMapPoints.size(); i++)
+    {
+        ORB_SLAM2::MapPoint* pMP = mCurrentFrame.mvpMapPoints[i];
+        if (pMP && !mCurrentFrame.mvbOutlier[i] && !pMP->isBad())
+            nInstrMatched++;
+    }
+    {
+        static int nInstr2 = 0;
+        nInstr2++;
+        if (nInstr2 <= 5 || (nInstr2 % 60) == 0)
+        {
+            std::cout << "[track-instr] frame=" << nInstr2
+                      << " matched=" << nInstrMatched
+                      << " N=" << mCurrentFrame.N
+                      << " state=" << mState
+                      << std::endl;
+        }
+    }
+
     return mCurrentFrame.mTcw.clone();
 }
 

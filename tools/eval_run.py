@@ -30,6 +30,7 @@ import csv
 import json
 import math
 import os
+import re
 import sys
 
 
@@ -124,6 +125,54 @@ def rpe(t, xy, window=1.0):
     return math.sqrt(s / len(acc))
 
 
+INSTR = re.compile(r'\[obs-instr\] frame=(\d+) N=(\d+) valid_depth_kp=(\d+) '
+                   r'depth_px_sampled_valid=(\d+) state=(-?\d+)')
+CAMERA_FPS = 30.0          # this platform publishes the camera at 30 Hz
+
+
+def internal_tracking(simlog):
+    """Tracking loss from the SLAM frontend's *own* state, not from the ROS publisher.
+
+    `orb_slam2_ros/info/state` alternates between 4 (OK) and 5 (LOST) every 20-30 ms on
+    this platform even though the tracker is fine, so the published state is useless as a
+    loss indicator. The `[obs-instr]` line prints the internal Tracking::eTrackingState
+    every 60 frames (2 s at 30 fps); 2 == OK, 3 == LOST. The duration of each non-OK run
+    is measured in frames, then converted with the camera rate.
+
+    Returns dict(ok_pct, lost_s, n_samples, min_N, mean_N) or None when the log is absent.
+    """
+    if not os.path.exists(simlog):
+        return None
+    recs = []
+    for line in open(simlog, errors='ignore'):
+        m = INSTR.search(line)
+        if m:
+            recs.append((int(m.group(1)), int(m.group(2)), int(m.group(3)), int(m.group(5))))
+    if len(recs) < 3:
+        return None
+    last_frame = recs[-1][0]
+    first_frame = recs[0][0]
+    lost_frames = 0
+    n_ok = 0
+    prev = None
+    for (f, _N, _vd, st) in recs:
+        ok = (st == 2)
+        if ok:
+            n_ok += 1
+        elif prev is not None:
+            # count the *misclassified* span: half the gap on each side, so a single bad
+            # sample between two good ones does not become a 2 s loss
+            lost_frames += (f - prev) / CAMERA_FPS
+        prev = f
+    total_s = (last_frame - first_frame) / CAMERA_FPS if last_frame > first_frame else 0.0
+    Ns = [r[1] for r in recs]
+    return dict(ok_pct=100.0 * n_ok / len(recs),
+                lost_s=lost_frames,
+                analysed_s=total_s,
+                n_samples=len(recs),
+                min_N=min(Ns), mean_N=sum(Ns) / len(Ns))
+
+
 def main():
     if len(sys.argv) < 2:
         print(__doc__)
@@ -193,6 +242,34 @@ def main():
         res['ate_rmse_m'] = float('nan')
         res['n_ate_samples'] = 0
     res['rpe_rmse_m'] = rpe(sl_t, sl_xy) if sl_xy else float('nan')
+
+    # --- tracking loss: internal SLAM state is the authoritative one -----------------
+    simlog = None
+    for cand in (os.path.join(os.path.dirname(os.path.dirname(run_dir)), 'logs',
+                              os.path.basename(run_dir) + '_sim.log'),
+                 '/home/wcqw/explorb_line_20261121/logs/%s_sim.log' % os.path.basename(run_dir)):
+        if os.path.exists(cand):
+            simlog = cand
+            break
+    it = internal_tracking(simlog) if simlog else None
+    if it:
+        res['track_ok_internal_pct'] = it['ok_pct']
+        res['lost_internal_s'] = it['lost_s']
+        res['obs_instr_samples'] = it['n_samples']
+        res['min_keypoints_N'] = it['min_N']
+        res['mean_keypoints_N'] = it['mean_N']
+    else:
+        res['track_ok_internal_pct'] = float('nan')
+        res['lost_internal_s'] = float('nan')
+        res['obs_instr_samples'] = 0
+        res['min_keypoints_N'] = 0
+        res['mean_keypoints_N'] = 0
+    # the published-state numbers stay, but renamed so nobody mistakes them for tracking loss
+    res['published_state_ok_pct'] = res.pop('tracking_ok_pct', float('nan'))
+    res['published_state_lost_s'] = res.pop('lost_s', float('nan'))
+    res['lost_s_note'] = ('lost_internal_s is measured from the frontend internal state '
+                          '([obs-instr] state==2); published_state_* only reflects the ROS '
+                          'publisher, which flaps 4<->5 on this platform.')
 
     # strict success: every dispatched goal was reported as reached (status 3).
     # (An earlier version only compared counts, which counted aborted goals as success.)

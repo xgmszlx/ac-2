@@ -66,6 +66,54 @@ ls -l "$LINE_ROOT/ws/devel/lib/libteb_local_planner.so" 2>/dev/null \
 
 RUN_DIR="$LINE_ROOT/results/runs/$TASK_ID"
 mkdir -p "$RUN_DIR"
+
+# ---------------------------------------------------------------------------
+# Parameter snapshot + git SHA for this run (task book phase 4.3). Written before
+# anything starts so a crashed run still carries its provenance.
+# ---------------------------------------------------------------------------
+GIT_SHA=$(git -C "$LINE_ROOT" rev-parse HEAD 2>/dev/null || echo unknown)
+GIT_BRANCH=$(git -C "$LINE_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)
+TEB_SRC=$(rospack find teb_local_planner 2>/dev/null || echo MISSING)
+TEB_LIB="$LINE_ROOT/ws/devel/lib/libteb_local_planner.so"
+if [ -f "$TEB_LIB" ]; then
+    TEB_INFO=$(stat -c '%y %s' "$TEB_LIB" 2>/dev/null)
+else
+    TEB_INFO="absent"
+fi
+python3 - "$RUN_DIR/meta.json" "$TASK_ID" "$STRATEGY" "$SCENARIO" "$BUDGET" "$SEED" \
+         "$GIT_SHA" "$GIT_BRANCH" "$TEB_SRC" "$TEB_INFO" \
+         "${USE_DYNAMIC_MASK:-true}" "${WITH_DECISION_MAKER:-true}" \
+         "${FIXED_GOALS:-false}" "${FIXED_GOALS_CSV:-}" "$EXTRA_ARGS" <<'PYMETA'
+import json, sys, time
+(out, task, strategy, scenario, budget, seed, sha, branch, teb_src, teb_info,
+ mask, dm, fixed, fixed_csv, extra) = sys.argv[1:16]
+def grab(name):
+    for tok in extra.split():
+        tok = tok.strip('"')
+        if tok.startswith(name + ':='):
+            return tok.split(':=', 1)[1]
+    return None
+doc = dict(
+    task=task, strategy=strategy, scenario=scenario, budget_sim_s=float(budget), seed=int(seed),
+    git_sha=sha, git_branch=branch,
+    teb_package=teb_src, teb_library=teb_info,
+    teb_library_is_workspace_source=teb_src.startswith('/home/wcqw/explorb_line_20261121/ws/src/'),
+    use_dynamic_mask=(mask == 'true'),
+    with_decision_maker=(dm == 'true'),
+    with_fixed_goals=(fixed == 'true'), fixed_goals_csv=fixed_csv,
+    lambda_g=float(grab('lambda_g') or 0.0),
+    lambda_c=float(grab('lambda_c') or 0.0),
+    visual_use_dynamic=(grab('visual_use_dynamic') or 'true') == 'true',
+    visual_dt=float(grab('visual_dt') or 0.45),
+    extra_args=extra,
+    started_wall=time.strftime('%Y-%m-%dT%H:%M:%S'),
+    ground_truth_online=False,
+    note=('No simulator ground truth is used as an online input. GT is read only by '
+          'tools/eval_run.py, offline.'),
+)
+json.dump(doc, open(out, 'w'), indent=2)
+PYMETA
+echo "[run_task] meta: $RUN_DIR/meta.json (sha=$GIT_SHA teb=$(basename "$TEB_SRC"))"
 SIMLOG="$LINE_ROOT/logs/${TASK_ID}_sim.log"
 AGENTLOG="$LINE_ROOT/logs/${TASK_ID}_agent.log"
 

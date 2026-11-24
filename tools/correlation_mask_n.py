@@ -28,17 +28,27 @@ import sys
 
 INSTR = re.compile(r'\[obs-instr\] frame=(\d+) N=(\d+) valid_depth_kp=(\d+) '
                    r'depth_px_sampled_valid=(\d+) state=(-?\d+)')
+# The frontend's *own* "actual tracking inliers": keypoints matched to map points after
+# tracking, outliers and bad points excluded. This is the quantity the predicted
+# occlusion / co-visibility cost must correlate with (task book phase 4.3).
+TRACK = re.compile(r'\[track-instr\] frame=(\d+) matched=(\d+) N=(\d+) state=(-?\d+)')
 
 
 def read_frontend(simlog):
+    """Prefer the [track-instr] lines (matched inliers); fall back to [obs-instr]."""
     out = []
     if not os.path.exists(simlog):
         return out
     for line in open(simlog, errors='ignore'):
+        m = TRACK.search(line)
+        if m:
+            out.append(dict(frame=int(m.group(1)), N=int(m.group(3)), matched=int(m.group(2)),
+                            valid_depth=int(m.group(2)), state=int(m.group(4)), kind='track'))
+            continue
         m = INSTR.search(line)
         if m:
             out.append(dict(frame=int(m.group(1)), N=int(m.group(2)),
-                            valid_depth=int(m.group(3)), state=int(m.group(5))))
+                            valid_depth=int(m.group(3)), state=int(m.group(5)), kind='obs'))
     return out
 
 
@@ -112,6 +122,13 @@ def main():
         best = min(mk_sorted, key=lambda r: abs(r['t'] - t))
         return best if abs(best['t'] - t) < 0.5 else None
 
+    # prefer the tracking-inlier records whenever they exist (they are the real quantity);
+    # mixing both kinds would compare different things.
+    if any(r.get('kind') == 'track' for r in fe):
+        fe = [r for r in fe if r.get('kind') == 'track']
+    kind = fe[0].get('kind', 'obs') if fe else 'obs'
+    print('inlier source: %s (%s)' % ('[track-instr] matched map points' if kind == 'track'
+                                      else '[obs-instr] valid_depth_kp (fallback)', kind))
     xs, ny, nd, times = [], [], [], []
     for rec in fe:
         if rec['state'] != 2:      # only while the frontend is actually tracking
@@ -130,8 +147,9 @@ def main():
     rho_n = spearman(xs, ny)
     r_d = pearson(xs, nd)
     rho_d = spearman(xs, nd)
+    label = 'matched inliers' if kind == 'track' else 'valid_depth_kp'
     print('masked px vs N            : pearson=%+.3f spearman=%+.3f' % (r_n, rho_n))
-    print('masked px vs valid_depth  : pearson=%+.3f spearman=%+.3f' % (r_d, rho_d))
+    print('masked px vs %-12s: pearson=%+.3f spearman=%+.3f' % (label, r_d, rho_d))
 
     # binned view (quartiles of the predicted occlusion)
     pairs = sorted(zip(xs, nd))
@@ -145,6 +163,19 @@ def main():
             print('  q%d  masked_px %6.0f..%6.0f   mean valid_depth_kp=%.1f'
                   % (b + 1, chunk[0][0], chunk[-1][0],
                      sum(c[1] for c in chunk) / len(chunk)))
+
+    # second, event-restricted view: only frames where the mask actually flags something.
+    # A short episode that crosses one actor corridor has few such frames, so the overall
+    # correlation above is dominated by "no occlusion" samples; making the restriction
+    # explicit keeps the two readings from being confused.
+    sub = [(x, y) for (x, y) in zip(xs, nd) if x > 0]
+    if len(sub) >= 5:
+        rx = [a for a, _ in sub]
+        ry = [b for _, b in sub]
+        print('  (masked>0 subset: n=%d, pearson=%+.3f spearman=%+.3f)'
+              % (len(sub), pearson(rx, ry), spearman(rx, ry)))
+    else:
+        print('  (masked>0 subset: n=%d -- too few dynamic events in this episode)' % len(sub))
 
     out = os.path.join(run, 'export', 'occlusion_vs_inliers.csv')
     with open(out, 'w', newline='') as f:
