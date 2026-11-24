@@ -28,6 +28,11 @@
   下一步的首要改动是换一条真正穿过遮挡板走廊的 episode（§6.3 第 7 条）。
 - **ATE 旁边必须同时看**：各臂 `moved` 在旧代里是 0.41–6.28 m（轨迹不同构，跨臂不可直接比）；
   最终代虽只差 1.3%，但观测面积仍差 19%。**主判据是 RPE + 航点到达时刻，ATE 仅作辅。**
+- **⚠️ 关于"多航点那一代的 A/B"：不成立，已按无效比较归档。** 那一代四臂的失败数**逐臂不同**
+  （B0 3 到达 / B1 1 到达 / Ours 1 到达 / Ours_no_cov 2 到达，全部失败在 `(5.27,0.87)` 的
+  `status=4 "Failed to find a valid plan"`），即**比的是规划鲁棒性而非视觉约束连续性**。
+  该代数据保留（`ab_table_round3_zeroedges.csv` / `round4_slow.csv` / `round5_slow_binary.csv`），
+  但在本报告中**不作为方法效果结论**，只在 §6.7c/§6.7d 作为"为什么作废"的证据。
 
 ---
 
@@ -378,7 +383,56 @@ localroot/.../libteb_local_planner.so.deb-orig    EdgeVisualObservability|EdgeCo
 > `python3 tools/ab_summary.py --md --agg` 从 12 个 `metrics.json` 生成）。
 > 手写表格仅作阅读用，任何复核请以生成文件为准。
 
-逐次明细（`results/ab_table_generated.csv`，12 行；原始行亦在 `results/ab_table.csv`）：
+逐次明细（**脚本生成**，`results/ab_table_generated.csv`；下表就是该文件的当前内容，未经手改）：
+
+| task | arm | goals | reached | failed ids | arrival s | cmd_vel | path m | coverage m2 | RPE m | ATE m | lost(inner) s | TEB p50/p95 ms | vis/covis edges |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| ab_B0_visual_r1 | B0 | 1 | 1 | - | 10.6 | 106 | 2.07 | 8.58 | 0.0405 | 0.0493 | 0.00 | 69 / 91 | - / - |
+| ab_B0_visual_r2 | B0 | 1 | 1 | - | 10.6 | 105 | 2.04 | 7.24 | 0.0407 | 0.0393 | 0.00 | 80 / 92 | - / - |
+| ab_B0_visual_r3 | B0 | 1 | 1 | - | 10.5 | 103 | 2.06 | 9.00 | 0.0395 | 0.0483 | 0.00 | 71 / 82 | - / - |
+| ab_B0_visual_r4_911b20b | B0 | 0 | 0 | - | - | 0 | 0.00 | 0.00 | nan | nan | 0.00 | - / - | - / - |
+| ab_B1_visual_r1 | B1 | 1 | 1 | - | 10.4 | 71 | 2.04 | 6.49 | 0.0446 | 0.0236 | 0.00 | 82 / 409 | 7 / 3 |
+| ab_B1_visual_r2 | B1 | 1 | 1 | - | 10.7 | 71 | 2.03 | 8.62 | 0.0449 | 0.0170 | 0.00 | 100 / 259 | 7 / 3 |
+| ab_B1_visual_r3 | B1 | 1 | 1 | - | 10.5 | 71 | 2.04 | 6.02 | 0.0434 | 0.0251 | 0.00 | 102 / 191 | 7 / 3 |
+| ab_B1_visual_r4_412f1c9 | B1 | 1 | 1 | - | 10.3 | 65 | 2.04 | 4.79 | 0.0409 | 0.0201 | 0.00 | 102 / 306 | 8 / 3 |
+| ab_Ours_visual_r1 | Ours | 1 | 1 | - | 10.4 | 62 | 2.06 | 5.97 | 0.0468 | 0.0283 | 0.00 | 102 / 299 | 8 / 4 |
+| ab_Ours_visual_r2 | Ours | 1 | 1 | - | 10.3 | 65 | 1.98 | 5.74 | 0.0414 | 0.0060 | 0.00 | 101 / 272 | 8 / 4 |
+| ab_Ours_visual_r3 | Ours | 1 | 1 | - | 10.4 | 69 | 2.04 | 8.48 | 0.0419 | 0.0158 | 0.00 | 83 / 525 | 7 / 3 |
+| ab_Ours_visual_r4_43417b7 | Ours | 1 | 1 | - | 10.3 | 60 | 2.03 | 5.24 | 0.0426 | 0.0072 | 0.00 | 101 / 335 | 8 / 4 |
+| ab_Ours_no_cov_visual_r1 | Ours_no_cov | 1 | 1 | - | 10.3 | 81 | 2.04 | 9.09 | 0.0428 | 0.0335 | 0.00 | 88 / 186 | 9 / 0 |
+| ab_Ours_no_cov_visual_r2 | Ours_no_cov | 1 | 1 | - | 10.4 | 86 | 2.03 | 8.57 | 0.0430 | 0.0304 | 0.00 | 104 / 142 | 9 / 0 |
+| ab_Ours_no_cov_visual_r3 | Ours_no_cov | 1 | 1 | - | 10.4 | 83 | 2.05 | 8.81 | 0.0398 | 0.0255 | 0.00 | 86 / 162 | 8 / 0 |
+| ab_Ours_no_cov_visual_r4_49bfe7b | Ours_no_cov | 1 | 1 | - | 10.5 | 84 | 2.02 | 4.84 | 0.0400 | 0.0239 | 0.00 | 106 / 142 | 8 / 0 |
+
+## per-arm mean
+
+| arm | n | RPE m | ATE m | path m | coverage m2 | lost inner s | TEB ms |
+|---|---|---|---|---|---|---|---|
+| B0 | 3 | 0.0403 | 0.0456 | 2.056 | 8.27 | 0.00 | 74.2 |
+| B1 | 4 | 0.0435 | 0.0215 | 2.038 | 6.48 | 0.00 | 148.3 |
+| Ours | 4 | 0.0432 | 0.0144 | 2.028 | 6.36 | 0.00 | 158.7 |
+| Ours_no_cov | 4 | 0.0414 | 0.0283 | 2.036 | 7.83 | 0.00 | 125.8 |
+
+> Runs whose `goals` are 0 (failed episodes) stay in the per-run table above
+> but are excluded from these means.
+
+
+原始行亦在 `results/ab_table.csv`（历史表）与 `results/ab_table_v2.csv`（新口径追加表）。
+
+**per-arm 均值（同样由脚本生成；`goals=0` 的失败 episode 保留在上表但不进均值）**
+
+## per-arm mean
+
+| arm | n | RPE m | ATE m | path m | coverage m2 | lost inner s | TEB ms |
+|---|---|---|---|---|---|---|---|
+| B0 | 3 | 0.0403 | 0.0456 | 2.056 | 8.27 | 0.00 | 74.2 |
+| B1 | 4 | 0.0435 | 0.0215 | 2.038 | 6.48 | 0.00 | 148.3 |
+| Ours | 4 | 0.0432 | 0.0144 | 2.028 | 6.36 | 0.00 | 158.7 |
+| Ours_no_cov | 4 | 0.0414 | 0.0283 | 2.036 | 7.83 | 0.00 | 125.8 |
+
+> Runs whose `goals` are 0 (failed episodes) stay in the per-run table above
+> but are excluded from these means.
+
 
 | task | ATE m | 路径 m | 覆盖 m² | TEB ms |
 |---|---|---|---|---|
@@ -411,9 +465,18 @@ B0          : [visual_query] disabled (both visual weights are 0: author graph)
    "预测遮挡 vs 实际跟踪内点"的相关性测不出（pearson +0.09）。这同时解释了为什么
    `Ours` 与 `B1` 的 RPE/路径几乎相同——**没有遮挡事件，动态项无从起作用**。
    长路线上的方向性证据（Spearman −0.52）保留在 §6.5 作为"机制在事件发生时可测"的旁证。
-4. **实时性仍不达标**：`B0 74.2 ms` → `B1 144.9` → `Ours 155.2` → `Ours_no_cov 127.6`，
-   控制周期 100 ms。原生 TEB 已用掉 74% 的余量，两条视觉边再吃掉 53–81 ms。
-   真跑里 move_base 也会报 `Control loop missed its desired rate`。
+4. **实时性仍不达标，而且看 p95 更清楚**（`tools/run_extras.py` 从每个控制周期的
+   `[teb-solve] last=` 采样统计，不是平均值的平均）：
+
+   | arm | TEB p50 | TEB p95 | p95 vs 100 ms 周期 |
+   |---|---|---|---|
+   | `B0` | 69–80 ms | **82–92 ms** | 勉强满足 |
+   | `B1` | 82–102 ms | **259–409 ms** | 超 2.6–4.1× |
+   | `Ours` | 95–101 ms | **306–335 ms** | 超 3.1–3.4× |
+   | `Ours_no_cov` | 100–110 ms | 250–300 ms | 超 2.5–3× |
+
+   即：**原生 TEB 的 p95 还在预算内，两条视觉边的 p95 直接超 3–4 倍**——最坏的那 5% 就是
+   move_base 报 `Control loop missed its desired rate` 的时刻。
 5. **覆盖率不是本方法的目标，且数据支持"它确实让机器人更保守"**：
    `B0 8.27 m²` vs `Ours 6.73 m²`（−19%）、`Ours_no_cov 8.82 m²`。
    即视觉代价会牺牲一点探索收益换取约束质量——这正是任务书里要的"有界代价"的预期行为，
@@ -679,6 +742,15 @@ bash tools/run_ab.sh static 240 1
 **外加每臂自述**：`[visual_query] enabled (lambda_g=…, lambda_c=…, dt_vis=…)` /
 `[visual_query] disabled (both visual weights are 0: author graph)`——这四个字符串**只存在于源码构建**，
 deb 版一个都没有；所以"B0 臂 = 作者图"和"B1/Ours 臂 = 带边"这两件事，都是运行时可验证的，而不是靠参数推断。
+
+**编排窗口独立复核到的一行（同一条证据，不同的人不同的时间）**：
+```
+[visual_query] enabled (lambda_g=1, lambda_c=1, dt_vis=0.45 s)
+[visual-constraint] lambda_g=1 lambda_c=1 dt_vis=0.45 vertices=18 visual_edges=18 covis_edges=16 graph_edges=129
+```
+本轮各臂自己日志里的同类行：`B1 vertices=6/8 visual_edges=6/8 covis_edges=2/3`、
+`Ours vertices=15 visual_edges=15 covis_edges=7`、`Ours_no_cov visual_edges=7 covis_edges=0`（见
+`results/ab_table_generated.md` 的 `vis/covis edges` 列）。
 
 ## 9 未完成项（明确列出，供下一轮接手）
 
