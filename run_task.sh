@@ -13,6 +13,7 @@
 # publishes odometry; stage 2 starts the agent half.
 set +u
 
+SELF_PID=$$
 LINE_ROOT=/home/wcqw/explorb_line_20261121
 STRATEGY=${1:-native}
 SCENARIO=${2:-static}
@@ -91,6 +92,9 @@ print(h.hexdigest()[:7])
 PYHASH
 )
 TASK_ID="${TASK_ID}_${CONF_HASH}"
+echo "$SELF_PID" > "$LINE_ROOT/.run_task.pid" 2>/dev/null || true
+trap 'rm -f "$LINE_ROOT/.run_task.pid"' EXIT INT TERM
+
 RUN_DIR="$LINE_ROOT/results/runs/$TASK_ID"
 if [ -e "$RUN_DIR/metrics.json" ] || [ -e "$RUN_DIR/clock.csv" ]; then
     echo "[run_task] FATAL: $RUN_DIR already holds a completed run; refusing to overwrite."
@@ -98,7 +102,7 @@ if [ -e "$RUN_DIR/metrics.json" ] || [ -e "$RUN_DIR/clock.csv" ]; then
     exit 3
 fi
 mkdir -p "$RUN_DIR"
-echo "[run_task] run id    : $TASK_ID (confighash=$CONF_HASH)"
+echo "[run_task] run id    : $TASK_ID (confighash=$CONF_HASH) pid=$SELF_PID"
 GIT_BRANCH=$(git -C "$LINE_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)
 TEB_SRC=$(rospack find teb_local_planner 2>/dev/null || echo MISSING)
 TEB_LIB="$LINE_ROOT/ws/devel/lib/libteb_local_planner.so"

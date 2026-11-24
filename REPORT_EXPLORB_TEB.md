@@ -446,39 +446,39 @@ B0          : [visual_query] disabled (both visual weights are 0: author graph)
 
 ### 6.5 相关性日志：预测遮挡 vs **实际跟踪内点**（任务书 4.3 要求）
 
-为了给出"机制是否成立"的直接证据，本轮给 ORB-SLAM 的**只读插桩**加了一行
-`[track-instr] frame=… matched=<匹配上的地图点数> N=… state=…`
-（`matched` = 跟踪后仍有地图点关联、且非外点、且地图点未失效的关键点数），
-并用 `tools/correlation_mask_n.py` 把它与 `dynamic_mask.py` 逐帧预测的遮挡像素数
-按**仿真时间**对齐（只取前端 `state==2` 的帧）。
+两条日志流已经足够，不需要为它单独加物理量。新增 `tools/join_mechanism.py`（离线，不需要锁/不重跑）
+把三方按下表对齐，产出 `results/runs/<task>/mechanism.csv` + `mechanism_summary.json`：
 
-**结果（`results/runs/corr_ours`，Ours 配置，230 sim-s，269 个对齐样本）**
+| 预测侧（TEB/掩码） | 实测侧（SLAM） |
+|---|---|
+| `dynamic_objects.csv` 的 `n_mask_px`（就是 $w_{dyn}$ 的输入：被跟踪动态物体的遮挡像素） | `[track-instr] matched=`（跟踪后仍关联的地图点数，外点与失效点已排除） |
+| `[visual-constraint] … visual_edges= covis_edges= vertices=` | `[obs-instr] N= valid_depth_kp= state= masked_out=` |
 
-```
-inlier source: [track-instr] matched map points (track)
-masked px vs N              : pearson=-0.034 spearman=-0.140
-masked px vs matched inliers: pearson=+0.091 spearman=+0.086
-(masked>0 subset: n=3 -- too few dynamic events in this episode)
-```
+列：`t, w_dyn_proxy, n_blobs, covis_edges, visual_edges, vertices, matched_inliers,
+N_keypoints, valid_depth_kp, state, masked_out`（按仿真时间最近邻 ±0.2 s 对齐）。
 
-即：**在这条 2 m 的固定航线上，预测遮挡与实际跟踪内点数之间没有可测的相关性**，
-而且原因很明确：**269 个样本里只有 3 帧的掩码非零**——动态遮挡事件几乎没发生
-（机器人 2 m 直行段上，遮挡板横穿的时段没落在视野里）。
+**实测（合格 run，四臂同一协议）**
 
-**对照：更长路线上的负相关是真实存在的**（第 1 轮的 6 航点路线，`ab_Ours_visual_r1` 等，
-当时还没有 `[track-instr]`，用前端可用深度关键点数作被解释量）：
+| run | masked_px vs matched_inliers | masked_px vs valid_depth_kp | masked_px vs N_keypoints |
+|---|---|---|---|
+| `ab_Ours_visual_r4_43417b7` | r=+0.107, ρ=+0.258 (n=119) | r=+0.355, ρ=+0.344 | r=−0.102, ρ=−0.268 |
+| `ab_B1_visual_r4_412f1c9` | r=+0.069, ρ=+0.183 (n=119) | r=+0.267, ρ=+0.272 | r=+0.030, ρ=+0.011 |
+| `corr_ours`（同协议） | r=+0.090, ρ=+0.083 | r=+0.228, ρ=+0.243 | r=−0.034, ρ=−0.141 |
 
-```
-masked px vs valid_depth_kp: pearson=-0.445 spearman=-0.515       （616/1129 帧掩码非零）
-bin (masked px quartile) -> mean usable depth kp:  q4 14340..70216 -> 417.6（最低档）
-```
+**怎么读（这是本轮最重要的负结论）**
 
-**结论（两句话，都要写进任何引用）**
-1. **机制方向成立但只在"遮挡真的发生"时才可测**：长路线上"预测遮挡多 → 前端可用观测少"
-   的 Spearman 达 −0.52；短航线上遮挡事件只有 3/269 帧，测不出来，也不该指望轨迹有变化。
-2. 因此**本轮 A/B 里"动态遮挡预测"这一项实际上从未被触发到**，`Ours` 与 `B1` 的差别
-   在物理上没有依据——这解释了为什么两者的 RPE/路径几乎一样。要检验动态项，
-   必须选一条**机器人真正穿过遮挡板走廊**且停留足够长的 episode（下一轮的首要设计改动）。
+- **方向不成立**：预测遮挡与"实际跟踪内点"之间**没有负相关**（r≈+0.07~+0.11，符号还偏正）。
+  分箱曲线也不单调：`q1..q4` 的 matched inliers 是 178 → 280 → 292 → 374（越高越"多"），
+  因为后半程地图点更多、遮挡帧与"地图变丰富"在时间上是混在一起的——**这是一个混淆**，
+  而不是方法效应。
+- **原因**：整段 230 s 里掩码非零的帧只有个位数（`corr_ours` 是 3/269），
+  预测侧几乎没有方差；`q1..q3` 的 `masked_px` 全为 0。**这条 2 m 航线上动态遮挡事件根本没被触发**，
+  所以既测不出相关性，也解释得通"`Ours` 与 `B1` 的 RPE/路径一致"。
+- **有意义的那部分**：在最早的 6 航点长路线上（`masked px vs valid_depth_kp`，
+  616/1129 帧掩码非零）得到 **r=−0.445, ρ=−0.515**，方向正确。说明"机制在事件发生时可测"，
+  但要真正检验动态项，必须换一条**机器人确实穿过遮挡板走廊、并在遮挡期间停留**的 episode。
+- `covis_edges vs matched_inliers` 无法计算（n≈0~1）：`[visual-constraint]` 是 5 s 节流打印，
+  与 2 s 一次的 track 行几乎不重叠。**下一版应把 covis 计数写进每周期日志**（已在 §6.8 列为未完成项）。
 
 ### 6.6 失跟时长的口径（`lost_s` 曾是假指标，已更换）
 
@@ -515,13 +515,30 @@ bin (masked px quartile) -> mean usable depth kp:  q4 14340..70216 -> 417.6（�
 的 `git_sha`/`git_branch` 列 + 各臂日志里的 `[visual-constraint]` 行共同构成等价快照；
 从下一次运行起每个 episode 都自带 `meta.json`。）
 
+### 6.7b 可完全追溯的一轮（唯一 id + 每 run `meta.json` 之后）
+
+上面 §6.2 的 12 次运行早于"唯一 id + meta.json"机制，**目录在盘上、`git_sha` 在 `metrics.json` 与
+`ab_table_round*.csv` 里，但没有 `meta.json`**。为补上这一条，最后又跑了一轮**四臂 × 1 次**，
+全部使用新机制（`results/runs/ab_<arm>_visual_r4_<confighash>/`，每目录带 `meta.json`）：
+
+| run | 到达 | 路径 m | 覆盖 m² | RPE m | ATE m | 失跟(内部) s | TEB ms |
+|---|---|---|---|---|---|---|---|
+| `ab_B0_visual_r4_911b20b` | **0/0**（失败，见 §6.8） | – | – | – | – | 0.00 | – |
+| `ab_B1_visual_r4_412f1c9` | 1/1 ✅ | 2.035 | 4.79 | 0.0409 | 0.0201 | 0.00 | 148.3 |
+| `ab_Ours_visual_r4_43417b7` | 1/1 ✅ | 2.026 | 5.24 | 0.0426 | 0.0072 | 0.00 | 158.7 |
+| `ab_Ours_no_cov_visual_r4_49bfe7b` | 1/1 ✅ | 2.024 | 4.84 | 0.0821 | 0.0239 | 0.00 | 125.8 |
+
+（机器生成版本：`results/ab_table_generated.md`；失败行 `goals=0` 保留在上表但不进均值。）
+
 ### 6.8 失败与未跑（保留）
 
 | 项 | 说明 |
 |---|---|
 | 第一轮 A/B（`results/ab_table_round1_badroute.csv`） | 固定路线里含 `(2.20,-4.30)`，四臂最后一条目标都是 `Failed to find a valid plan`。**这是目标点选错，不是规划器结果**，该轮整表作废但保留 |
 | 第二轮的 B1 那一格 | 我在其运行期间手工执行了 `cleanup.sh`（为修孤儿进程），把该 arm 的节点杀了 → `teb_norm` 为空。已在 STATUS §02:30 记录 |
-| 每臂重复次数 | **1 次**（要求 ≥3）：重型锁被另一条线（DynoSAM）连续占用，单次排队最长 2400 s 超时 |
+| 每臂重复次数 | 主 3 次（§6.2），补跑 1 次（§6.7b）；**未做到每臂 3 次 × 两轮** |
+| **`ab_B0_visual_r4_911b20b`（失败，保留）** | 我在该 episode 运行期间手工执行了新加保护的 `cleanup.sh`——**保护是在那次运行开始之后才加的，pid 文件还不存在，于是它把这一轮杀掉了**（`n_goal=0`、无路径）。这是操作失误，不是算法失败；之后 `cleanup.sh` 已能正确拒绝（实测 `cleanup: REFUSED - run_task.sh (pid …) is running an episode.`） |
+| 第 1–5 轮运行目录被同名覆盖 | 见 §6.0.2；已修复（唯一 id），历史数据以 CSV 快照保留 |
 
 ---
 
@@ -554,3 +571,36 @@ heavy --line A --note run --max-wait 1200 -- bash run_task.sh native static task
 # 4 臂 A/B（固定起终点路线，每条 240 sim-s）
 bash tools/run_ab.sh static 240 1
 ```
+
+---
+
+## 8 附录：为什么可以相信"跑的是源码 TEB"（三重自证）
+
+这类实验最容易被质疑的一点是"你改了源码但运行时加载的是 deb"。本线用三条互相独立的机械证据
+堵住这个口子，并且都在**每次运行的日志里**，不需要事后回忆：
+
+1. **包解析层**（`run_task.sh` 启动时打印，并写入 `meta.json`）：
+   `rospack find teb_local_planner` → `<ws>/src/teb_local_planner`；`[run_task] teb source : SOURCE`。
+2. **符号/链接层**：`nm -C ws/devel/lib/libteb_local_planner.so | grep -cE 'EdgeVisualObservability|EdgeCoVisibility'`
+   = **45**，同一 grep 对 `localroot/…/libteb_local_planner.so.deb-orig` = **0**；
+   `ldd` 里 `libvisual_query.so => <ws>/devel/lib/libvisual_query.so`（`meta.json.teb_library_ldd`）。
+3. **运行进程层**：`tools/verify_source_teb.sh` 在 episode 运行中读
+   `/proc/<move_base pid>/maps`，必须命中 `<ws>/devel/lib/libteb_local_planner.so`，
+   否则脚本 `exit 1`、A/B 不许开跑（`tools/run_ab.sh` 已把这条做成起跑前断言）。
+   实测一次：`cmdline: /opt/ros/noetic/lib/move_base/move_base …` +
+   `…/ws/devel/lib/libteb_local_planner.so`，`[gate] PASS`。
+
+**外加每臂自述**：`[visual_query] enabled (lambda_g=…, lambda_c=…, dt_vis=…)` /
+`[visual_query] disabled (both visual weights are 0: author graph)`——这四个字符串**只存在于源码构建**，
+deb 版一个都没有；所以"B0 臂 = 作者图"和"B1/Ours 臂 = 带边"这两件事，都是运行时可验证的，而不是靠参数推断。
+
+## 9 未完成项（明确列出，供下一轮接手）
+
+| # | 未完成 | 卡在哪 / 下一步 |
+|---|---|---|
+| 1 | 动态遮挡项**从未被真正触发** | 需要一条"机器人穿过 `visual_panel_a`(x=1.6) 或 `visual_panel_b`(y=1.2) 走廊并停留"的 episode；本轮 230 s 内掩码非零仅个别帧 |
+| 2 | `covis` 计数与 track 行的时间分辨率不匹配 | 把每周期 `w_dyn` 均值与 `covis_n` 写进 `[teb-solve]`/`[visual-constraint]` 行（一行改动），再重跑即可做相关 |
+| 3 | 实时性不达标（74→126~172 ms vs 100 ms 周期） | 解析雅可比 → 稀疏加边 → 限 `max_samples`/同伦类数 |
+| 4 | 严格 RPE（TUM `rpe_trans` 分段对齐）与分段 ATE | 本轮 RPE 是弱代理；分段 ATE 才能处理"四臂观测面积不同"的混淆 |
+| 5 | 每臂重复次数 | 最后一轮做到 3 次；随后加入 meta.json 机制的一轮只跑到 1 次/臂（含 1 次被我误杀，见 §6.8） |
+| 6 | 独立 seed 的评测轮 | 目前全部 seed=0（同一起点/同一演员相位） |

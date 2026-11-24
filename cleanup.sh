@@ -12,6 +12,24 @@
 # "$LINE_ROOT/logs/ros/" catches all of them and nothing belonging to another line.
 set +u
 LINE_ROOT=/home/wcqw/explorb_line_20261121
+PIDFILE=$LINE_ROOT/.run_task.pid
+FORCE=0
+for a in "$@"; do [ "$a" = "--force" ] && FORCE=1; done
+
+# Guard added after a real accident: a manual cleanup.sh run *during* an episode killed
+# that episode's nodes (2026-11-25 02:30). run_task.sh writes its pid here; while it is
+# alive, cleanup refuses to act unless --force is given.
+if [ -f "$PIDFILE" ]; then
+    OWNER=$(cat "$PIDFILE" 2>/dev/null)
+    if [ -n "$OWNER" ] && kill -0 "$OWNER" 2>/dev/null; then
+        if [ "$FORCE" != "1" ]; then
+            echo "cleanup: REFUSED - run_task.sh (pid $OWNER) is running an episode."
+            echo "cleanup:          if you really mean to kill it, use: cleanup.sh --force"
+            exit 2
+        fi
+        echo "cleanup: --force given, killing the episode owned by pid $OWNER"
+    fi
+fi
 SELF=$$
 ANC=()
 p=$SELF

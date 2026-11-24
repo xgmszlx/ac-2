@@ -42,7 +42,7 @@ fi
 
 export PATH=/home/wcqw/.dsh_heavy:$PATH
 GOALS_CSV=$LINE_ROOT/results/fixed_goals_ab.csv
-TABLE=$LINE_ROOT/results/ab_table.csv
+TABLE=$LINE_ROOT/results/ab_table_v2.csv
 GIT_SHA=$(git -C "$LINE_ROOT" rev-parse --short HEAD)
 BRANCH=$(git -C "$LINE_ROOT" rev-parse --abbrev-ref HEAD)
 
@@ -84,14 +84,21 @@ for arm in "${ARMS[@]}"; do
             continue
         fi
         # offline metrics (GT only here, never online)
+        # run_task.sh appends a configuration hash to the run id, so the real directory is
+        # <TASK>_<confighash>: resolve it instead of assuming the bare name (this is what
+        # silently produced no table row for the first conformant round).
+        RUN_DIR=$(ls -dt "$LINE_ROOT/results/runs/${TASK}_"* 2>/dev/null | head -1)
+        [ -n "$RUN_DIR" ] || RUN_DIR="$LINE_ROOT/results/runs/$TASK"
+        TASK=$(basename "$RUN_DIR")
+        echo "[ab] resolved run dir: $RUN_DIR"
         # keep the source-TEB gate evidence inside the run directory (machine proof that
         # this episode ran on the workspace build, per the orchestrator's P0)
-        if [ -f "$LINE_ROOT/logs/gate_preflight_gate.log" ] && [ -d "$LINE_ROOT/results/runs/$TASK" ]; then
-            cp "$LINE_ROOT/logs/gate_preflight_gate.log" "$LINE_ROOT/results/runs/$TASK/gate_source_teb.log" 2>/dev/null
+        if [ -f "$LINE_ROOT/logs/gate_preflight_gate.log" ] && [ -d "$RUN_DIR" ]; then
+            cp "$LINE_ROOT/logs/gate_preflight_gate.log" "$RUN_DIR/gate_source_teb.log" 2>/dev/null
         fi
-        if [ -d "$LINE_ROOT/results/runs/$TASK" ]; then
-            python3 "$LINE_ROOT/tools/eval_run.py" "$LINE_ROOT/results/runs/$TASK" >/dev/null 2>&1
-            python3 - "$TASK" "$arm" "$SCENARIO" "$rep" "$GIT_SHA" "$BRANCH" "$BUDGET" "$TABLE" "$LINE_ROOT/results/runs/$TASK" <<'PY'
+        if [ -d "$RUN_DIR" ]; then
+            python3 "$LINE_ROOT/tools/eval_run.py" "$RUN_DIR" >/dev/null 2>&1
+            python3 - "$TASK" "$arm" "$SCENARIO" "$rep" "$GIT_SHA" "$BRANCH" "$BUDGET" "$TABLE" "$RUN_DIR" <<'PY'
 import json, sys, os, csv
 task, arm, scen, rep, sha, branch, budget, table, rundir = sys.argv[1:10]
 mpath = os.path.join(rundir, 'metrics.json')

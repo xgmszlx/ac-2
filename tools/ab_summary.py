@@ -88,7 +88,7 @@ def write_generated(rows):
         f.write('\n## per-arm mean\n\n| arm | n | RPE m | ATE m | path m | coverage m2 | lost inner s | TEB ms |\n')
         f.write('|---|---|---|---|---|---|---|---|\n')
         for arm in ARMS:
-            rs = by.get(arm, [])
+            rs = [x for x in by.get(arm, []) if (x.get('n_goal') or 0) > 0]
             if not rs:
                 continue
             def mean(k, nd=4):
@@ -103,6 +103,8 @@ def write_generated(rows):
             f.write('| %s | %d | %s | %s | %s | %s | %s | %s |\n' % (
                 arm, len(rs), mean('rpe_rmse_m'), mean('ate_rmse_m'), mean('path_len_m', 3),
                 mean('coverage_m2', 2), mean('lost_internal_s', 2), mean('teb_ms', 1)))
+        f.write('\n> Runs whose `goals` are 0 (failed episodes) stay in the per-run table above\n'
+                '> but are excluded from these means.\n')
     return md_path, csv_path
 
 
@@ -139,7 +141,7 @@ def main():
         print('| arm | n | reached mean | path m mean | coverage m2 mean | ATE m mean | TEB ms mean |')
         print('|---|---|---|---|---|---|---|')
         for arm in ARMS:
-            rs = by.get(arm, [])
+            rs = [x for x in by.get(arm, []) if (x.get('n_goal') or 0) > 0]
             if not rs:
                 continue
             def mean(key, nd=3):
